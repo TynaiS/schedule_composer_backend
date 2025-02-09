@@ -1,0 +1,9 @@
+spring:
+  application:
+    name:
+      schedule_composer
+  datasource:
+    url: jdbc:postgresql://localhost:5432/schedule_composer
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
