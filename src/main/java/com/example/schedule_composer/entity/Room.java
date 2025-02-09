@@ -1,5 +1,6 @@
 package com.example.schedule_composer.entity;
 
+import com.example.schedule_composer.utils.RoomType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String roomNum;
-    private String type;
+    private RoomType type;
 
     public Long getId() {
         return id;
@@ -27,7 +28,7 @@ public class Room {
         return roomNum;
     }
 
-    public String getType() {
+    public RoomType getType() {
         return type;
     }
 
@@ -39,7 +40,7 @@ public class Room {
         this.roomNum = roomNum;
     }
 
-    public void setType(String type) {
+    public void setType(RoomType type) {
         this.type = type;
     }
 }

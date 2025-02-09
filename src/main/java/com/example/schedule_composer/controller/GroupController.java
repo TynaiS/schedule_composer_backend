@@ -32,7 +32,7 @@ public class GroupController {
         return groupService.getGroups();
     }
 
-    @GetMapping("{groupId}")
+    @GetMapping("/{groupId}")
     @Operation(summary = "Get group by ID", description = "Retrieves a specific group by its ID")
     public Group getGroupById(@PathVariable("groupId") Long id) {
         System.out.println(groupService.getGroupById(id).getName());

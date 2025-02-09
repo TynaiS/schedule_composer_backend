@@ -32,7 +32,7 @@ public class CourseController {
         return courseService.getCourses();
     }
 
-    @GetMapping("{courseId}")
+    @GetMapping("/{courseId}")
     @Operation(summary = "Get course by ID", description = "Retrieves a specific course by its ID")
     public Course getCourseById(@PathVariable("courseId") Long id) {
         System.out.println(courseService.getCourseById(id).getName());
