@@ -7,3 +7,6 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+springdoc:
+  api-docs:
+    path: /api-docs
