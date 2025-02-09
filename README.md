@@ -8,7 +8,7 @@ To setup database:
      "
      in /src/main/resources/application.yml to your database path, username and password.
   4) Go to /sql/database_setup_sql, copy the code and run in your database sql file.
-  5) You database is set up, you can run the application!
+  5) You database is set up, you can now run the application!
 
 
 
