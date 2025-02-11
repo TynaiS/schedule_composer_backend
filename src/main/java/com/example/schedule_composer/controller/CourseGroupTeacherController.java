@@ -1,5 +1,6 @@
 package com.example.schedule_composer.controller;
 
+import com.example.schedule_composer.dto.CourseGroupTeacherPatchRequest;
 import com.example.schedule_composer.dto.CourseGroupTeacherPostRequest;
 import com.example.schedule_composer.entity.CourseGroupTeacher;
 import com.example.schedule_composer.service.CourseGroupTeacherService;
@@ -43,6 +44,16 @@ public class CourseGroupTeacherController {
         CourseGroupTeacher savedEntity = courseGroupService.createCourseGroupTeacher(request);
         return ResponseEntity.ok(savedEntity);
     }
+
+    @PatchMapping("/{id}")
+    @Operation(summary = "Update course_group_teacher relation", description = "Updates an existing course_group_teacher relation")
+    public ResponseEntity<CourseGroupTeacher> patchCourseGroupTeacher(
+            @PathVariable Long id,
+            @RequestBody CourseGroupTeacherPatchRequest patchRequest) {
+        CourseGroupTeacher updated = courseGroupService.updateCourseGroupTeacher(id, patchRequest);
+        return ResponseEntity.ok(updated);
+    }
+
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete course_group_teacher by ID", description = "Deletes a specific course_group_teacher by its ID")

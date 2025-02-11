@@ -4,8 +4,7 @@ import com.example.schedule_composer.utils.CourseType;
 import lombok.Data;
 
 @Data
-public class CourseGroupTeacherPostRequest {
-
+public class CourseGroupTeacherPatchRequest {
     private Long groupId;
     private Long courseId;
     private Long teacherId;
