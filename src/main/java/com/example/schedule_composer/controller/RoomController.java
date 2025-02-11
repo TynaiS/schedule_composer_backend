@@ -2,6 +2,7 @@ package com.example.schedule_composer.controller;
 
 import com.example.schedule_composer.entity.Room;
 import com.example.schedule_composer.service.RoomService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +25,14 @@ public class RoomController {
     }
 
     @GetMapping()
+    @Operation(summary = "Get all rooms", description = "Retrieves a list of all rooms")
     public List<Room> getRooms() {
         System.out.println(roomService.getRooms());
         return roomService.getRooms();
     }
 
     @GetMapping("/{roomId}")
+    @Operation(summary = "Get room by id", description = "Retrieves a room by id")
     public Room getRoomById(@PathVariable("roomId") Long id) {
         return roomService.getRoomById(id);
     }

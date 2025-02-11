@@ -18,29 +18,4 @@ public class Course {
     private Long id;
     private String name;
     private Integer credits;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Integer getCredits() {
-        return credits;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    private void setCredits(Integer credits) {
-        this.credits = credits;
-    }
 }

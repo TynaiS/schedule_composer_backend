@@ -13,10 +13,20 @@ import java.util.List;
 public class CourseGroupTeacherService {
 
     private final CourseGroupTeacherRepository courseGroupTeacherRepository;
+    private final GroupService groupService;
+    private final CourseService courseService;
+    private final TeacherService teacherService;
 
     @Autowired
-    public CourseGroupTeacherService(CourseGroupTeacherRepository courseGroupTeacherRepository) {
+    public CourseGroupTeacherService(
+            CourseGroupTeacherRepository courseGroupTeacherRepository,
+            GroupService groupService,
+            CourseService courseService,
+            TeacherService teacherService) {
         this.courseGroupTeacherRepository = courseGroupTeacherRepository;
+        this.groupService = groupService;
+        this.courseService = courseService;
+        this.teacherService = teacherService;
     }
 
     public List<CourseGroupTeacher> getCourseGroupTeachers() {
@@ -27,8 +37,18 @@ public class CourseGroupTeacherService {
         return courseGroupTeacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("CourseGroupTeacher not found with id " + id));
     }
 
-    public CourseGroupTeacher createCourseGroupTeacher(CourseGroupTeacher request) {
-        return courseGroupTeacherRepository.save(request);
+    public CourseGroupTeacher createCourseGroupTeacher(CourseGroupTeacherPostRequest request) {
+        CourseGroupTeacher newCourseGroupTeacher = CourseGroupTeacher.builder()
+                .id(request.getId())
+                .group(groupService.getGroupById(request.getGroupId()))
+                .course(courseService.getCourseById(request.getCourseId()))
+                .teacher(teacherService.getTeacherById(request.getTeacherId()))
+                .hoursAWeek(request.getHoursAWeek())
+                .hoursTotal(request.getHoursTotal())
+                .type(request.getType())
+                .build();
+        CourseGroupTeacher savedCourseGroupTeacher = courseGroupTeacherRepository.save(newCourseGroupTeacher);
+        return savedCourseGroupTeacher;
     }
 
     public void deleteCourseGroupTeacher(Long id) {

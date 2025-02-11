@@ -1,11 +1,13 @@
 package com.example.schedule_composer.entity;
 
-import com.example.schedule_composer.utils.RoomType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 
 @Entity
 @Table
@@ -13,12 +15,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Room {
+public class ScheduleLunch {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String roomNum;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = false)
+    private Group group;
 
     @Enumerated(EnumType.STRING)
-    private RoomType type;
+    private DayOfWeek day;
+
+    private LocalTime startTime;
+    private LocalTime endTime;
 }
