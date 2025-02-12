@@ -2,6 +2,7 @@ package com.example.schedule_composer.controller;
 
 import com.example.schedule_composer.entity.ScheduleLunch;
 import com.example.schedule_composer.service.ScheduleLunchService;
+import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/schedule_lunches")
+@RequestMapping(ApiConstants.SCHEDULE_LUNCH_API)
 @Tag(name = "Schedule Lunch API", description = "Endpoints for managing schedule lunches")
 public class ScheduleLunchController {
 

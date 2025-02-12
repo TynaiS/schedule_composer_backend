@@ -2,6 +2,7 @@ package com.example.schedule_composer.controller;
 
 import com.example.schedule_composer.entity.Course;
 import com.example.schedule_composer.service.CourseService;
+import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/courses")
+@RequestMapping(ApiConstants.COURSE_API)
 @Tag(name = "Course API", description = "Endpoints for managing student courses")
 public class CourseController {
 

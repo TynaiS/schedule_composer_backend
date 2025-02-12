@@ -4,6 +4,7 @@ import com.example.schedule_composer.dto.CourseGroupTeacherPatchRequest;
 import com.example.schedule_composer.dto.CourseGroupTeacherPostRequest;
 import com.example.schedule_composer.entity.CourseGroupTeacher;
 import com.example.schedule_composer.service.CourseGroupTeacherService;
+import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/course_group_teacher")
+@RequestMapping(ApiConstants.COURSE_GROUP_TEACHER_API)
 @Tag(name = "CourseGroupTeacher API", description = "Endpoints for managing course-group-teacher relations, i.e. what courses and teachers assigned for specific groups")
 public class CourseGroupTeacherController {
 
@@ -45,6 +46,12 @@ public class CourseGroupTeacherController {
             @RequestBody CourseGroupTeacherPostRequest request) {
         CourseGroupTeacher savedEntity = courseGroupService.createCourseGroupTeacher(request);
         return ResponseEntity.ok(savedEntity);
+    }
+
+    @PostMapping("/generate")
+    @Operation(summary = "Generates the schedule", description = "Generated the schedule")
+    public ResponseEntity<String> generateSchedule() {
+        return ResponseEntity.ok("Schedule created");
     }
 
     @PatchMapping("/{id}")
