@@ -1,6 +1,7 @@
 package com.example.schedule_composer.dto;
 
 import com.example.schedule_composer.utils.CourseType;
+import com.example.schedule_composer.utils.RoomType;
 import lombok.Data;
 
 @Data
@@ -12,4 +13,5 @@ public class CourseGroupTeacherPostRequest {
     private Integer hoursAWeek;
     private Integer hoursTotal;
     private CourseType type;
+    private RoomType requiredRoomType;
 }

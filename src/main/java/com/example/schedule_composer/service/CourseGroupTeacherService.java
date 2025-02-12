@@ -51,6 +51,7 @@ public class CourseGroupTeacherService {
                 .hoursAWeek(request.getHoursAWeek())
                 .hoursTotal(request.getHoursTotal())
                 .type(request.getType())
+                .requiredRoomType(request.getRequiredRoomType())
                 .build();
         CourseGroupTeacher savedCourseGroupTeacher = courseGroupTeacherRepository.save(newCourseGroupTeacher);
         return savedCourseGroupTeacher;

@@ -1,6 +1,7 @@
 package com.example.schedule_composer.entity;
 
 import com.example.schedule_composer.utils.CourseType;
+import com.example.schedule_composer.utils.RoomType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,5 +38,8 @@ public class CourseGroupTeacher {
 
     @Enumerated(EnumType.STRING)
     private CourseType type;
+
+    @Column(name = "required_room_type")
+    private RoomType requiredRoomType;
 
 }
