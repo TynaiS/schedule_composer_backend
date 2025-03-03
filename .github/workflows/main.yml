@@ -24,7 +24,7 @@ jobs:
 
       - name: Set Variables
         run: |
-          echo "IMAGE_NAME=warradish/schedulerspring:${{ github.head_ref }}.${{ github.sha }}" >> $GITHUB_ENV
+          echo "IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/schedule_composer_backend:${{ github.sha }}" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         run: |
