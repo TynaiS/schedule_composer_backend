@@ -48,7 +48,7 @@ jobs:
         
       - env:
           DOCKER_IMAGE: ${{needs.build.outputs.IMAGE_NAME}}
-        run: echo "DOCKER_IMAGE=$DOCKER_IMAGE" > .env
+        run: echo "DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/schedule_composer_backend:${{ github.sha }}" > .env
         
       - name: Copy docker-compose
         uses: appleboy/scp-action@master
@@ -75,6 +75,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            export DOCKER_IMAGE=${{ needs.build.outputs.IMAGE_NAME }}
             sudo docker-compose --env-file .env down
             sudo docker-compose --env-file .env up -d --build
