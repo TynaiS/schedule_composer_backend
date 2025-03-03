@@ -1,22 +1,24 @@
 package com.example.schedule_composer.dto;
 
-import com.example.schedule_composer.entity.CourseGroupTeacher;
-import com.example.schedule_composer.entity.Room;
+import com.example.schedule_composer.entity.TimeSlot;
 import com.example.schedule_composer.utils.TeachingMode;
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
-@Data
-public class SchedulePostRequest {
+@Getter
+@AllArgsConstructor
+public class ScheduleDTOPost {
 
     private Long id;
     private Long courseGroupTeacherId;
     private Long roomId;
     private DayOfWeek day;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private TimeSlot startTimeSlot;
+    private LocalTime endTimeSlot;
     private TeachingMode teachingMode;
 }

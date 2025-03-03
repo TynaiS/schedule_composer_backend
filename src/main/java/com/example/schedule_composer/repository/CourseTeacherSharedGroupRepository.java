@@ -1,0 +1,14 @@
+package com.example.schedule_composer.repository;
+
+import com.example.schedule_composer.entity.CourseTeacherSharedGroup;
+import com.example.schedule_composer.utils.CourseType;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface CourseTeacherSharedGroupRepository extends JpaRepository<CourseTeacherSharedGroup, Long> {
+    List<CourseTeacherSharedGroup> findAll();
+
+}

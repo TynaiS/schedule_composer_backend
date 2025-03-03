@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name = "room")
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,6 +17,8 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "room_num", nullable = false)
     private String roomNum;
 
     @Enumerated(EnumType.STRING)

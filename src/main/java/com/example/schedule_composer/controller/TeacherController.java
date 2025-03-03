@@ -1,5 +1,6 @@
 package com.example.schedule_composer.controller;
 
+import com.example.schedule_composer.dto.get.TeacherDTOGet;
 import com.example.schedule_composer.entity.Teacher;
 import com.example.schedule_composer.service.TeacherService;
 import com.example.schedule_composer.utils.ApiConstants;
@@ -27,14 +28,13 @@ public class TeacherController {
 
     @GetMapping()
     @Operation(summary = "Get all teachers", description = "Retrieves a list of all teachers")
-    public List<Teacher> getTeachers() {
-        System.out.println(teacherService.getTeachers());
+    public List<TeacherDTOGet> getTeachers() {
         return teacherService.getTeachers();
     }
 
     @GetMapping("/{teacherId}")
     @Operation(summary = "Get teacher by id", description = "Retrieves a teacher by id")
-    public Teacher getTeacherById(@PathVariable("teacherId") Long id) {
+    public TeacherDTOGet getTeacherById(@PathVariable("teacherId") Long id) {
         return teacherService.getTeacherById(id);
     }
 

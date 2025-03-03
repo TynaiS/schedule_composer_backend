@@ -1,5 +1,6 @@
 package com.example.schedule_composer.service;
 
+import com.example.schedule_composer.dto.get.TeacherDTOGet;
 import com.example.schedule_composer.entity.Teacher;
 import com.example.schedule_composer.repository.TeacherRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,11 +19,15 @@ public class TeacherService {
         this.teacherRepository = teacherRepository;
     }
 
-    public List<Teacher> getTeachers() {
-        return teacherRepository.findAll();
+    public List<TeacherDTOGet> getTeachers() {
+//        return teacherRepository.findAll();
+        return null;
+//        to be implemented;
     }
 
-    public Teacher getTeacherById(Long id) {
-        return teacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Teacher not found with id " + id));
+    public TeacherDTOGet getTeacherById(Long id) {
+//        return teacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Teacher not found with id " + id));
+        return null;
+//        to be implemented;
     }
 }

@@ -11,7 +11,7 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Entity
-@Table
+@Table(name = "schedule")
 @Data
 @Builder
 @AllArgsConstructor
@@ -23,16 +23,23 @@ public class Schedule {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "course_group_teacher_id", referencedColumnName = "id", nullable = false)
-    private CourseGroupTeacher courseGroupTeacher;
+    @JoinColumn(name = "group_course_teacher_id", referencedColumnName = "id")
+    private GroupCourseTeacher groupCourseTeacher;
 
     @ManyToOne
-    @JoinColumn(name = "room_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
+    @Column(nullable = false)
     private DayOfWeek day;
-    private LocalTime startTime;
-    private LocalTime endTime;
+
+    @ManyToOne
+    @JoinColumn(name = "start_timeslot_id", referencedColumnName = "id")
+    private TimeSlot startTimeslot;
+
+    @ManyToOne
+    @JoinColumn(name = "end_timeslot_id", referencedColumnName = "id")
+    private TimeSlot endTimeslot;
 
     @Enumerated(EnumType.STRING)
     private TeachingMode teachingMode;

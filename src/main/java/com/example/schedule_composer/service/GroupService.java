@@ -1,5 +1,6 @@
 package com.example.schedule_composer.service;
 
+import com.example.schedule_composer.dto.get.GroupDTOGet;
 import com.example.schedule_composer.entity.Group;
 import com.example.schedule_composer.repository.GroupRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,11 +19,15 @@ public class GroupService {
         this.groupRepository = groupRepository;
     }
 
-    public List<Group> getGroups() {
-        return groupRepository.findAll();
+    public List<GroupDTOGet> getGroups() {
+//        return groupRepository.findAll();
+        return null;
+//        to be implemented;
     }
 
-    public Group getGroupById(Long id) {
-        return groupRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Group not found with id " + id));
+    public GroupDTOGet getGroupById(Long id) {
+//        return groupRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Group not found with id " + id));
+        return null;
+//        to be implemented;
     }
 }

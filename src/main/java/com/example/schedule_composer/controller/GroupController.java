@@ -1,5 +1,6 @@
 package com.example.schedule_composer.controller;
 
+import com.example.schedule_composer.dto.get.GroupDTOGet;
 import com.example.schedule_composer.entity.Group;
 import com.example.schedule_composer.service.GroupService;
 import com.example.schedule_composer.utils.ApiConstants;
@@ -28,15 +29,14 @@ public class GroupController {
 
     @GetMapping()
     @Operation(summary = "Get all groups", description = "Retrieves a list of all student groups")
-    public List<Group> getGroups() {
-        System.out.println(groupService.getGroups());
+    public List<GroupDTOGet> getGroups() {
+
         return groupService.getGroups();
     }
 
     @GetMapping("/{groupId}")
     @Operation(summary = "Get group by ID", description = "Retrieves a specific group by its ID")
-    public Group getGroupById(@PathVariable("groupId") Long id) {
-        System.out.println(groupService.getGroupById(id).getName());
+    public GroupDTOGet getGroupById(@PathVariable("groupId") Long id) {
         return groupService.getGroupById(id);
     }
 

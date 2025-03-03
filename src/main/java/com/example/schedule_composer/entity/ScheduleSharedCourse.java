@@ -1,5 +1,6 @@
 package com.example.schedule_composer.entity;
 
+import com.example.schedule_composer.utils.TeachingMode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,22 +11,26 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Entity
-@Table
+@Table(name = "schedule_shared_courses")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScheduleLunch {
+public class ScheduleSharedCourse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = false)
-    private Group group;
+    @JoinColumn(name = "course_teacher_shared_id", referencedColumnName = "id")
+    private CourseTeacherShared courseTeacherShared;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
+    private Room room;
+
+    @Column(nullable = false)
     private DayOfWeek day;
 
     @ManyToOne
@@ -35,4 +40,7 @@ public class ScheduleLunch {
     @ManyToOne
     @JoinColumn(name = "end_timeslot_id", referencedColumnName = "id")
     private TimeSlot endTimeslot;
+
+    @Enumerated(EnumType.STRING)
+    private TeachingMode teachingMode;
 }
