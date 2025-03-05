@@ -1,4 +1,4 @@
-package com.example.schedule_composer.dto;
+package com.example.schedule_composer.dto.post;
 
 import com.example.schedule_composer.dto.get.CourseTeacherSharedDTOGet;
 import com.example.schedule_composer.entity.Group;
@@ -9,7 +9,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CourseTeacherSharedGroupDTOPost {
 
-    private Long id;
     private Long courseTeacherSharedId;
-    private Group group;
+    private Long groupId;
 }

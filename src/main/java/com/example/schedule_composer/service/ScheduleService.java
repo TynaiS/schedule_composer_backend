@@ -4,6 +4,8 @@ import com.example.schedule_composer.dto.get.ScheduleDTOGet;
 import com.example.schedule_composer.dto.get.ScheduleLunchDTOGet;
 import com.example.schedule_composer.dto.get.ScheduleSharedCourseDTOGet;
 import com.example.schedule_composer.dto.get.TimeSlotDTOGet;
+import com.example.schedule_composer.dto.patch.ScheduleDTOPatch;
+import com.example.schedule_composer.dto.post.ScheduleDTOPost;
 import com.example.schedule_composer.entity.*;
 import com.example.schedule_composer.repository.ScheduleLunchRepository;
 import com.example.schedule_composer.repository.ScheduleRepository;
@@ -17,90 +19,29 @@ import java.time.DayOfWeek;
 import java.util.List;
 
 @Service
-public class ScheduleService {
-
-    private final ScheduleRepository scheduleRepository;
-    private final ScheduleLunchRepository scheduleLunchRepository;
-
-
-    @Autowired
-    public ScheduleService(ScheduleRepository scheduleRepository, ScheduleLunchRepository scheduleLunchRepository) {
-        this.scheduleRepository = scheduleRepository;
-        this.scheduleLunchRepository = scheduleLunchRepository;
-
-    }
-
-    public List<ScheduleDTOGet> getSchedules() {
-//        return scheduleRepository.findAll();
+public class ScheduleService implements CrudService<ScheduleDTOGet, ScheduleDTOPost, ScheduleDTOPatch, Long>{
+    @Override
+    public ScheduleDTOGet getById(Long aLong) {
         return null;
-//        to be implemented;
     }
 
-    public ScheduleDTOGet getScheduleById(Long id) {
-//        return scheduleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Schedule item not found with id " + id));
+    @Override
+    public List<ScheduleDTOGet> getAll() {
         return null;
-//        to be implemented;
     }
 
-
-
-
-
-
-    public List<ScheduleSharedCourseDTOGet> getScheduleSharedCourses() {
+    @Override
+    public ScheduleDTOGet create(ScheduleDTOPost createDto) {
         return null;
-//      to be implemented
     }
 
-    public ScheduleSharedCourseDTOGet getScheduleSharedCourseById(Long id) {
+    @Override
+    public ScheduleDTOGet update(Long aLong, ScheduleDTOPatch updateDto) {
         return null;
-//      to be implemented
     }
 
+    @Override
+    public void deleteById(Long aLong) {
 
-
-
-
-
-
-    public List<ScheduleLunchDTOGet> getScheduleLunches() {
-
-//        return scheduleLunchRepository.findAll();
-        return null;
-//        to be implemented;
-    }
-
-
-    public ScheduleLunchDTOGet getScheduleLunchById(Long id) {
-//        return scheduleLunchRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Schedule lunch not found with id " + id));
-        return null;
-//        to be implemented;
-    }
-
-
-    @Transactional
-    public Schedule createScheduleItem(GroupCourseTeacher groupCourseTeacher, Room room, DayOfWeek day, TimeSlot startTimeSlot, TimeSlot endTimeSlot, TeachingMode teachingMode) {
-        Schedule newScheduleItem = Schedule.builder()
-                .groupCourseTeacher(groupCourseTeacher)
-                .room(room)
-                .day(day)
-                .startTimeslot(startTimeSlot)
-                .endTimeslot(endTimeSlot)
-                .teachingMode(teachingMode)
-                .build();
-        Schedule savedScheduleItem = scheduleRepository.save(newScheduleItem);
-        System.out.println("Schedule item added with courseGroupId " + groupCourseTeacher.getId());
-        return savedScheduleItem;
-    }
-
-
-    public List<TimeSlotDTOGet> getTimeslots() {
-        return null;
-//        to be implemented;
-    }
-
-    public TimeSlotDTOGet getTimeslotById(Long id) {
-        return null;
-//        to be implemented;
     }
 }

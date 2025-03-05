@@ -34,12 +34,12 @@ public class Schedule {
     private DayOfWeek day;
 
     @ManyToOne
-    @JoinColumn(name = "start_timeslot_id", referencedColumnName = "id")
-    private TimeSlot startTimeslot;
+    @JoinColumn(name = "start_time_slot_id", referencedColumnName = "id")
+    private TimeSlot startTimeSlot;
 
     @ManyToOne
-    @JoinColumn(name = "end_timeslot_id", referencedColumnName = "id")
-    private TimeSlot endTimeslot;
+    @JoinColumn(name = "end_time_slot_id", referencedColumnName = "id")
+    private TimeSlot endTimeSlot;
 
     @Enumerated(EnumType.STRING)
     private TeachingMode teachingMode;

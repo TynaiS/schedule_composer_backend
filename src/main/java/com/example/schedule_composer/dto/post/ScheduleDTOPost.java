@@ -1,5 +1,8 @@
-package com.example.schedule_composer.dto;
+package com.example.schedule_composer.dto.post;
 
+import com.example.schedule_composer.dto.get.GroupCourseTeacherDTOGet;
+import com.example.schedule_composer.dto.get.RoomDTOGet;
+import com.example.schedule_composer.dto.get.TimeSlotDTOGet;
 import com.example.schedule_composer.entity.TimeSlot;
 import com.example.schedule_composer.utils.TeachingMode;
 import lombok.AllArgsConstructor;
@@ -14,11 +17,10 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class ScheduleDTOPost {
 
-    private Long id;
-    private Long courseGroupTeacherId;
+    private Long groupCourseTeacherId;
     private Long roomId;
     private DayOfWeek day;
-    private TimeSlot startTimeSlot;
-    private LocalTime endTimeSlot;
+    private Long startTimeSlotId;
+    private Long endTimeSlotId;
     private TeachingMode teachingMode;
 }

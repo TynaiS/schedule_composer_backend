@@ -1,33 +1,38 @@
 package com.example.schedule_composer.service;
 
 import com.example.schedule_composer.dto.get.GroupDTOGet;
-import com.example.schedule_composer.entity.Group;
-import com.example.schedule_composer.repository.GroupRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.schedule_composer.dto.patch.GroupDTOPatch;
+import com.example.schedule_composer.dto.post.GroupDTOPost;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
-public class GroupService {
+public class GroupService implements CrudService<GroupDTOGet, GroupDTOPost, GroupDTOPatch, Long>{
 
-    private final GroupRepository groupRepository;
-
-    @Autowired
-    public GroupService(GroupRepository groupRepository) {
-        this.groupRepository = groupRepository;
+    @Override
+    public GroupDTOGet getById(Long aLong) {
+        return null;
     }
 
-    public List<GroupDTOGet> getGroups() {
-//        return groupRepository.findAll();
+    @Override
+    public List<GroupDTOGet> getAll() {
         return null;
-//        to be implemented;
     }
 
-    public GroupDTOGet getGroupById(Long id) {
-//        return groupRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Group not found with id " + id));
+    @Override
+    public GroupDTOGet create(GroupDTOPost createDto) {
         return null;
-//        to be implemented;
+    }
+
+    @Override
+    public GroupDTOGet update(Long aLong, GroupDTOPatch updateDto) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long aLong) {
+
     }
 }

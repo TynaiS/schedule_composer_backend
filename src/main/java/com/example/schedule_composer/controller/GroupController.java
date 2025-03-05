@@ -1,17 +1,15 @@
 package com.example.schedule_composer.controller;
 
 import com.example.schedule_composer.dto.get.GroupDTOGet;
-import com.example.schedule_composer.entity.Group;
+import com.example.schedule_composer.dto.patch.GroupDTOPatch;
+import com.example.schedule_composer.dto.post.GroupDTOPost;
 import com.example.schedule_composer.service.GroupService;
 import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,17 +25,43 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    @GetMapping()
-    @Operation(summary = "Get all groups", description = "Retrieves a list of all student groups")
-    public List<GroupDTOGet> getGroups() {
 
-        return groupService.getGroups();
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get group by ID", description = "Retrieves a specific student group by its ID")
+    public GroupDTOGet getById(@PathVariable("id") Long id) {
+        return groupService.getById(id);
     }
 
-    @GetMapping("/{groupId}")
-    @Operation(summary = "Get group by ID", description = "Retrieves a specific group by its ID")
-    public GroupDTOGet getGroupById(@PathVariable("groupId") Long id) {
-        return groupService.getGroupById(id);
+    @GetMapping()
+    @Operation(summary = "Get all groups", description = "Retrieves a list of all student groups")
+    public List<GroupDTOGet> getAll() {
+        System.out.println(groupService.getAll());
+        return groupService.getAll();
+    }
+
+    @PostMapping()
+    @Operation(summary = "Create group", description = "Creates new group")
+    public ResponseEntity<GroupDTOGet> create(
+            @RequestBody GroupDTOPost request) {
+        GroupDTOGet savedEntity = groupService.create(request);
+        return ResponseEntity.ok(savedEntity);
+    }
+
+    @PatchMapping("/{id}")
+    @Operation(summary = "Update group", description = "Updates an existing group")
+    public ResponseEntity<GroupDTOGet> update(
+            @PathVariable Long id,
+            @RequestBody GroupDTOPatch patchRequest) {
+        GroupDTOGet updated = groupService.update(id, patchRequest);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete group by ID", description = "Deletes a specific group by its ID")
+    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
+        groupService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

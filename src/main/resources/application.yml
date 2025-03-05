@@ -1,15 +1,20 @@
 spring:
   application:
-    name:
-      schedule_composer
+    name: schedule_composer
   datasource:
     url: jdbc:postgresql://localhost:5432/schedule_composer
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
-#  jpa:
-#    hibernate:
-#      ddl-auto: create-drop
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 springdoc:
   api-docs:
     path: /api-docs

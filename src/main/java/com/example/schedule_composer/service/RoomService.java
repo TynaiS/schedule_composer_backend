@@ -1,6 +1,8 @@
 package com.example.schedule_composer.service;
 
 import com.example.schedule_composer.dto.get.RoomDTOGet;
+import com.example.schedule_composer.dto.patch.RoomDTOPatch;
+import com.example.schedule_composer.dto.post.RoomDTOPost;
 import com.example.schedule_composer.entity.Room;
 import com.example.schedule_composer.repository.RoomRepository;
 import com.example.schedule_composer.utils.RoomType;
@@ -11,32 +13,29 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class RoomService {
-
-    private final RoomRepository roomRepository;
-
-    @Autowired
-    public RoomService(RoomRepository roomRepository) {
-        this.roomRepository = roomRepository;
-    }
-
-    public List<RoomDTOGet> getRooms() {
-//        return roomRepository.findAll();
+public class RoomService implements CrudService<RoomDTOGet, RoomDTOPost, RoomDTOPatch, Long>{
+    @Override
+    public RoomDTOGet getById(Long aLong) {
         return null;
-//        to be implemented;
     }
 
-    public RoomDTOGet getRoomById(Long id) {
-//        return roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Room not found with id " + id));
+    @Override
+    public List<RoomDTOGet> getAll() {
         return null;
-//        to be implemented;
     }
 
-    public List<Room> getLabs() {
-        return roomRepository.findByType(RoomType.LAB);
+    @Override
+    public RoomDTOGet create(RoomDTOPost createDto) {
+        return null;
     }
 
-    public List<Room> getClassrooms() {
-        return roomRepository.findByType(RoomType.CLASSROOM);
+    @Override
+    public RoomDTOGet update(Long aLong, RoomDTOPatch updateDto) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long aLong) {
+
     }
 }

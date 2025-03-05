@@ -1,15 +1,16 @@
-package com.example.schedule_composer.dto;
+package com.example.schedule_composer.dto.patch;
 
 import com.example.schedule_composer.utils.CoursePriority;
 import com.example.schedule_composer.utils.RoomType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-public class GroupCourseTeacherDTOPatch {
-
-    private Long groupId;
+@NoArgsConstructor
+public class CourseTeacherSharedDTOPatch {
+    private String name;
     private Long courseId;
     private Long teacherId;
     private CoursePriority coursePriority;
@@ -18,5 +19,4 @@ public class GroupCourseTeacherDTOPatch {
     private Integer weeksTotal;
     private Integer hoursInLab;
     private RoomType preferredRoomType;
-
 }

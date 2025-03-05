@@ -1,4 +1,4 @@
-package com.example.schedule_composer.dto;
+package com.example.schedule_composer.dto.post;
 
 import com.example.schedule_composer.dto.get.CourseTeacherSharedDTOGet;
 import com.example.schedule_composer.dto.get.RoomDTOGet;
@@ -12,11 +12,10 @@ import java.time.DayOfWeek;
 @Getter
 @AllArgsConstructor
 public class ScheduleSharedCourseDTOPost {
-    private Long id;
     private Long courseTeacherSharedId;
     private Long roomId;
     private DayOfWeek day;
-    private Long startTimeslotId;
-    private Long endTimeslotId;
+    private Long startTimeSlotId;
+    private Long endTimeSlotId;
     private TeachingMode teachingMode;
 }

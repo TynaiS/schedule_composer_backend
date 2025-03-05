@@ -18,7 +18,7 @@ public class ScheduleSharedCourseDTOGet {
     private CourseTeacherSharedDTOGet courseTeacherShared;
     private RoomDTOGet room;
     private DayOfWeek day;
-    private TimeSlotDTOGet startTimeslot;
-    private TimeSlotDTOGet endTimeslot;
+    private TimeSlotDTOGet startTimeSlot;
+    private TimeSlotDTOGet endTimeSlot;
     private TeachingMode teachingMode;
 }

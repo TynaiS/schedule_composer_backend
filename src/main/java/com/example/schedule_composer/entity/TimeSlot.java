@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "timeslot")
+@Table(name = "time_slots")
 @Data
 @Builder
 @AllArgsConstructor

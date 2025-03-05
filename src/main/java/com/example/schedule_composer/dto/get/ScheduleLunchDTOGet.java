@@ -14,6 +14,6 @@ public class ScheduleLunchDTOGet {
     private Long id;
     private GroupDTOGet group;
     private DayOfWeek day;
-    private TimeSlotDTOGet startTimeslot;
-    private TimeSlotDTOGet endTimeslot;
+    private TimeSlotDTOGet startTimeSlot;
+    private TimeSlotDTOGet endTimeSlot;
 }

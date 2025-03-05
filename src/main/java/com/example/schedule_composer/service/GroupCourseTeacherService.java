@@ -1,19 +1,14 @@
 package com.example.schedule_composer.service;
 
-import com.example.schedule_composer.dto.CourseTeacherSharedDTOPost;
-import com.example.schedule_composer.dto.CourseTeacherSharedGroupDTOPost;
-import com.example.schedule_composer.dto.GroupCourseTeacherDTOPatch;
-import com.example.schedule_composer.dto.GroupCourseTeacherDTOPost;
+import com.example.schedule_composer.dto.patch.GroupCourseTeacherDTOPatch;
+import com.example.schedule_composer.dto.post.CourseTeacherSharedDTOPost;
+import com.example.schedule_composer.dto.post.CourseTeacherSharedGroupDTOPost;
+import com.example.schedule_composer.dto.post.GroupCourseTeacherDTOPost;
 import com.example.schedule_composer.dto.get.CourseTeacherSharedDTOGet;
 import com.example.schedule_composer.dto.get.CourseTeacherSharedGroupDTOGet;
 import com.example.schedule_composer.dto.get.GroupCourseTeacherDTOGet;
-import com.example.schedule_composer.entity.CourseTeacherShared;
-import com.example.schedule_composer.entity.CourseTeacherSharedGroup;
-import com.example.schedule_composer.entity.GroupCourseTeacher;
 import com.example.schedule_composer.repository.CourseTeacherSharedRepository;
 import com.example.schedule_composer.repository.GroupCourseTeacherRepository;
-import com.example.schedule_composer.utils.CourseType;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class GroupCourseTeacherService {
+public class GroupCourseTeacherService implements CrudService<GroupCourseTeacherDTOGet, GroupCourseTeacherDTOPost, GroupCourseTeacherDTOPatch, Long>{
 
     private final GroupCourseTeacherRepository groupCourseTeacherRepository;
     private final CourseTeacherSharedRepository courseTeacherSharedRepository;
@@ -43,20 +38,25 @@ public class GroupCourseTeacherService {
         this.teacherService = teacherService;
     }
 
-    public List<GroupCourseTeacherDTOGet> getGroupCourseTeachers() {
-//        return groupCourseTeacherRepository.findAll();
-        return null;
-//        to be implemented
-    }
 
-    public GroupCourseTeacherDTOGet getGroupCourseTeacherById(Long id) {
+
+    @Override
+    public GroupCourseTeacherDTOGet getById(Long id) {
 //        return groupCourseTeacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("GroupCourseTeacher not found with id " + id));
         return null;
 //        to be implemented
     }
 
+    @Override
+    public List<GroupCourseTeacherDTOGet> getAll() {
+//        return groupCourseTeacherRepository.findAll();
+        return null;
+//        to be implemented
+    }
+
+    @Override
     @Transactional
-    public GroupCourseTeacherDTOPost createGroupCourseTeacher(GroupCourseTeacherDTOPost request) {
+    public GroupCourseTeacherDTOGet create(GroupCourseTeacherDTOPost request) {
 //        GroupCourseTeacher newGroupCourseTeacher = GroupCourseTeacher.builder()
 //                .group(groupService.getGroupById(request.getGroupId()))
 //                .course(courseService.getCourseById(request.getCourseId()))
@@ -74,8 +74,9 @@ public class GroupCourseTeacherService {
 //        to be implemented
     }
 
-//    @Transactional
-//    public GroupCourseTeacher updateGroupCourseTeacher(Long id, GroupCourseTeacherDTOPatch patchRequest) {
+    @Override
+    @Transactional
+    public GroupCourseTeacherDTOGet update(Long id, GroupCourseTeacherDTOPatch patchRequest) {
 //        GroupCourseTeacher entity = groupCourseTeacherRepository.findById(id)
 //                .orElseThrow(() -> new EntityNotFoundException("GroupCourseTeacher not found"));
 //
@@ -110,49 +111,12 @@ public class GroupCourseTeacherService {
 //
 //
 //        return groupCourseTeacherRepository.save(entity);
-//    }
+        return null;
+    }
 
-    public void deleteGroupCourseTeacher(Long id) {
+    @Override
+    public void deleteById(Long id) {
         groupCourseTeacherRepository.deleteById(id);
     }
 
-
-    public List<CourseTeacherSharedDTOGet> getCourseTeacherShareds() {
-        return null;
-//        to be implemendted
-    }
-
-    public CourseTeacherSharedDTOGet getCourseTeacherSharedById(Long id) {
-        return null;
-//        to be implemendted
-    }
-
-    public CourseTeacherSharedDTOPost createCourseTeacherShared(CourseTeacherSharedDTOPost request) {
-        return null;
-//        to be implemendted
-    }
-
-    public void deleteCourseTeacherShared(Long id) {
-//        to be implemendted
-    }
-
-
-    public List<CourseTeacherSharedGroupDTOGet> getCourseTeacherSharedGroups() {
-        return null;
-//        to be implemendted
-    }
-
-    public CourseTeacherSharedGroupDTOGet getCourseTeacherSharedGroupById(Long id) {
-        return null;
-//        to be implemendted
-    }
-
-    public void deleteCourseTeacherSharedGroup(Long id) {
-//        to be implemendted
-    }
-
-    public CourseTeacherSharedGroupDTOPost createCourseTeacherSharedGroup(CourseTeacherSharedGroupDTOPost request) {
-        return null;
-//        to be implemendted
-    }
 }

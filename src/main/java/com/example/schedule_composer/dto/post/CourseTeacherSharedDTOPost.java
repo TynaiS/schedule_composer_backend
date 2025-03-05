@@ -1,4 +1,4 @@
-package com.example.schedule_composer.dto;
+package com.example.schedule_composer.dto.post;
 
 import com.example.schedule_composer.entity.Course;
 import com.example.schedule_composer.entity.Teacher;
@@ -12,10 +12,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CourseTeacherSharedDTOPost {
 
-    private Long id;
     private String name;
-    private Course course;
-    private Teacher teacher;
+    private Long courseId;
+    private Long teacherId;
     private CoursePriority coursePriority;
     private Integer hoursAWeek;
     private Integer hoursTotal;

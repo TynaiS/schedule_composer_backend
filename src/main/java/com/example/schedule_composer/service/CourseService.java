@@ -1,6 +1,8 @@
 package com.example.schedule_composer.service;
 
 import com.example.schedule_composer.dto.get.CourseDTOGet;
+import com.example.schedule_composer.dto.patch.CourseDTOPatch;
+import com.example.schedule_composer.dto.post.CourseDTOPost;
 import com.example.schedule_composer.entity.Course;
 import com.example.schedule_composer.repository.CourseRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,24 +12,30 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CourseService {
+public class CourseService implements CrudService<CourseDTOGet, CourseDTOPost, CourseDTOPatch, Long>{
 
-    private final CourseRepository courseRepository;
-
-    @Autowired
-    public CourseService(CourseRepository courseRepository) {
-        this.courseRepository = courseRepository;
+    @Override
+    public CourseDTOGet getById(Long aLong) {
+        return null;
     }
 
-    public List<CourseDTOGet> getCourses() {
-//        return courseRepository.findAll();
+    @Override
+    public List<CourseDTOGet> getAll() {
         return null;
-//        to be implemented;
     }
 
-    public CourseDTOGet getCourseById(Long id) {
-//        return courseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Course not found with id " + id));
+    @Override
+    public CourseDTOGet create(CourseDTOPost createDto) {
         return null;
-//        to be implemented;
+    }
+
+    @Override
+    public CourseDTOGet update(Long aLong, CourseDTOPatch updateDto) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long aLong) {
+
     }
 }
