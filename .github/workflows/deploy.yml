@@ -28,8 +28,9 @@ jobs:
       - name: Set Variables
         id: set_vars
         run: |
-          echo "IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/schedule_composer_backend:${{ github.sha }}" >> $GITHUB_ENV
-          echo "IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/schedule_composer_backend:${{ github.sha }}" >> $GITHUB_OUTPUT
+          IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/schedule_composer_backend:${{ github.sha }}"
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         run: |
@@ -77,6 +78,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            export DOCKER_IMAGE=${{ needs.build.set_output.IMAGE_NAME }}
             sudo docker-compose --env-file .env down
             sudo docker-compose --env-file .env up -d --build
