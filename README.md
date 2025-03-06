@@ -4,6 +4,7 @@ This is a backend part of the **Schedule composer**, app that allows to create c
 ## Pipeline
 [![Deploy App](https://github.com/TynaiS/schedule_composer_backend/actions/workflows/deploy.yml/badge.svg)](https://github.com/TynaiS/schedule_composer_backend/actions/workflows/deploy.yml)
 
+## How to run
 To setup database: 
   1) Create your PostgreSQL database locally.
   2) Change these lines
