@@ -1,3 +1,9 @@
+# Schedule composer backend
+This is a backend part of *schedule composer backend*. App that allows to create custom schedules, view and publish them.
+
+## Pipeline
+[![Deploy App](https://github.com/TynaiS/schedule_composer_backend/actions/workflows/deploy.yml/badge.svg)](https://github.com/TynaiS/schedule_composer_backend/actions/workflows/deploy.yml)
+
 To setup database: 
   1) Create your PostgreSQL database locally.
   2) Change these lines
