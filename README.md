@@ -1,5 +1,5 @@
 # Schedule composer backend
-This is a backend part of *schedule composer backend*. App that allows to create custom schedules, view and publish them.
+This is a backend part of the **Schedule composer**, app that allows to create custom schedules, view and publish them.
 
 ## Pipeline
 [![Deploy App](https://github.com/TynaiS/schedule_composer_backend/actions/workflows/deploy.yml/badge.svg)](https://github.com/TynaiS/schedule_composer_backend/actions/workflows/deploy.yml)
