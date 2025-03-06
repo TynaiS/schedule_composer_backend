@@ -37,7 +37,7 @@ jobs:
 
       - name: Set output variable
         id: set_output 
-        run: echo "::set-output name=IMAGE_NAME::$IMAGE_NAME"
+        run: echo "IMAGE_NAME::$IMAGE_NAME" >> "$GITHUB_OUTPUT"
 
   deploy:
     runs-on: ubuntu-latest
