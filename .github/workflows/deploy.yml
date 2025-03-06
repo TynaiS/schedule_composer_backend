@@ -36,6 +36,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    needs: build
     env: 
       IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/schedule_composer_backend:${{ github.sha }}
     steps:
