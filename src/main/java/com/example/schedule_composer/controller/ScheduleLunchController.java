@@ -7,7 +7,9 @@ import com.example.schedule_composer.service.ScheduleLunchService;
 import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,23 +31,24 @@ public class ScheduleLunchController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get schedule lunch item by ID", description = "Retrieves a specific schedule lunch item by its ID")
-    public ScheduleLunchDTOGet getById(@PathVariable("id") Long id) {
-        return scheduleLunchService.getById(id);
+    public ResponseEntity<ScheduleLunchDTOGet> getById(@PathVariable("id") Long id) {
+        ScheduleLunchDTOGet scheduleLunchItem = scheduleLunchService.getById(id);
+        return ResponseEntity.ok(scheduleLunchItem);
     }
 
     @GetMapping()
     @Operation(summary = "Get all schedule lunch items", description = "Retrieves a list of all schedule lunch items")
-    public List<ScheduleLunchDTOGet> getAll() {
-        System.out.println(scheduleLunchService.getAll());
-        return scheduleLunchService.getAll();
+    public ResponseEntity<List<ScheduleLunchDTOGet>> getAll() {
+        List<ScheduleLunchDTOGet> scheduleLunches = scheduleLunchService.getAll();
+        return ResponseEntity.ok(scheduleLunches);
     }
 
     @PostMapping()
     @Operation(summary = "Create schedule lunch item", description = "Creates new schedule lunch item")
     public ResponseEntity<ScheduleLunchDTOGet> create(
-            @RequestBody ScheduleLunchDTOPost request) {
+            @Valid @RequestBody ScheduleLunchDTOPost request) {
         ScheduleLunchDTOGet savedEntity = scheduleLunchService.create(request);
-        return ResponseEntity.ok(savedEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
     @PatchMapping("/{id}")

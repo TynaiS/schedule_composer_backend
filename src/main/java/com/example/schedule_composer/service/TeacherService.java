@@ -1,6 +1,7 @@
 package com.example.schedule_composer.service;
 
 import com.example.schedule_composer.dto.get.TeacherDTOGet;
+import com.example.schedule_composer.dto.mappers.TeacherMapper;
 import com.example.schedule_composer.dto.patch.TeacherDTOPatch;
 import com.example.schedule_composer.dto.post.TeacherDTOPost;
 import com.example.schedule_composer.entity.Teacher;
@@ -10,31 +11,63 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class TeacherService implements CrudService<TeacherDTOGet, TeacherDTOPost, TeacherDTOPatch, Long>{
+public class TeacherService implements CrudService<TeacherDTOGet, TeacherDTOPost, TeacherDTOPatch, Teacher, Long> {
+
+    private final TeacherRepository teacherRepository;
+    private final TeacherMapper teacherMapper;
+
+    @Autowired
+    public TeacherService(TeacherRepository teacherRepository,TeacherMapper teacherMapper){
+        this.teacherRepository = teacherRepository;
+        this.teacherMapper = teacherMapper;
+    }
+
     @Override
-    public TeacherDTOGet getById(Long aLong) {
-        return null;
+    public TeacherDTOGet getById(Long id) {
+        return teacherMapper.fromEntityToGet(getEntityById(id));
+    }
+
+    @Override
+    public Teacher getEntityById(Long id) {
+        Teacher entity = teacherRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found with id: " + id));
+        return entity;
+    }
+
+    @Override
+    public Boolean checkIfExists(Long id) {
+        if (!teacherRepository.existsById(id)) {
+            throw new EntityNotFoundException("Teacher not found with id: " + id);
+        }
+        return true;
     }
 
     @Override
     public List<TeacherDTOGet> getAll() {
-        return null;
+        List<Teacher> entities = teacherRepository.findAll();
+
+        return entities.stream()
+                .map(teacherMapper::fromEntityToGet)
+                .collect(Collectors.toList());
     }
 
     @Override
     public TeacherDTOGet create(TeacherDTOPost createDto) {
-        return null;
+        Teacher savedEntity = teacherRepository.save(teacherMapper.fromPostToEntity(createDto));
+        return teacherMapper.fromEntityToGet(savedEntity);
     }
 
     @Override
-    public TeacherDTOGet update(Long aLong, TeacherDTOPatch updateDto) {
-        return null;
+    public TeacherDTOGet update(Long id, TeacherDTOPatch updateDto) {
+        Teacher updatedEntity = teacherRepository.save(teacherMapper.fromPatchToEntity(updateDto, id));
+        return teacherMapper.fromEntityToGet(updatedEntity);
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
+    public void deleteById(Long id) {
+        if(checkIfExists(id)) teacherRepository.deleteById(id);
     }
 }

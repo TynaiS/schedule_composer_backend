@@ -1,5 +1,6 @@
 package com.example.schedule_composer.controller;
 
+import com.example.schedule_composer.dto.get.CourseDTOGet;
 import com.example.schedule_composer.dto.get.CourseTeacherSharedDTOGet;
 import com.example.schedule_composer.dto.patch.CourseTeacherSharedDTOPatch;
 import com.example.schedule_composer.dto.post.CourseTeacherSharedDTOPost;
@@ -7,10 +8,13 @@ import com.example.schedule_composer.service.CourseTeacherSharedService;
 import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -28,24 +32,26 @@ public class CourseTeacherSharedController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get course-teacher-shared by ID", description = "Retrieves a specific course-teacher-shared by its ID")
-    public CourseTeacherSharedDTOGet getById(
+    public ResponseEntity<CourseTeacherSharedDTOGet> getById(
             @PathVariable("id") Long id) {
-        return courseTeacherSharedService.getById(id);
+        CourseTeacherSharedDTOGet result = courseTeacherSharedService.getById(id);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping()
     @Operation(summary = "Get all course-teacher-shared", description = "Retrieves a list of all course-teacher-shared's")
-    public List<CourseTeacherSharedDTOGet> getAll() {
-        return courseTeacherSharedService.getAll();
+    public ResponseEntity<List<CourseTeacherSharedDTOGet>> getAll() {
+        List<CourseTeacherSharedDTOGet> result = courseTeacherSharedService.getAll();
+        return ResponseEntity.ok(result);
     }
 
 
     @PostMapping()
     @Operation(summary = "Create course-teacher-shared relation", description = "Creates new course-teacher-shared relation")
     public ResponseEntity<CourseTeacherSharedDTOGet> create(
-            @RequestBody CourseTeacherSharedDTOPost request) {
+            @Valid @RequestBody CourseTeacherSharedDTOPost request) {
         CourseTeacherSharedDTOGet savedEntity = courseTeacherSharedService.create(request);
-        return ResponseEntity.ok(savedEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
     @PatchMapping("/{id}")

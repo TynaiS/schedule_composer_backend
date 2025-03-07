@@ -7,10 +7,14 @@ import com.example.schedule_composer.service.CourseService;
 import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -28,23 +32,24 @@ public class CourseController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get course by ID", description = "Retrieves a specific course by its ID")
-    public CourseDTOGet getById(@PathVariable("id") Long id) {
-        return courseService.getById(id);
+    public ResponseEntity<CourseDTOGet> getById(@PathVariable("id") Long id) {
+        CourseDTOGet course = courseService.getById(id);
+        return ResponseEntity.ok(course);
     }
 
     @GetMapping()
     @Operation(summary = "Get all courses", description = "Retrieves a list of all courses")
-    public List<CourseDTOGet> getAll() {
-        System.out.println(courseService.getAll());
-        return courseService.getAll();
+    public ResponseEntity<List<CourseDTOGet>>  getAll() {
+        List<CourseDTOGet> courses = courseService.getAll();
+        return ResponseEntity.ok(courses);
     }
 
     @PostMapping()
     @Operation(summary = "Create course", description = "Creates new course")
     public ResponseEntity<CourseDTOGet> create(
-            @RequestBody CourseDTOPost request) {
+            @Valid @RequestBody CourseDTOPost request) {
         CourseDTOGet savedEntity = courseService.create(request);
-        return ResponseEntity.ok(savedEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
     @PatchMapping("/{id}")

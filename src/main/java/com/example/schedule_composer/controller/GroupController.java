@@ -7,7 +7,9 @@ import com.example.schedule_composer.service.GroupService;
 import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,23 +31,24 @@ public class GroupController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get group by ID", description = "Retrieves a specific student group by its ID")
-    public GroupDTOGet getById(@PathVariable("id") Long id) {
-        return groupService.getById(id);
+    public ResponseEntity<GroupDTOGet> getById(@PathVariable("id") Long id) {
+        GroupDTOGet group = groupService.getById(id);
+        return ResponseEntity.ok(group);
     }
 
     @GetMapping()
     @Operation(summary = "Get all groups", description = "Retrieves a list of all student groups")
-    public List<GroupDTOGet> getAll() {
-        System.out.println(groupService.getAll());
-        return groupService.getAll();
+    public ResponseEntity<List<GroupDTOGet>> getAll() {
+        List<GroupDTOGet> groups = groupService.getAll();
+        return ResponseEntity.ok(groups);
     }
 
     @PostMapping()
     @Operation(summary = "Create group", description = "Creates new group")
     public ResponseEntity<GroupDTOGet> create(
-            @RequestBody GroupDTOPost request) {
+            @Valid @RequestBody GroupDTOPost request) {
         GroupDTOGet savedEntity = groupService.create(request);
-        return ResponseEntity.ok(savedEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
     @PatchMapping("/{id}")

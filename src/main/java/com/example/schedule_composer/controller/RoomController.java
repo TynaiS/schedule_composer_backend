@@ -7,7 +7,9 @@ import com.example.schedule_composer.service.RoomService;
 import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,23 +30,24 @@ public class RoomController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get room by ID", description = "Retrieves a specific room by its ID")
-    public RoomDTOGet getById(@PathVariable("id") Long id) {
-        return roomService.getById(id);
+    public ResponseEntity<RoomDTOGet> getById(@PathVariable("id") Long id) {
+        RoomDTOGet room = roomService.getById(id);
+        return ResponseEntity.ok(room);
     }
 
     @GetMapping()
     @Operation(summary = "Get all rooms", description = "Retrieves a list of all rooms")
-    public List<RoomDTOGet> getAll() {
-        System.out.println(roomService.getAll());
-        return roomService.getAll();
+    public ResponseEntity<List<RoomDTOGet>> getAll() {
+        List<RoomDTOGet> rooms = roomService.getAll();
+        return ResponseEntity.ok(rooms);
     }
 
     @PostMapping()
     @Operation(summary = "Create room", description = "Creates new room")
     public ResponseEntity<RoomDTOGet> create(
-            @RequestBody RoomDTOPost request) {
+            @Valid @RequestBody RoomDTOPost request) {
         RoomDTOGet savedEntity = roomService.create(request);
-        return ResponseEntity.ok(savedEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
     @PatchMapping("/{id}")

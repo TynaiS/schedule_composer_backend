@@ -6,8 +6,11 @@ import com.example.schedule_composer.dto.post.CourseTeacherSharedGroupDTOPost;
 import com.example.schedule_composer.service.CourseTeacherSharedGroupService;
 import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,24 +31,28 @@ public class CourseTeacherSharedGroupController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get course_teacher_shared by ID", description = "Retrieves a specific course_teacher_shared by its ID")
-    public CourseTeacherSharedGroupDTOGet getById(
+    public ResponseEntity<CourseTeacherSharedGroupDTOGet> getById(
             @PathVariable("id") Long id) {
-        return courseTeacherSharedGroupService.getById(id);
+        CourseTeacherSharedGroupDTOGet result = courseTeacherSharedGroupService.getById(id);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping()
     @Operation(summary = "Get all course-teacher-shared-groups", description = "Retrieves a list of all course-teacher-shared-groups")
-    public List<CourseTeacherSharedGroupDTOGet> getAll() {
-        return courseTeacherSharedGroupService.getAll();
+    @ApiResponse(responseCode = "200", description = "Successful retrieval of data")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
+    public ResponseEntity<List<CourseTeacherSharedGroupDTOGet>> getAll() {
+        List<CourseTeacherSharedGroupDTOGet> result = courseTeacherSharedGroupService.getAll();
+        return ResponseEntity.ok(result);
     }
 
 
     @PostMapping()
     @Operation(summary = "Create course-teacher-shared-groups relation", description = "Creates new course-teacher-shared-groups relation")
     public ResponseEntity<CourseTeacherSharedGroupDTOGet> create(
-            @RequestBody CourseTeacherSharedGroupDTOPost request) {
+            @Valid @RequestBody CourseTeacherSharedGroupDTOPost request) {
         CourseTeacherSharedGroupDTOGet savedEntity = courseTeacherSharedGroupService.create(request);
-        return ResponseEntity.ok(savedEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
     @PatchMapping("/{id}")

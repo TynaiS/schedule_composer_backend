@@ -7,7 +7,9 @@ import com.example.schedule_composer.service.TimeSlotService;
 import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,23 +30,24 @@ public class TimeSlotController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get time slot by ID", description = "Retrieves a specific time slot by its ID")
-    public TimeSlotDTOGet getById(@PathVariable("id") Long id) {
-        return timeSlotService.getById(id);
+    public ResponseEntity<TimeSlotDTOGet> getById(@PathVariable("id") Long id) {
+        TimeSlotDTOGet timeSlot = timeSlotService.getById(id);
+        return ResponseEntity.ok(timeSlot);
     }
 
     @GetMapping()
     @Operation(summary = "Get all time slots", description = "Retrieves a list of all time slots")
-    public List<TimeSlotDTOGet> getAll() {
-        System.out.println(timeSlotService.getAll());
-        return timeSlotService.getAll();
+    public ResponseEntity<List<TimeSlotDTOGet>> getAll() {
+        List<TimeSlotDTOGet> timeSlots = timeSlotService.getAll();
+        return ResponseEntity.ok(timeSlots);
     }
 
     @PostMapping()
     @Operation(summary = "Create time slot", description = "Creates new time slot")
     public ResponseEntity<TimeSlotDTOGet> create(
-            @RequestBody TimeSlotDTOPost request) {
+            @Valid @RequestBody TimeSlotDTOPost request) {
         TimeSlotDTOGet savedEntity = timeSlotService.create(request);
-        return ResponseEntity.ok(savedEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
     @PatchMapping("/{id}")

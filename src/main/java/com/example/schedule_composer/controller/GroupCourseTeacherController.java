@@ -11,7 +11,9 @@ import com.example.schedule_composer.service.GroupCourseTeacherService;
 import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,23 +33,25 @@ public class GroupCourseTeacherController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get group-course-teacher by ID", description = "Retrieves a specific group-course-teacher by its ID")
-    public GroupCourseTeacherDTOGet getById(
+    public ResponseEntity<GroupCourseTeacherDTOGet> getById(
             @PathVariable("id") Long id) {
-        return groupCourseTeacherService.getById(id);
+        GroupCourseTeacherDTOGet result = groupCourseTeacherService.getById(id);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping()
     @Operation(summary = "Get all group-course-teacher", description = "Retrieves a list of all group-course-teacher's")
-    public List<GroupCourseTeacherDTOGet> getAll() {
-        return groupCourseTeacherService.getAll();
+    public ResponseEntity<List<GroupCourseTeacherDTOGet>> getAll() {
+        List<GroupCourseTeacherDTOGet> result = groupCourseTeacherService.getAll();
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping
     @Operation(summary = "Create group-course-teacher relation", description = "Creates new group-course-teacher relation")
     public ResponseEntity<GroupCourseTeacherDTOGet> create(
-            @RequestBody GroupCourseTeacherDTOPost request) {
+            @Valid @RequestBody GroupCourseTeacherDTOPost request) {
         GroupCourseTeacherDTOGet savedEntity = groupCourseTeacherService.create(request);
-        return ResponseEntity.ok(savedEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
     @PatchMapping("/{id}")

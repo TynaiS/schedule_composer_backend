@@ -7,7 +7,9 @@ import com.example.schedule_composer.service.ScheduleService;
 import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,23 +30,24 @@ public class ScheduleController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get schedule item by ID", description = "Retrieves a specific schedule item by its ID")
-    public ScheduleDTOGet getById(@PathVariable("id") Long id) {
-        return scheduleService.getById(id);
+    public ResponseEntity<ScheduleDTOGet> getById(@PathVariable("id") Long id) {
+        ScheduleDTOGet scheduleItem = scheduleService.getById(id);
+        return ResponseEntity.ok(scheduleItem);
     }
 
     @GetMapping()
     @Operation(summary = "Get all schedule items", description = "Retrieves a list of all schedule items")
-    public List<ScheduleDTOGet> getAll() {
-        System.out.println(scheduleService.getAll());
-        return scheduleService.getAll();
+    public ResponseEntity<List<ScheduleDTOGet>> getAll() {
+        List<ScheduleDTOGet> schedule = scheduleService.getAll();
+        return ResponseEntity.ok(schedule);
     }
 
     @PostMapping()
     @Operation(summary = "Create schedule item", description = "Creates new schedule item")
     public ResponseEntity<ScheduleDTOGet> create(
-            @RequestBody ScheduleDTOPost request) {
+            @Valid @RequestBody ScheduleDTOPost request) {
         ScheduleDTOGet savedEntity = scheduleService.create(request);
-        return ResponseEntity.ok(savedEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
     @PatchMapping("/{id}")

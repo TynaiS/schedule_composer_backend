@@ -8,7 +8,9 @@ import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.Column;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,23 +32,24 @@ public class ScheduleSharedCourseController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get schedule shared course item by ID", description = "Retrieves a specific schedule shared course item by its ID")
-    public ScheduleSharedCourseDTOGet getById(@PathVariable("id") Long id) {
-        return scheduleSharedCourseService.getById(id);
+    public ResponseEntity<ScheduleSharedCourseDTOGet> getById(@PathVariable("id") Long id) {
+        ScheduleSharedCourseDTOGet result = scheduleSharedCourseService.getById(id);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping()
     @Operation(summary = "Get all schedule shared course items", description = "Retrieves a list of all schedule shared course items")
-    public List<ScheduleSharedCourseDTOGet> getAll() {
-        System.out.println(scheduleSharedCourseService.getAll());
-        return scheduleSharedCourseService.getAll();
+    public ResponseEntity<List<ScheduleSharedCourseDTOGet>> getAll() {
+        List<ScheduleSharedCourseDTOGet> result = scheduleSharedCourseService.getAll();
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping()
     @Operation(summary = "Create schedule shared course item", description = "Creates new schedule shared course item")
     public ResponseEntity<ScheduleSharedCourseDTOGet> create(
-            @RequestBody ScheduleSharedCourseDTOPost request) {
+            @Valid @RequestBody ScheduleSharedCourseDTOPost request) {
         ScheduleSharedCourseDTOGet savedEntity = scheduleSharedCourseService.create(request);
-        return ResponseEntity.ok(savedEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
     @PatchMapping("/{id}")
