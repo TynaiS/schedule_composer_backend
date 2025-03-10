@@ -67,5 +67,4 @@ public class CourseController {
         courseService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
 }

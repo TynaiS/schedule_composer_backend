@@ -123,7 +123,6 @@
 
 
 
-
 INSERT INTO courses (name, credits) VALUES
                                         ('English', 3), ('Japan', 3), ('French', 3), ('German', 3),
                                         ('Discrete Math', 4), ('Calculus 2', 4), ('Design and Analysis of Algorithms', 4),
