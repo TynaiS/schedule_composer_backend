@@ -5,6 +5,8 @@ import com.example.schedule_composer.dto.patch.CourseDTOPatch;
 import com.example.schedule_composer.dto.post.CourseDTOPost;
 import com.example.schedule_composer.service.CourseService;
 import com.example.schedule_composer.utils.ApiConstants;
+import com.example.schedule_composer.utils.CoursePriority;
+import com.example.schedule_composer.utils.TeachingMode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -66,5 +68,15 @@ public class CourseController {
     public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
         courseService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/course-priorities")
+    public ResponseEntity<List<CoursePriority>> getCoursePriorities() {
+        return ResponseEntity.ok(List.of(CoursePriority.values()));
+    }
+
+    @GetMapping("/teaching-modes")
+    public ResponseEntity<List<TeachingMode>> getTeachingModes() {
+        return ResponseEntity.ok(List.of(TeachingMode.values()));
     }
 }

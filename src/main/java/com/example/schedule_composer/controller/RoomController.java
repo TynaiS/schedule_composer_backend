@@ -5,6 +5,7 @@ import com.example.schedule_composer.dto.patch.RoomDTOPatch;
 import com.example.schedule_composer.dto.post.RoomDTOPost;
 import com.example.schedule_composer.service.RoomService;
 import com.example.schedule_composer.utils.ApiConstants;
+import com.example.schedule_composer.utils.RoomType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -64,5 +65,10 @@ public class RoomController {
     public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
         roomService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/room-types")
+    public ResponseEntity<List<RoomType>> getRoomTypes() {
+        return ResponseEntity.ok(List.of(RoomType.values()));
     }
 }
