@@ -39,8 +39,6 @@ public class CourseTeacherSharedGroupController {
 
     @GetMapping()
     @Operation(summary = "Get all course-teacher-shared-groups", description = "Retrieves a list of all course-teacher-shared-groups")
-    @ApiResponse(responseCode = "200", description = "Successful retrieval of data")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<List<CourseTeacherSharedGroupDTOGet>> getAll() {
         List<CourseTeacherSharedGroupDTOGet> result = courseTeacherSharedGroupService.getAll();
         return ResponseEntity.ok(result);

@@ -10,7 +10,6 @@ public enum CoursePriority {
     HIGH,
     @Schema(description = "Medium priority course")
     MEDIUM,
-
     @Schema(description = "Low priority course")
     LOW;
 

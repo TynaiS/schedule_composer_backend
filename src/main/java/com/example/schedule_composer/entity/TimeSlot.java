@@ -20,9 +20,6 @@ public class TimeSlot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
-
     @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
 

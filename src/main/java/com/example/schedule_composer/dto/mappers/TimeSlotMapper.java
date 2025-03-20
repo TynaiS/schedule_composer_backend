@@ -5,6 +5,7 @@ import com.example.schedule_composer.dto.patch.TimeSlotDTOPatch;
 import com.example.schedule_composer.dto.post.TimeSlotDTOPost;
 import com.example.schedule_composer.entity.TimeSlot;
 import com.example.schedule_composer.repository.TimeSlotRepository;
+import com.example.schedule_composer.utils.TimeSlotValidator;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,15 +16,17 @@ import java.time.LocalTime;
 public class TimeSlotMapper implements DTOMapper<TimeSlotDTOGet, TimeSlotDTOPost, TimeSlotDTOPatch, TimeSlot, Long>{
 
     private final TimeSlotRepository timeSlotRepository;
+    private final TimeSlotValidator timeSlotValidator;
 
     @Autowired
-    public TimeSlotMapper(TimeSlotRepository timeSlotRepository) {
+    public TimeSlotMapper(TimeSlotRepository timeSlotRepository,  TimeSlotValidator timeSlotValidator) {
         this.timeSlotRepository = timeSlotRepository;
+        this.timeSlotValidator = timeSlotValidator;
     }
 
     @Override
     public TimeSlotDTOGet fromEntityToGet(TimeSlot timeSlot) {
-        TimeSlotDTOGet timeSlotGet = new TimeSlotDTOGet(timeSlot.getId(), timeSlot.getName(), timeSlot.getStartTime(), timeSlot.getEndTime());
+        TimeSlotDTOGet timeSlotGet = new TimeSlotDTOGet(timeSlot.getId(), timeSlot.getStartTime(), timeSlot.getEndTime());
         return timeSlotGet;
     }
 
@@ -38,10 +41,10 @@ public class TimeSlotMapper implements DTOMapper<TimeSlotDTOGet, TimeSlotDTOPost
         }
 
         TimeSlot timeSlot = TimeSlot.builder()
-                .name(timeSlotDTOPost.getName())
                 .startTime(timeSlotDTOPost.getStartTime())
                 .endTime(timeSlotDTOPost.getEndTime())
                 .build();
+
         return timeSlot;
     }
 
@@ -51,13 +54,6 @@ public class TimeSlotMapper implements DTOMapper<TimeSlotDTOGet, TimeSlotDTOPost
         TimeSlot existingTimeSlot = timeSlotRepository.findById(timeSlotId)
                 .orElseThrow(() -> new EntityNotFoundException("Time slot not found with id: " + timeSlotId));
 
-
-        if (timeSlotDTOPatch.getName() != null){
-            if(timeSlotDTOPatch.getName().isBlank()) {
-                throw new IllegalArgumentException("Time slot name cannot be blank");
-            }
-            existingTimeSlot.setName(timeSlotDTOPatch.getName());
-        }
 
         LocalTime newStartTime = timeSlotDTOPatch.getStartTime();
         LocalTime newEndTime = timeSlotDTOPatch.getEndTime();
@@ -83,7 +79,6 @@ public class TimeSlotMapper implements DTOMapper<TimeSlotDTOGet, TimeSlotDTOPost
             }
             existingTimeSlot.setEndTime(newEndTime);
         }
-
 
         return existingTimeSlot;
 
