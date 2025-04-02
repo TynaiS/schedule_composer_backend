@@ -14,7 +14,8 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/v1/**")
-                        .allowedOrigins("*")
+                        .allowedOriginPatterns("*")
+                        .allowedHeaders("*")
                         .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE")
                         .allowCredentials(true);
             }
