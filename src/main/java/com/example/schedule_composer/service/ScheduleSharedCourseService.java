@@ -1,73 +1,25 @@
 package com.example.schedule_composer.service;
 
 import com.example.schedule_composer.dto.get.ScheduleSharedCourseDTOGet;
-import com.example.schedule_composer.dto.mappers.ScheduleSharedCourseMapper;
 import com.example.schedule_composer.dto.patch.ScheduleSharedCourseDTOPatch;
 import com.example.schedule_composer.dto.post.ScheduleSharedCourseDTOPost;
 import com.example.schedule_composer.entity.ScheduleSharedCourse;
-import com.example.schedule_composer.repository.ScheduleSharedCourseRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Service
-public class ScheduleSharedCourseService implements CrudService<ScheduleSharedCourseDTOGet, ScheduleSharedCourseDTOPost, ScheduleSharedCourseDTOPatch, ScheduleSharedCourse, Long> {
+public interface ScheduleSharedCourseService {
 
-    private final ScheduleSharedCourseRepository scheduleSharedCourseRepository;
-    private final ScheduleSharedCourseMapper scheduleSharedCourseMapper;
+    ScheduleSharedCourseDTOGet getById(Long id);
 
-    @Autowired
-    public ScheduleSharedCourseService(ScheduleSharedCourseRepository scheduleSharedCourseRepository,ScheduleSharedCourseMapper scheduleSharedCourseMapper){
-        this.scheduleSharedCourseRepository = scheduleSharedCourseRepository;
-        this.scheduleSharedCourseMapper = scheduleSharedCourseMapper;
-    }
+    ScheduleSharedCourse getEntityById(Long id);
 
-    @Override
-    public ScheduleSharedCourseDTOGet getById(Long id) {
-        return scheduleSharedCourseMapper.fromEntityToGet(getEntityById(id));
-    }
+    Boolean checkIfExists(Long id);
 
-    @Override
-    public ScheduleSharedCourse getEntityById(Long id) {
-        ScheduleSharedCourse entity = scheduleSharedCourseRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Schedule-Shared-Course item not found with id: " + id));
-        return entity;
-    }
+    List<ScheduleSharedCourseDTOGet> getAll();
 
-    @Override
-    public Boolean checkIfExists(Long id) {
-        if (!scheduleSharedCourseRepository.existsById(id)) {
-            throw new EntityNotFoundException("Schedule-Shared-Course item not found with id: " + id);
-        }
-        return true;
-    }
+    ScheduleSharedCourseDTOGet create(ScheduleSharedCourseDTOPost createDto);
 
-    @Override
-    public List<ScheduleSharedCourseDTOGet> getAll() {
-        List<ScheduleSharedCourse> entities = scheduleSharedCourseRepository.findAll();
+    ScheduleSharedCourseDTOGet update(Long id, ScheduleSharedCourseDTOPatch updateDto);
 
-        return entities.stream()
-                .map(scheduleSharedCourseMapper::fromEntityToGet)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public ScheduleSharedCourseDTOGet create(ScheduleSharedCourseDTOPost createDto) {
-        ScheduleSharedCourse savedEntity = scheduleSharedCourseRepository.save(scheduleSharedCourseMapper.fromPostToEntity(createDto));
-        return scheduleSharedCourseMapper.fromEntityToGet(savedEntity);
-    }
-
-    @Override
-    public ScheduleSharedCourseDTOGet update(Long id, ScheduleSharedCourseDTOPatch updateDto) {
-        ScheduleSharedCourse updatedEntity = scheduleSharedCourseRepository.save(scheduleSharedCourseMapper.fromPatchToEntity(updateDto, id));
-        return scheduleSharedCourseMapper.fromEntityToGet(updatedEntity);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        if(checkIfExists(id)) scheduleSharedCourseRepository.deleteById(id);
-    }
+    void deleteById(Long id);
 }

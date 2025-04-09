@@ -1,73 +1,25 @@
 package com.example.schedule_composer.service;
 
 import com.example.schedule_composer.dto.get.ScheduleLunchDTOGet;
-import com.example.schedule_composer.dto.mappers.ScheduleLunchMapper;
 import com.example.schedule_composer.dto.patch.ScheduleLunchDTOPatch;
 import com.example.schedule_composer.dto.post.ScheduleLunchDTOPost;
 import com.example.schedule_composer.entity.ScheduleLunch;
-import com.example.schedule_composer.repository.ScheduleLunchRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Service
-public class ScheduleLunchService implements CrudService<ScheduleLunchDTOGet, ScheduleLunchDTOPost, ScheduleLunchDTOPatch, ScheduleLunch, Long> {
+public interface ScheduleLunchService {
 
-    private final ScheduleLunchRepository scheduleLunchRepository;
-    private final ScheduleLunchMapper scheduleLunchMapper;
+    ScheduleLunchDTOGet getById(Long id);
 
-    @Autowired
-    public ScheduleLunchService(ScheduleLunchRepository scheduleLunchRepository,ScheduleLunchMapper scheduleLunchMapper){
-        this.scheduleLunchRepository = scheduleLunchRepository;
-        this.scheduleLunchMapper = scheduleLunchMapper;
-    }
+    ScheduleLunch getEntityById(Long id);
 
-    @Override
-    public ScheduleLunchDTOGet getById(Long id) {
-        return scheduleLunchMapper.fromEntityToGet(getEntityById(id));
-    }
+    Boolean checkIfExists(Long id);
 
-    @Override
-    public ScheduleLunch getEntityById(Long id) {
-        ScheduleLunch entity = scheduleLunchRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Schedule lunch item not found with id: " + id));
-        return entity;
-    }
+    List<ScheduleLunchDTOGet> getAll();
 
-    @Override
-    public Boolean checkIfExists(Long id) {
-        if (!scheduleLunchRepository.existsById(id)) {
-            throw new EntityNotFoundException("Schedule lunch item not found with id: " + id);
-        }
-        return true;
-    }
+    ScheduleLunchDTOGet create(ScheduleLunchDTOPost createDto);
 
-    @Override
-    public List<ScheduleLunchDTOGet> getAll() {
-        List<ScheduleLunch> entities = scheduleLunchRepository.findAll();
+    ScheduleLunchDTOGet update(Long id, ScheduleLunchDTOPatch updateDto);
 
-        return entities.stream()
-                .map(scheduleLunchMapper::fromEntityToGet)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public ScheduleLunchDTOGet create(ScheduleLunchDTOPost createDto) {
-        ScheduleLunch savedEntity = scheduleLunchRepository.save(scheduleLunchMapper.fromPostToEntity(createDto));
-        return scheduleLunchMapper.fromEntityToGet(savedEntity);
-    }
-
-    @Override
-    public ScheduleLunchDTOGet update(Long id, ScheduleLunchDTOPatch updateDto) {
-        ScheduleLunch updatedEntity = scheduleLunchRepository.save(scheduleLunchMapper.fromPatchToEntity(updateDto, id));
-        return scheduleLunchMapper.fromEntityToGet(updatedEntity);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        if(checkIfExists(id)) scheduleLunchRepository.deleteById(id);
-    }
+    void deleteById(Long id);
 }

@@ -1,73 +1,26 @@
 package com.example.schedule_composer.service;
 
 import com.example.schedule_composer.dto.get.GroupDTOGet;
-import com.example.schedule_composer.dto.mappers.GroupMapper;
 import com.example.schedule_composer.dto.patch.GroupDTOPatch;
 import com.example.schedule_composer.dto.post.GroupDTOPost;
 import com.example.schedule_composer.entity.Group;
-import com.example.schedule_composer.repository.GroupRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Service
-public class GroupService implements CrudService<GroupDTOGet, GroupDTOPost, GroupDTOPatch, Group, Long> {
+public interface GroupService {
 
-    private final GroupRepository groupRepository;
-    private final GroupMapper groupMapper;
+    GroupDTOGet getById(Long id);
 
-    @Autowired
-    public GroupService(GroupRepository groupRepository,GroupMapper groupMapper){
-        this.groupRepository = groupRepository;
-        this.groupMapper = groupMapper;
-    }
+    Group getEntityById(Long id);
 
-    @Override
-    public GroupDTOGet getById(Long id) {
-        return groupMapper.fromEntityToGet(getEntityById(id));
-    }
+    Boolean checkIfExists(Long id);
 
-    @Override
-    public Group getEntityById(Long id) {
-        Group entity = groupRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Group not found with id: " + id));
-        return entity;
-    }
+    List<GroupDTOGet> getAll();
 
-    @Override
-    public Boolean checkIfExists(Long id) {
-        if (!groupRepository.existsById(id)) {
-            throw new EntityNotFoundException("Group not found with id: " + id);
-        }
-        return true;
-    }
+    GroupDTOGet create(GroupDTOPost createDto);
 
-    @Override
-    public List<GroupDTOGet> getAll() {
-        List<Group> entities = groupRepository.findAll();
+    GroupDTOGet update(Long id, GroupDTOPatch updateDto);
 
-        return entities.stream()
-                .map(groupMapper::fromEntityToGet)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public GroupDTOGet create(GroupDTOPost createDto) {
-        Group savedEntity = groupRepository.save(groupMapper.fromPostToEntity(createDto));
-        return groupMapper.fromEntityToGet(savedEntity);
-    }
-
-    @Override
-    public GroupDTOGet update(Long id, GroupDTOPatch updateDto) {
-        Group updatedEntity = groupRepository.save(groupMapper.fromPatchToEntity(updateDto, id));
-        return groupMapper.fromEntityToGet(updatedEntity);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        if(checkIfExists(id)) groupRepository.deleteById(id);
-    }
+    void deleteById(Long id);
 }

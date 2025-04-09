@@ -1,73 +1,25 @@
 package com.example.schedule_composer.service;
 
 import com.example.schedule_composer.dto.get.RoomDTOGet;
-import com.example.schedule_composer.dto.mappers.RoomMapper;
 import com.example.schedule_composer.dto.patch.RoomDTOPatch;
 import com.example.schedule_composer.dto.post.RoomDTOPost;
 import com.example.schedule_composer.entity.Room;
-import com.example.schedule_composer.repository.RoomRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Service
-public class RoomService implements CrudService<RoomDTOGet, RoomDTOPost, RoomDTOPatch, Room, Long> {
+public interface RoomService {
 
-    private final RoomRepository roomRepository;
-    private final RoomMapper roomMapper;
+    RoomDTOGet getById(Long id);
 
-    @Autowired
-    public RoomService(RoomRepository roomRepository,RoomMapper roomMapper){
-        this.roomRepository = roomRepository;
-        this.roomMapper = roomMapper;
-    }
+    Room getEntityById(Long id);
 
-    @Override
-    public RoomDTOGet getById(Long id) {
-        return roomMapper.fromEntityToGet(getEntityById(id));
-    }
+    Boolean checkIfExists(Long id);
 
-    @Override
-    public Room getEntityById(Long id) {
-        Room entity = roomRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Room not found with id: " + id));
-        return entity;
-    }
+    List<RoomDTOGet> getAll();
 
-    @Override
-    public Boolean checkIfExists(Long id) {
-        if (!roomRepository.existsById(id)) {
-            throw new EntityNotFoundException("Room not found with id: " + id);
-        }
-        return true;
-    }
+    RoomDTOGet create(RoomDTOPost createDto);
 
-    @Override
-    public List<RoomDTOGet> getAll() {
-        List<Room> entities = roomRepository.findAll();
+    RoomDTOGet update(Long id, RoomDTOPatch updateDto);
 
-        return entities.stream()
-                .map(roomMapper::fromEntityToGet)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public RoomDTOGet create(RoomDTOPost createDto) {
-        Room savedEntity = roomRepository.save(roomMapper.fromPostToEntity(createDto));
-        return roomMapper.fromEntityToGet(savedEntity);
-    }
-
-    @Override
-    public RoomDTOGet update(Long id, RoomDTOPatch updateDto) {
-        Room updatedEntity = roomRepository.save(roomMapper.fromPatchToEntity(updateDto, id));
-        return roomMapper.fromEntityToGet(updatedEntity);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        if(checkIfExists(id)) roomRepository.deleteById(id);
-    }
+    void deleteById(Long id);
 }
