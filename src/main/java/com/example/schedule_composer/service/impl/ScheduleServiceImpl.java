@@ -50,9 +50,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     public List<ScheduleDTOGet> getAll() {
         List<Schedule> entities = scheduleRepository.findAll();
 
-        return entities.stream()
-                .map(scheduleMapper::fromEntityToGet)
-                .collect(Collectors.toList());
+        return scheduleMapper.fromEntityListToGetList(entities);
     }
 
     @Override

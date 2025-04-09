@@ -50,9 +50,7 @@ public class GroupCourseTeacherServiceImpl implements GroupCourseTeacherService 
     public List<GroupCourseTeacherDTOGet> getAll() {
         List<GroupCourseTeacher> entities = groupCourseTeacherRepository.findAll();
 
-        return entities.stream()
-                .map(groupCourseTeacherMapper::fromEntityToGet)
-                .collect(Collectors.toList());
+        return groupCourseTeacherMapper.fromEntityListToGetList(entities);
     }
 
     @Override

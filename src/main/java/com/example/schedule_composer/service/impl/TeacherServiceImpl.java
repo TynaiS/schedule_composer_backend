@@ -50,9 +50,7 @@ public class TeacherServiceImpl implements TeacherService {
     public List<TeacherDTOGet> getAll() {
         List<Teacher> entities = teacherRepository.findAll();
 
-        return entities.stream()
-                .map(teacherMapper::fromEntityToGet)
-                .collect(Collectors.toList());
+        return teacherMapper.fromEntityListToGetList(entities);
     }
 
     @Override

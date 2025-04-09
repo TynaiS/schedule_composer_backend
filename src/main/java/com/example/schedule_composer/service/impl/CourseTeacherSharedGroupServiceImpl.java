@@ -50,9 +50,7 @@ public class CourseTeacherSharedGroupServiceImpl implements CourseTeacherSharedG
     public List<CourseTeacherSharedGroupDTOGet> getAll() {
         List<CourseTeacherSharedGroup> entities = courseTeacherSharedGroupRepository.findAll();
 
-        return entities.stream()
-                .map(courseTeacherSharedGroupMapper::fromEntityToGet)
-                .collect(Collectors.toList());
+        return courseTeacherSharedGroupMapper.fromEntityListToGetList(entities);
     }
 
     @Override

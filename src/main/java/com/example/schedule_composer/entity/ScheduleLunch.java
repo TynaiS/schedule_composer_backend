@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
-import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Table
@@ -28,11 +28,11 @@ public class ScheduleLunch {
     @Enumerated(EnumType.STRING)
     private DayOfWeek day;
 
-    @ManyToOne
-    @JoinColumn(name = "start_time_slot_id", referencedColumnName = "id")
-    private TimeSlot startTimeSlot;
-
-    @ManyToOne
-    @JoinColumn(name = "end_time_slot_id", referencedColumnName = "id")
-    private TimeSlot endTimeSlot;
+    @ManyToMany
+    @JoinTable(
+            name = "time_slots",
+            joinColumns = @JoinColumn(name = "schedule_id"),
+            inverseJoinColumns = @JoinColumn(name = "time_slot_id")
+    )
+    private List<TimeSlot> timeSlots;
 }

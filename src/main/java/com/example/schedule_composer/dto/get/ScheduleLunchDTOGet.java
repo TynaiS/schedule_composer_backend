@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.DayOfWeek;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -14,6 +15,5 @@ public class ScheduleLunchDTOGet {
     private Long id;
     private GroupDTOGet group;
     private DayOfWeek day;
-    private TimeSlotDTOGet startTimeSlot;
-    private TimeSlotDTOGet endTimeSlot;
+    private List<TimeSlotDTOGet> timeSlots;
 }

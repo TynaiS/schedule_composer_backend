@@ -9,6 +9,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class TeacherMapper implements DTOMapper<TeacherDTOGet, TeacherDTOPost, TeacherDTOPatch, Teacher, Long>{
 
@@ -22,6 +25,13 @@ public class TeacherMapper implements DTOMapper<TeacherDTOGet, TeacherDTOPost, T
     public TeacherDTOGet fromEntityToGet(Teacher teacher) {
         TeacherDTOGet teacherGet = new TeacherDTOGet(teacher.getId(), teacher.getName(), teacher.getDailyHours(), teacher.getWeeklyHours());
         return teacherGet;
+    }
+
+    @Override
+    public List<TeacherDTOGet> fromEntityListToGetList(List<Teacher> teachers) {
+        return teachers.stream()
+                .map(this::fromEntityToGet)
+                .collect(Collectors.toList());
     }
 
     @Override

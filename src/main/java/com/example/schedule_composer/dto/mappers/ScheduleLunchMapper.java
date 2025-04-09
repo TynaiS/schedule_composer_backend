@@ -1,6 +1,7 @@
 package com.example.schedule_composer.dto.mappers;
 
 import com.example.schedule_composer.dto.get.ScheduleLunchDTOGet;
+import com.example.schedule_composer.dto.get.TimeSlotDTOGet;
 import com.example.schedule_composer.dto.patch.ScheduleLunchDTOPatch;
 import com.example.schedule_composer.dto.post.ScheduleLunchDTOPost;
 import com.example.schedule_composer.entity.Group;
@@ -12,6 +13,9 @@ import com.example.schedule_composer.service.TimeSlotService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ScheduleLunchMapper implements DTOMapper<ScheduleLunchDTOGet, ScheduleLunchDTOPost, ScheduleLunchDTOPatch, ScheduleLunch, Long> {
@@ -37,23 +41,27 @@ public class ScheduleLunchMapper implements DTOMapper<ScheduleLunchDTOGet, Sched
                 scheduleLunch.getId(),
                 groupMapper.fromEntityToGet(scheduleLunch.getGroup()),
                 scheduleLunch.getDay(),
-                timeSlotMapper.fromEntityToGet(scheduleLunch.getStartTimeSlot()),
-                timeSlotMapper.fromEntityToGet(scheduleLunch.getEndTimeSlot()));
+                timeSlotMapper.fromEntityListToGetList(scheduleLunch.getTimeSlots()));
         return scheduleLunchGet;
+    }
+
+    @Override
+    public List<ScheduleLunchDTOGet> fromEntityListToGetList(List<ScheduleLunch> scheduleLunches) {
+        return scheduleLunches.stream()
+                .map(this::fromEntityToGet)
+                .collect(Collectors.toList());
     }
 
     @Override
     public ScheduleLunch fromPostToEntity(ScheduleLunchDTOPost scheduleLunchDTOPost) {
         Group group = groupService.getEntityById(scheduleLunchDTOPost.getGroupId());
-        TimeSlot startTimeSlot = timeSlotService.getEntityById(scheduleLunchDTOPost.getStartTimeSlotId());
-        TimeSlot endTimeSlot = timeSlotService.getEntityById(scheduleLunchDTOPost.getEndTimeSlotId());
+        List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleLunchDTOPost.getTimeSlotIds());
 
 
         ScheduleLunch scheduleLunch = ScheduleLunch.builder()
                 .group(group)
                 .day(scheduleLunchDTOPost.getDay())
-                .startTimeSlot(startTimeSlot)
-                .endTimeSlot(endTimeSlot)
+                .timeSlots(timeSlots)
                 .build();
         return scheduleLunch;
     }
@@ -73,14 +81,9 @@ public class ScheduleLunchMapper implements DTOMapper<ScheduleLunchDTOGet, Sched
             existingScheduleLunch.setDay(scheduleLunchDTOPatch.getDay());
         }
 
-        if(scheduleLunchDTOPatch.getStartTimeSlotId() != null){
-            TimeSlot startTimeSlot = timeSlotService.getEntityById(scheduleLunchDTOPatch.getStartTimeSlotId());
-            existingScheduleLunch.setStartTimeSlot(startTimeSlot);
-        }
-
-        if(scheduleLunchDTOPatch.getEndTimeSlotId() != null){
-            TimeSlot endTimeSlot = timeSlotService.getEntityById(scheduleLunchDTOPatch.getEndTimeSlotId());
-            existingScheduleLunch.setEndTimeSlot(endTimeSlot);
+        if(scheduleLunchDTOPatch.getTimeSlotIds() != null && scheduleLunchDTOPatch.getTimeSlotIds().size() > 0){
+            List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleLunchDTOPatch.getTimeSlotIds());
+            existingScheduleLunch.setTimeSlots(timeSlots);
         }
 
         return existingScheduleLunch;

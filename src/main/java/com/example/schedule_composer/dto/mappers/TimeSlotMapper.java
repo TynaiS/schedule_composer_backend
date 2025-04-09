@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class TimeSlotMapper implements DTOMapper<TimeSlotDTOGet, TimeSlotDTOPost, TimeSlotDTOPatch, TimeSlot, Long>{
@@ -28,6 +30,13 @@ public class TimeSlotMapper implements DTOMapper<TimeSlotDTOGet, TimeSlotDTOPost
     public TimeSlotDTOGet fromEntityToGet(TimeSlot timeSlot) {
         TimeSlotDTOGet timeSlotGet = new TimeSlotDTOGet(timeSlot.getId(), timeSlot.getStartTime(), timeSlot.getEndTime());
         return timeSlotGet;
+    }
+
+    @Override
+    public List<TimeSlotDTOGet> fromEntityListToGetList(List<TimeSlot> timeSlots) {
+        return timeSlots.stream()
+                .map(this::fromEntityToGet)
+                .collect(Collectors.toList());
     }
 
     @Override

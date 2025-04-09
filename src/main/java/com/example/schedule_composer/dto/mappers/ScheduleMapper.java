@@ -13,6 +13,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost, ScheduleDTOPatch, Schedule, Long>{
 
@@ -43,26 +46,30 @@ public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost
                 groupCourseTeacherMapper.fromEntityToGet(schedule.getGroupCourseTeacher()),
                 roomMapper.fromEntityToGet(schedule.getRoom()),
                 schedule.getDay(),
-                timeSlotMapper.fromEntityToGet(schedule.getStartTimeSlot()),
-                timeSlotMapper.fromEntityToGet(schedule.getEndTimeSlot()),
+                timeSlotMapper.fromEntityListToGetList(schedule.getTimeSlots()),
                 schedule.getTeachingMode());
         return scheduleGet;
+    }
+
+    @Override
+    public List<ScheduleDTOGet> fromEntityListToGetList(List<Schedule> schedules) {
+        return schedules.stream()
+                .map(this::fromEntityToGet)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Schedule fromPostToEntity(ScheduleDTOPost scheduleDTOPost) {
         GroupCourseTeacher groupCourseTeacher = groupCourseTeacherService.getEntityById(scheduleDTOPost.getGroupCourseTeacherId());
         Room room = roomService.getEntityById(scheduleDTOPost.getRoomId());
-        TimeSlot startTimeSlot = timeSlotService.getEntityById(scheduleDTOPost.getStartTimeSlotId());
-        TimeSlot endTimeSlot = timeSlotService.getEntityById(scheduleDTOPost.getEndTimeSlotId());
+        List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleDTOPost.getTimeSlotIds());
 
 
         Schedule schedule = Schedule.builder()
                 .groupCourseTeacher(groupCourseTeacher)
                 .room(room)
                 .day(scheduleDTOPost.getDay())
-                .startTimeSlot(startTimeSlot)
-                .endTimeSlot(endTimeSlot)
+                .timeSlots(timeSlots)
                 .teachingMode(scheduleDTOPost.getTeachingMode())
                 .build();
         return schedule;
@@ -89,14 +96,9 @@ public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost
             existingSchedule.setDay(scheduleDTOPatch.getDay());
         }
 
-        if(scheduleDTOPatch.getStartTimeSlotId() != null){
-            TimeSlot startTimeSlot = timeSlotService.getEntityById(scheduleDTOPatch.getStartTimeSlotId());
-            existingSchedule.setStartTimeSlot(startTimeSlot);
-        }
-
-        if(scheduleDTOPatch.getEndTimeSlotId() != null){
-            TimeSlot endTimeSlot = timeSlotService.getEntityById(scheduleDTOPatch.getEndTimeSlotId());
-            existingSchedule.setEndTimeSlot(endTimeSlot);
+        if(scheduleDTOPatch.getTimeSlotIds() != null && scheduleDTOPatch.getTimeSlotIds().size() > 0){
+            List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleDTOPatch.getTimeSlotIds());
+            existingSchedule.setTimeSlots(timeSlots);
         }
 
         if(scheduleDTOPatch.getTeachingMode() != null){

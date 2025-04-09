@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -12,6 +13,5 @@ import java.time.DayOfWeek;
 public class ScheduleLunchDTOPatch {
     private Long groupId;
     private DayOfWeek day;
-    private Long startTimeSlotId;
-    private Long endTimeSlotId;
+    private List<Long> timeSlotIds;
 }

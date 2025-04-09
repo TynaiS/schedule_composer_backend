@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -14,7 +15,6 @@ public class ScheduleDTOPatch {
     private Long groupCourseTeacherId;
     private Long roomId;
     private DayOfWeek day;
-    private Long startTimeSlotId;
-    private Long endTimeSlotId;
+    private List<Long> timeSlotIds;
     private TeachingMode teachingMode;
 }

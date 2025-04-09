@@ -9,6 +9,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class GroupMapper implements DTOMapper<GroupDTOGet, GroupDTOPost, GroupDTOPatch, Group, Long>{
 
@@ -22,6 +25,13 @@ public class GroupMapper implements DTOMapper<GroupDTOGet, GroupDTOPost, GroupDT
     public GroupDTOGet fromEntityToGet(Group group) {
         GroupDTOGet groupGet = new GroupDTOGet(group.getId(), group.getName());
         return groupGet;
+    }
+
+    @Override
+    public List<GroupDTOGet> fromEntityListToGetList(List<Group> groups) {
+        return groups.stream()
+                .map(this::fromEntityToGet)
+                .collect(Collectors.toList());
     }
 
     @Override

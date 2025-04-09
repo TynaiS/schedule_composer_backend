@@ -13,6 +13,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class ScheduleSharedCourseMapper implements DTOMapper<ScheduleSharedCourseDTOGet, ScheduleSharedCourseDTOPost, ScheduleSharedCourseDTOPatch, ScheduleSharedCourse, Long>{
 
@@ -43,26 +46,30 @@ public class ScheduleSharedCourseMapper implements DTOMapper<ScheduleSharedCours
                 courseTeacherSharedMapper.fromEntityToGet(schedule.getCourseTeacherShared()),
                 roomMapper.fromEntityToGet(schedule.getRoom()),
                 schedule.getDay(),
-                timeSlotMapper.fromEntityToGet(schedule.getStartTimeSlot()),
-                timeSlotMapper.fromEntityToGet(schedule.getEndTimeSlot()),
+                timeSlotMapper.fromEntityListToGetList(schedule.getTimeSlots()),
                 schedule.getTeachingMode());
         return scheduleGet;
+    }
+
+    @Override
+    public List<ScheduleSharedCourseDTOGet> fromEntityListToGetList(List<ScheduleSharedCourse> scheduleSharedCourses) {
+        return scheduleSharedCourses.stream()
+                .map(this::fromEntityToGet)
+                .collect(Collectors.toList());
     }
 
     @Override
     public ScheduleSharedCourse fromPostToEntity(ScheduleSharedCourseDTOPost scheduleSharedCourseDTOPost) {
         CourseTeacherShared courseTeacherShared = courseTeacherSharedService.getEntityById(scheduleSharedCourseDTOPost.getCourseTeacherSharedId());
         Room room = roomService.getEntityById(scheduleSharedCourseDTOPost.getRoomId());
-        TimeSlot startTimeSlot = timeSlotService.getEntityById(scheduleSharedCourseDTOPost.getStartTimeSlotId());
-        TimeSlot endTimeSlot = timeSlotService.getEntityById(scheduleSharedCourseDTOPost.getEndTimeSlotId());
+        List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleSharedCourseDTOPost.getTimeSlotIds());
 
 
         ScheduleSharedCourse schedule = ScheduleSharedCourse.builder()
                 .courseTeacherShared(courseTeacherShared)
                 .room(room)
                 .day(scheduleSharedCourseDTOPost.getDay())
-                .startTimeSlot(startTimeSlot)
-                .endTimeSlot(endTimeSlot)
+                .timeSlots(timeSlots)
                 .teachingMode(scheduleSharedCourseDTOPost.getTeachingMode())
                 .build();
         return schedule;
@@ -88,15 +95,11 @@ public class ScheduleSharedCourseMapper implements DTOMapper<ScheduleSharedCours
             existingScheduleSharedCourse.setDay(scheduleSharedCourseDTOPatch.getDay());
         }
 
-        if(scheduleSharedCourseDTOPatch.getStartTimeSlotId() != null){
-            TimeSlot startTimeSlot = timeSlotService.getEntityById(scheduleSharedCourseDTOPatch.getStartTimeSlotId());
-            existingScheduleSharedCourse.setStartTimeSlot(startTimeSlot);
+        if(scheduleSharedCourseDTOPatch.getTimeSlotIds() != null && scheduleSharedCourseDTOPatch.getTimeSlotIds().size() > 0){
+            List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleSharedCourseDTOPatch.getTimeSlotIds());
+            existingScheduleSharedCourse.setTimeSlots(timeSlots);
         }
 
-        if(scheduleSharedCourseDTOPatch.getEndTimeSlotId() != null){
-            TimeSlot endTimeSlot = timeSlotService.getEntityById(scheduleSharedCourseDTOPatch.getEndTimeSlotId());
-            existingScheduleSharedCourse.setEndTimeSlot(endTimeSlot);
-        }
 
         if(scheduleSharedCourseDTOPatch.getTeachingMode() != null){
             existingScheduleSharedCourse.setTeachingMode(scheduleSharedCourseDTOPatch.getTeachingMode());

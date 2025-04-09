@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class CourseMapper implements DTOMapper<CourseDTOGet, CourseDTOPost, CourseDTOPatch, Course, Long>{
 
@@ -23,6 +26,13 @@ public class CourseMapper implements DTOMapper<CourseDTOGet, CourseDTOPost, Cour
     public CourseDTOGet fromEntityToGet(Course course) {
         CourseDTOGet courseGet = new CourseDTOGet(course.getId(), course.getName(), course.getCredits());
         return courseGet;
+    }
+
+    @Override
+    public List<CourseDTOGet> fromEntityListToGetList(List<Course> courses) {
+        return courses.stream()
+                .map(this::fromEntityToGet)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -11,6 +11,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class CourseTeacherSharedGroupMapper implements DTOMapper<CourseTeacherSharedGroupDTOGet, CourseTeacherSharedGroupDTOPost, CourseTeacherSharedGroupDTOPatch, CourseTeacherSharedGroup, Long>{
 
@@ -35,6 +38,13 @@ public class CourseTeacherSharedGroupMapper implements DTOMapper<CourseTeacherSh
     public CourseTeacherSharedGroupDTOGet fromEntityToGet(CourseTeacherSharedGroup courseTeacherSharedGroup) {
         CourseTeacherSharedGroupDTOGet courseTeacherSharedGroupGet = new CourseTeacherSharedGroupDTOGet(courseTeacherSharedGroup.getId(), courseTeacherSharedMapper.fromEntityToGet(courseTeacherSharedGroup.getCourseTeacherShared()), courseTeacherSharedGroup.getGroup());
         return courseTeacherSharedGroupGet;
+    }
+
+    @Override
+    public List<CourseTeacherSharedGroupDTOGet> fromEntityListToGetList(List<CourseTeacherSharedGroup> courseTeacherSharedGroups) {
+        return courseTeacherSharedGroups.stream()
+                .map(this::fromEntityToGet)
+                .collect(Collectors.toList());
     }
 
     @Override

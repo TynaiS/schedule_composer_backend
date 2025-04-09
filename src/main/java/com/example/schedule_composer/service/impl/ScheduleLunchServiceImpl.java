@@ -50,9 +50,7 @@ public class ScheduleLunchServiceImpl implements ScheduleLunchService {
     public List<ScheduleLunchDTOGet> getAll() {
         List<ScheduleLunch> entities = scheduleLunchRepository.findAll();
 
-        return entities.stream()
-                .map(scheduleLunchMapper::fromEntityToGet)
-                .collect(Collectors.toList());
+        return scheduleLunchMapper.fromEntityListToGetList(entities);
     }
 
     @Override

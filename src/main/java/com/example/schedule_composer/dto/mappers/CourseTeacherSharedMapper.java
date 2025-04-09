@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class CourseTeacherSharedMapper implements DTOMapper<CourseTeacherSharedDTOGet, CourseTeacherSharedDTOPost, CourseTeacherSharedDTOPatch, CourseTeacherShared, Long>{
 
@@ -45,6 +48,13 @@ public class CourseTeacherSharedMapper implements DTOMapper<CourseTeacherSharedD
                 courseTeacherShared.getHoursInLab(),
                 courseTeacherShared.getPreferredRoomType());
         return courseTeacherSharedGet;
+    }
+
+    @Override
+    public List<CourseTeacherSharedDTOGet> fromEntityListToGetList(List<CourseTeacherShared> courseTeacherShareds) {
+        return courseTeacherShareds.stream()
+                .map(this::fromEntityToGet)
+                .collect(Collectors.toList());
     }
 
     @Override

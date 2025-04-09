@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class RoomMapper implements DTOMapper<RoomDTOGet, RoomDTOPost, RoomDTOPatch, Room, Long>{
 
@@ -23,6 +26,13 @@ public class RoomMapper implements DTOMapper<RoomDTOGet, RoomDTOPost, RoomDTOPat
     public RoomDTOGet fromEntityToGet(Room room) {
         RoomDTOGet roomGet = new RoomDTOGet(room.getId(), room.getRoomNum(), room.getType());
         return roomGet;
+    }
+
+    @Override
+    public List<RoomDTOGet> fromEntityListToGetList(List<Room> rooms) {
+        return rooms.stream()
+                .map(this::fromEntityToGet)
+                .collect(Collectors.toList());
     }
 
     @Override

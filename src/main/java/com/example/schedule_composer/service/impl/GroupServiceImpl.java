@@ -50,9 +50,7 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupDTOGet> getAll() {
         List<Group> entities = groupRepository.findAll();
 
-        return entities.stream()
-                .map(groupMapper::fromEntityToGet)
-                .collect(Collectors.toList());
+        return groupMapper.fromEntityListToGetList(entities);
     }
 
     @Override

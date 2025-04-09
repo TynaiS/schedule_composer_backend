@@ -50,9 +50,7 @@ public class CourseTeacherSharedServiceImpl implements CourseTeacherSharedServic
     public List<CourseTeacherSharedDTOGet> getAll() {
         List<CourseTeacherShared> entities = courseTeacherSharedRepository.findAll();
 
-        return entities.stream()
-                .map(courseTeacherSharedMapper::fromEntityToGet)
-                .collect(Collectors.toList());
+        return courseTeacherSharedMapper.fromEntityListToGetList(entities);
     }
 
     @Override

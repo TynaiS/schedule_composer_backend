@@ -50,9 +50,7 @@ public class ScheduleSharedCourseServiceImpl implements ScheduleSharedCourseServ
     public List<ScheduleSharedCourseDTOGet> getAll() {
         List<ScheduleSharedCourse> entities = scheduleSharedCourseRepository.findAll();
 
-        return entities.stream()
-                .map(scheduleSharedCourseMapper::fromEntityToGet)
-                .collect(Collectors.toList());
+        return scheduleSharedCourseMapper.fromEntityListToGetList(entities);
     }
 
     @Override

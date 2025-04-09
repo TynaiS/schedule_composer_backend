@@ -46,14 +46,27 @@ public class TimeSlotServiceImpl implements TimeSlotService {
         return true;
     }
 
+    @Override
+    public TimeSlot checkIfExistsAndGetEntity(Long id) {
+        if (!timeSlotRepository.existsById(id)) {
+            throw new EntityNotFoundException("Time slot not found with id: " + id);
+        }
+        return getEntityById(id);
+    }
+
+    @Override
+    public List<TimeSlot> checkIfAllExistAndGetEntities(List<Long> timeSlotIds){
+        return timeSlotIds.stream()
+                .map(this::checkIfExistsAndGetEntity)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public List<TimeSlotDTOGet> getAll() {
         List<TimeSlot> entities = timeSlotRepository.findAll();
 
-        return entities.stream()
-                .map(timeSlotMapper::fromEntityToGet)
-                .collect(Collectors.toList());
+        return timeSlotMapper.fromEntityListToGetList(entities);
     }
 
     @Override

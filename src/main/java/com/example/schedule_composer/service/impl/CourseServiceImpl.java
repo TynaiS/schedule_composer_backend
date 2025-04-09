@@ -52,9 +52,7 @@ public class CourseServiceImpl implements CourseService {
     public List<CourseDTOGet> getAll() {
         List<Course> entities = courseRepository.findAll();
 
-        return entities.stream()
-                .map(courseMapper::fromEntityToGet)
-                .collect(Collectors.toList());
+        return courseMapper.fromEntityListToGetList(entities);
     }
 
     @Override

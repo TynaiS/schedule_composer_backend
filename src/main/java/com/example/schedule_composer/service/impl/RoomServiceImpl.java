@@ -50,9 +50,7 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomDTOGet> getAll() {
         List<Room> entities = roomRepository.findAll();
 
-        return entities.stream()
-                .map(roomMapper::fromEntityToGet)
-                .collect(Collectors.toList());
+        return roomMapper.fromEntityListToGetList(entities);
     }
 
     @Override
