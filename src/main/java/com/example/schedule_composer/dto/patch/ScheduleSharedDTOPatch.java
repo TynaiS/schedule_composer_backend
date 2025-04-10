@@ -11,8 +11,8 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScheduleDTOPatch {
-    private Long setupId;
+public class ScheduleSharedDTOPatch {
+    private Long setupSharedId;
     private Long roomId;
     private DayOfWeek day;
     private List<Long> timeSlotIds;

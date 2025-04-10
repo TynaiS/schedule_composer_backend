@@ -11,20 +11,20 @@ import java.time.DayOfWeek;
 import java.util.List;
 
 @Entity
-@Table(name = "schedule")
+@Table(name = "schedule_shared")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Schedule {
+public class ScheduleShared {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "setup_id", referencedColumnName = "id")
-    private Setup setup;
+    @JoinColumn(name = "setup_shared_id", referencedColumnName = "id")
+    private SetupShared setupShared;
 
     @ManyToOne
     @JoinColumn(name = "room_id", referencedColumnName = "id")

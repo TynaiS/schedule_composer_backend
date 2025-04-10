@@ -48,7 +48,7 @@ public class RoomMapper implements DTOMapper<RoomDTOGet, RoomDTOPost, RoomDTOPat
     public Room fromPatchToEntity(RoomDTOPatch roomDTOPatch, Long roomId) {
 
         Room existingRoom = roomRepository.findById(roomId)
-                .orElseThrow(() -> new EntityNotFoundException("Group-Course-Teacher not found with id: " + roomId));
+                .orElseThrow(() -> new EntityNotFoundException("Setup not found with id: " + roomId));
 
         if (roomDTOPatch.getRoomNum() != null) {
             if (roomDTOPatch.getRoomNum().isBlank()) {

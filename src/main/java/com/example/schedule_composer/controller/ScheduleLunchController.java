@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(ApiConstants.SCHEDULE_LUNCH_API)
-@Tag(name = "Schedule Lunch API", description = "Endpoints for managing schedule lunch items")
+@Tag(name = "Schedule Lunch API", description = "Endpoints for managing schedule-lunch items")
 public class ScheduleLunchController {
 
 
@@ -30,21 +30,21 @@ public class ScheduleLunchController {
 
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get schedule lunch item by ID", description = "Retrieves a specific schedule lunch item by its ID")
+    @Operation(summary = "Get schedule-lunch item by ID", description = "Retrieves a specific schedule-lunch item by its ID")
     public ResponseEntity<ScheduleLunchDTOGet> getById(@PathVariable("id") Long id) {
         ScheduleLunchDTOGet scheduleLunchItem = scheduleLunchService.getById(id);
         return ResponseEntity.ok(scheduleLunchItem);
     }
 
     @GetMapping()
-    @Operation(summary = "Get all schedule lunch items", description = "Retrieves a list of all schedule lunch items")
+    @Operation(summary = "Get all schedule-lunch items", description = "Retrieves a list of all schedule-lunch items")
     public ResponseEntity<List<ScheduleLunchDTOGet>> getAll() {
         List<ScheduleLunchDTOGet> scheduleLunches = scheduleLunchService.getAll();
         return ResponseEntity.ok(scheduleLunches);
     }
 
     @PostMapping()
-    @Operation(summary = "Create schedule lunch item", description = "Creates new schedule lunch item")
+    @Operation(summary = "Create schedule-lunch item", description = "Creates new schedule-lunch item")
     public ResponseEntity<ScheduleLunchDTOGet> create(
             @Valid @RequestBody ScheduleLunchDTOPost request) {
         ScheduleLunchDTOGet savedEntity = scheduleLunchService.create(request);
@@ -52,7 +52,7 @@ public class ScheduleLunchController {
     }
 
     @PatchMapping("/{id}")
-    @Operation(summary = "Update schedule lunch item", description = "Updates an existing schedule lunch item")
+    @Operation(summary = "Update schedule-lunch item", description = "Updates an existing schedule-lunch item")
     public ResponseEntity<ScheduleLunchDTOGet> update(
             @PathVariable Long id,
             @RequestBody ScheduleLunchDTOPatch patchRequest) {
@@ -61,7 +61,7 @@ public class ScheduleLunchController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete schedule lunch item by ID", description = "Deletes a specific schedule lunch item by its ID")
+    @Operation(summary = "Delete schedule-lunch item by ID", description = "Deletes a specific schedule-lunch item by its ID")
     public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
         scheduleLunchService.deleteById(id);
         return ResponseEntity.noContent().build();

@@ -6,7 +6,7 @@ import com.example.schedule_composer.dto.patch.ScheduleDTOPatch;
 import com.example.schedule_composer.dto.post.ScheduleDTOPost;
 import com.example.schedule_composer.entity.*;
 import com.example.schedule_composer.repository.ScheduleRepository;
-import com.example.schedule_composer.service.GroupCourseTeacherService;
+import com.example.schedule_composer.service.SetupService;
 import com.example.schedule_composer.service.RoomService;
 import com.example.schedule_composer.service.TimeSlotService;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,22 +20,22 @@ import java.util.stream.Collectors;
 public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost, ScheduleDTOPatch, Schedule, Long>{
 
     private final ScheduleRepository scheduleRepository;
-    private final GroupCourseTeacherService groupCourseTeacherService;
+    private final SetupService scheduleSetupRegularService;
     private final RoomService roomService;
     private final TimeSlotService timeSlotService;
-    private final GroupCourseTeacherMapper groupCourseTeacherMapper;
+    private final SetupMapper scheduleSetupRegularMapper;
     private final RoomMapper roomMapper;
     private final TimeSlotMapper timeSlotMapper;
 
 
 
     @Autowired
-    public ScheduleMapper(ScheduleRepository scheduleRepository, GroupCourseTeacherService groupCourseTeacherService, RoomService roomService, TimeSlotService timeSlotService, CourseMapper courseMapper, GroupCourseTeacherMapper groupCourseTeacherMapper, RoomMapper roomMapper, TimeSlotMapper timeSlotMapper) {
+    public ScheduleMapper(ScheduleRepository scheduleRepository, SetupService scheduleSetupRegularService, RoomService roomService, TimeSlotService timeSlotService, CourseMapper courseMapper, SetupMapper scheduleSetupRegularMapper, RoomMapper roomMapper, TimeSlotMapper timeSlotMapper) {
         this.scheduleRepository = scheduleRepository;
-        this.groupCourseTeacherService = groupCourseTeacherService;
+        this.scheduleSetupRegularService = scheduleSetupRegularService;
         this.roomService = roomService;
         this.timeSlotService = timeSlotService;
-        this.groupCourseTeacherMapper = groupCourseTeacherMapper;
+        this.scheduleSetupRegularMapper = scheduleSetupRegularMapper;
         this.roomMapper = roomMapper;
         this.timeSlotMapper = timeSlotMapper;
     }
@@ -43,7 +43,7 @@ public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost
     public ScheduleDTOGet fromEntityToGet(Schedule schedule) {
         ScheduleDTOGet scheduleGet = new ScheduleDTOGet(
                 schedule.getId(),
-                groupCourseTeacherMapper.fromEntityToGet(schedule.getGroupCourseTeacher()),
+                scheduleSetupRegularMapper.fromEntityToGet(schedule.getSetup()),
                 roomMapper.fromEntityToGet(schedule.getRoom()),
                 schedule.getDay(),
                 timeSlotMapper.fromEntityListToGetList(schedule.getTimeSlots()),
@@ -60,13 +60,13 @@ public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost
 
     @Override
     public Schedule fromPostToEntity(ScheduleDTOPost scheduleDTOPost) {
-        GroupCourseTeacher groupCourseTeacher = groupCourseTeacherService.getEntityById(scheduleDTOPost.getGroupCourseTeacherId());
+        Setup scheduleSetupRegular = scheduleSetupRegularService.getEntityById(scheduleDTOPost.getSetupId());
         Room room = roomService.getEntityById(scheduleDTOPost.getRoomId());
         List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleDTOPost.getTimeSlotIds());
 
 
         Schedule schedule = Schedule.builder()
-                .groupCourseTeacher(groupCourseTeacher)
+                .setup(scheduleSetupRegular)
                 .room(room)
                 .day(scheduleDTOPost.getDay())
                 .timeSlots(timeSlots)
@@ -82,9 +82,9 @@ public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost
                 .orElseThrow(() -> new EntityNotFoundException("Schedule item not found with id: " + scheduleId));
 
 
-        if(scheduleDTOPatch.getGroupCourseTeacherId() != null){
-            GroupCourseTeacher groupCourseTeacher = groupCourseTeacherService.getEntityById(scheduleDTOPatch.getGroupCourseTeacherId());
-            existingSchedule.setGroupCourseTeacher(groupCourseTeacher);
+        if(scheduleDTOPatch.getSetupId() != null){
+            Setup scheduleSetupRegular = scheduleSetupRegularService.getEntityById(scheduleDTOPatch.getSetupId());
+            existingSchedule.setSetup(scheduleSetupRegular);
         }
 
         if(scheduleDTOPatch.getRoomId() != null){
