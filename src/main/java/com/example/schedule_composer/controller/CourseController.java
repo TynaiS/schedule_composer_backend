@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(ApiConstants.COURSE_API)
-@Tag(name = "Course API", description = "Endpoints for managing student courses")
+@Tag(name = "Course API", description = "Endpoints for managing student courses ")
 public class CourseController {
 
     private final CourseService courseService;
