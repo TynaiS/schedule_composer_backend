@@ -22,25 +22,25 @@ import java.util.List;
 public class ScheduleSharedController {
 
 
-    private final ScheduleSharedService scheduleSharedCourseService;
+    private final ScheduleSharedService scheduleSharedService;
 
     @Autowired
-    public ScheduleSharedController(ScheduleSharedService scheduleSharedCourseService) {
-        this.scheduleSharedCourseService = scheduleSharedCourseService;
+    public ScheduleSharedController(ScheduleSharedService scheduleSharedService) {
+        this.scheduleSharedService = scheduleSharedService;
     }
 
 
     @GetMapping("/{id}")
     @Operation(summary = "Get schedule-shared course item by ID", description = "Retrieves a specific schedule-shared course item by its ID")
     public ResponseEntity<ScheduleSharedDTOGet> getById(@PathVariable("id") Long id) {
-        ScheduleSharedDTOGet result = scheduleSharedCourseService.getById(id);
+        ScheduleSharedDTOGet result = scheduleSharedService.getById(id);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping()
     @Operation(summary = "Get all schedule-shared course items", description = "Retrieves a list of all schedule-shared course items")
     public ResponseEntity<List<ScheduleSharedDTOGet>> getAll() {
-        List<ScheduleSharedDTOGet> result = scheduleSharedCourseService.getAll();
+        List<ScheduleSharedDTOGet> result = scheduleSharedService.getAll();
         return ResponseEntity.ok(result);
     }
 
@@ -48,7 +48,7 @@ public class ScheduleSharedController {
     @Operation(summary = "Create schedule-shared course item", description = "Creates new schedule-shared course item")
     public ResponseEntity<ScheduleSharedDTOGet> create(
             @Valid @RequestBody ScheduleSharedDTOPost request) {
-        ScheduleSharedDTOGet savedEntity = scheduleSharedCourseService.create(request);
+        ScheduleSharedDTOGet savedEntity = scheduleSharedService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
@@ -57,14 +57,14 @@ public class ScheduleSharedController {
     public ResponseEntity<ScheduleSharedDTOGet> update(
             @PathVariable Long id,
             @RequestBody ScheduleSharedDTOPatch patchRequest) {
-        ScheduleSharedDTOGet updated = scheduleSharedCourseService.update(id, patchRequest);
+        ScheduleSharedDTOGet updated = scheduleSharedService.update(id, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete schedule-shared course item by ID", description = "Deletes a specific schedule-shared course item by its ID")
     public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
-        scheduleSharedCourseService.deleteById(id);
+        scheduleSharedService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

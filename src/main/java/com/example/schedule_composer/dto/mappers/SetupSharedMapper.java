@@ -4,10 +4,12 @@ import com.example.schedule_composer.dto.get.SetupSharedDTOGet;
 import com.example.schedule_composer.dto.patch.SetupSharedDTOPatch;
 import com.example.schedule_composer.dto.post.SetupSharedDTOPost;
 import com.example.schedule_composer.entity.Course;
+import com.example.schedule_composer.entity.Group;
 import com.example.schedule_composer.entity.SetupShared;
 import com.example.schedule_composer.entity.Teacher;
 import com.example.schedule_composer.service.CourseService;
 import com.example.schedule_composer.repository.SetupSharedRepository;
+import com.example.schedule_composer.service.GroupService;
 import com.example.schedule_composer.service.TeacherService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,108 +22,122 @@ import java.util.stream.Collectors;
 @Component
 public class SetupSharedMapper implements DTOMapper<SetupSharedDTOGet, SetupSharedDTOPost, SetupSharedDTOPatch, SetupShared, Long>{
 
-    private final SetupSharedRepository scheduleSetupSharedRepository;
+    private final SetupSharedRepository setupSharedRepository;
     private final CourseService courseService;
     private final TeacherService teacherService;
+    private final GroupService groupService;
     private final CourseMapper courseMapper;
     private final TeacherMapper teacherMapper;
+    private final GroupMapper groupMapper;
+
+
 
     @Autowired
-    public SetupSharedMapper(SetupSharedRepository scheduleSetupSharedRepository, CourseService courseService, TeacherService teacherService, CourseMapper courseMapper, TeacherMapper teacherMapper) {
-        this.scheduleSetupSharedRepository = scheduleSetupSharedRepository;
+    public SetupSharedMapper(SetupSharedRepository setupSharedRepository, CourseService courseService, TeacherService teacherService, GroupService groupService, CourseMapper courseMapper, TeacherMapper teacherMapper, GroupMapper groupMapper) {
+        this.setupSharedRepository = setupSharedRepository;
         this.courseService = courseService;
         this.teacherService = teacherService;
+        this.groupService = groupService;
         this.courseMapper = courseMapper;
         this.teacherMapper = teacherMapper;
+        this.groupMapper = groupMapper;
     }
     @Override
-    public SetupSharedDTOGet fromEntityToGet(SetupShared scheduleSetupShared) {
-        SetupSharedDTOGet scheduleSetupSharedGet = new SetupSharedDTOGet(
-                scheduleSetupShared.getId(),
-                scheduleSetupShared.getName(),
-                courseMapper.fromEntityToGet(scheduleSetupShared.getCourse()),
-                teacherMapper.fromEntityToGet(scheduleSetupShared.getTeacher()),
-                scheduleSetupShared.getCoursePriority(),
-                scheduleSetupShared.getHoursAWeek(),
-                scheduleSetupShared.getHoursTotal(),
-                scheduleSetupShared.getWeeksTotal(),
-                scheduleSetupShared.getHoursInLab(),
-                scheduleSetupShared.getPreferredRoomType());
-        return scheduleSetupSharedGet;
+    public SetupSharedDTOGet fromEntityToGet(SetupShared setupShared) {
+        SetupSharedDTOGet setupSharedGet = new SetupSharedDTOGet(
+                setupShared.getId(),
+                setupShared.getName(),
+                groupMapper.fromEntityListToGetList(setupShared.getGroups()),
+                courseMapper.fromEntityToGet(setupShared.getCourse()),
+                teacherMapper.fromEntityToGet(setupShared.getTeacher()),
+                setupShared.getCoursePriority(),
+                setupShared.getHoursAWeek(),
+                setupShared.getHoursTotal(),
+                setupShared.getWeeksTotal(),
+                setupShared.getHoursInLab(),
+                setupShared.getPreferredRoomType());
+        return setupSharedGet;
     }
 
     @Override
-    public List<SetupSharedDTOGet> fromEntityListToGetList(List<SetupShared> scheduleSetupShareds) {
-        return scheduleSetupShareds.stream()
+    public List<SetupSharedDTOGet> fromEntityListToGetList(List<SetupShared> setupShareds) {
+        return setupShareds.stream()
                 .map(this::fromEntityToGet)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public SetupShared fromPostToEntity(SetupSharedDTOPost scheduleSetupSharedDTOPost) {
-        Course course = courseService.getEntityById(scheduleSetupSharedDTOPost.getCourseId());
-        Teacher teacher = teacherService.getEntityById(scheduleSetupSharedDTOPost.getTeacherId());
+    public SetupShared fromPostToEntity(SetupSharedDTOPost setupSharedDTOPost) {
+        Course course = courseService.getEntityById(setupSharedDTOPost.getCourseId());
+        Teacher teacher = teacherService.getEntityById(setupSharedDTOPost.getTeacherId());
+        List<Group> groups = groupService.checkIfAllExistAndGetEntities(setupSharedDTOPost.getGroupIds());
 
-        SetupShared scheduleSetupShared = SetupShared.builder()
-                .name(scheduleSetupSharedDTOPost.getName())
+        SetupShared setupShared = SetupShared.builder()
+                .name(setupSharedDTOPost.getName())
+                .groups(groups)
                 .course(course)
                 .teacher(teacher)
-                .coursePriority(scheduleSetupSharedDTOPost.getCoursePriority())
-                .hoursAWeek(scheduleSetupSharedDTOPost.getHoursAWeek())
-                .hoursTotal(scheduleSetupSharedDTOPost.getHoursTotal())
-                .weeksTotal(scheduleSetupSharedDTOPost.getWeeksTotal())
-                .hoursInLab(scheduleSetupSharedDTOPost.getHoursInLab())
-                .preferredRoomType(scheduleSetupSharedDTOPost.getPreferredRoomType())
+                .coursePriority(setupSharedDTOPost.getCoursePriority())
+                .hoursAWeek(setupSharedDTOPost.getHoursAWeek())
+                .hoursTotal(setupSharedDTOPost.getHoursTotal())
+                .weeksTotal(setupSharedDTOPost.getWeeksTotal())
+                .hoursInLab(setupSharedDTOPost.getHoursInLab())
+                .preferredRoomType(setupSharedDTOPost.getPreferredRoomType())
                 .build();
-        return scheduleSetupShared;
+        return setupShared;
     }
 
     @Override
-    public SetupShared fromPatchToEntity(SetupSharedDTOPatch scheduleSetupSharedDTOPatch, Long scheduleSetupSharedId) {
+    public SetupShared fromPatchToEntity(SetupSharedDTOPatch setupSharedDTOPatch, Long setupSharedId) {
 
-        SetupShared existingSetupShared = scheduleSetupSharedRepository.findById(scheduleSetupSharedId)
-                .orElseThrow(() -> new EntityNotFoundException("Setup-Shared not found with id: " + scheduleSetupSharedId));
+        SetupShared existingSetupShared = setupSharedRepository.findById(setupSharedId)
+                .orElseThrow(() -> new EntityNotFoundException("Setup-Shared not found with id: " + setupSharedId));
 
 
-        if (scheduleSetupSharedDTOPatch.getName() != null){
-            if(scheduleSetupSharedDTOPatch.getName().isBlank()){
+        if (setupSharedDTOPatch.getName() != null){
+            if(setupSharedDTOPatch.getName().isBlank()){
                 throw new IllegalArgumentException("Setup-Shared name cannot be blank");
             }
-            existingSetupShared.setName(scheduleSetupSharedDTOPatch.getName());
+            existingSetupShared.setName(setupSharedDTOPatch.getName());
         }
 
-        if(scheduleSetupSharedDTOPatch.getCourseId() != null){
-            Course course = courseService.getEntityById(scheduleSetupSharedDTOPatch.getCourseId());
+        if(setupSharedDTOPatch.getGroupIds() != null){
+            List<Group> groups = groupService.checkIfAllExistAndGetEntities(setupSharedDTOPatch.getGroupIds());
+            existingSetupShared.setGroups(groups);
+        }
+
+        if(setupSharedDTOPatch.getCourseId() != null){
+            Course course = courseService.getEntityById(setupSharedDTOPatch.getCourseId());
             existingSetupShared.setCourse(course);
         }
 
-        if(scheduleSetupSharedDTOPatch.getTeacherId() != null){
-            Teacher teacher = teacherService.getEntityById(scheduleSetupSharedDTOPatch.getTeacherId());
+        if(setupSharedDTOPatch.getTeacherId() != null){
+            Teacher teacher = teacherService.getEntityById(setupSharedDTOPatch.getTeacherId());
             existingSetupShared.setTeacher(teacher);
         }
 
-        if(scheduleSetupSharedDTOPatch.getCoursePriority() != null){
-            existingSetupShared.setCoursePriority(scheduleSetupSharedDTOPatch.getCoursePriority());
+        if(setupSharedDTOPatch.getCoursePriority() != null){
+            existingSetupShared.setCoursePriority(setupSharedDTOPatch.getCoursePriority());
         }
 
-        if(scheduleSetupSharedDTOPatch.getHoursAWeek() != null){
-            existingSetupShared.setHoursAWeek(scheduleSetupSharedDTOPatch.getHoursAWeek());
+        if(setupSharedDTOPatch.getHoursAWeek() != null){
+            existingSetupShared.setHoursAWeek(setupSharedDTOPatch.getHoursAWeek());
         }
 
-        if(scheduleSetupSharedDTOPatch.getHoursTotal() != null){
-            existingSetupShared.setHoursTotal(scheduleSetupSharedDTOPatch.getHoursTotal());
+        if(setupSharedDTOPatch.getHoursTotal() != null){
+            existingSetupShared.setHoursTotal(setupSharedDTOPatch.getHoursTotal());
         }
 
-        if(scheduleSetupSharedDTOPatch.getWeeksTotal() != null){
-            existingSetupShared.setWeeksTotal(scheduleSetupSharedDTOPatch.getWeeksTotal());
+        if(setupSharedDTOPatch.getWeeksTotal() != null){
+            existingSetupShared.setWeeksTotal(setupSharedDTOPatch.getWeeksTotal());
         }
 
-        if(scheduleSetupSharedDTOPatch.getHoursInLab() != null){
-            existingSetupShared.setHoursInLab(scheduleSetupSharedDTOPatch.getHoursInLab());
+        if(setupSharedDTOPatch.getHoursInLab() != null){
+            existingSetupShared.setHoursInLab(setupSharedDTOPatch.getHoursInLab());
         }
 
-        if(scheduleSetupSharedDTOPatch.getPreferredRoomType() != null){
-            existingSetupShared.setPreferredRoomType(scheduleSetupSharedDTOPatch.getPreferredRoomType());
+        if(setupSharedDTOPatch.getPreferredRoomType() != null){
+            existingSetupShared.setPreferredRoomType(setupSharedDTOPatch.getPreferredRoomType());
         }
 
         return existingSetupShared;

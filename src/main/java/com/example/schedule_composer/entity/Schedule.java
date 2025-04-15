@@ -35,7 +35,7 @@ public class Schedule {
 
     @ManyToMany
     @JoinTable(
-            name = "time_slots",
+            name = "schedule_time_slots",
             joinColumns = @JoinColumn(name = "schedule_id"),
             inverseJoinColumns = @JoinColumn(name = "time_slot_id")
     )

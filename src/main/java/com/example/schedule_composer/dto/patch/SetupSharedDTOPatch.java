@@ -1,16 +1,20 @@
 package com.example.schedule_composer.dto.patch;
 
+import com.example.schedule_composer.entity.Group;
 import com.example.schedule_composer.utils.CoursePriority;
 import com.example.schedule_composer.utils.RoomType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class SetupSharedDTOPatch {
     private String name;
+    private List<Long> groupIds;
     private Long courseId;
     private Long teacherId;
     private CoursePriority coursePriority;

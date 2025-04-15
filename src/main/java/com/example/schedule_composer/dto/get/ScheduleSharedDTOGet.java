@@ -16,7 +16,7 @@ import java.util.List;
 public class ScheduleSharedDTOGet {
 
     private Long id;
-    private SetupSharedDTOGet scheduleSetupShared;
+    private SetupSharedDTOGet setupShared;
     private RoomDTOGet room;
     private DayOfWeek day;
     private List<TimeSlotDTOGet> timeSlots;

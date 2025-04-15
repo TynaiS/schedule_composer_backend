@@ -5,6 +5,8 @@ import com.example.schedule_composer.utils.RoomType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "setup_shared")
 @Data
@@ -17,6 +19,14 @@ public class SetupShared {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "setup_shared_groups",
+            joinColumns = @JoinColumn(name = "setup_shared_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id")
+    )
+    private List<Group> groups;
 
     @ManyToOne
     @JoinColumn(name = "course_id", referencedColumnName = "id")

@@ -16,7 +16,7 @@ import java.util.List;
 public class ScheduleDTOGet {
 
     private Long id;
-    private SetupDTOGet scheduleSetupRegular;
+    private SetupDTOGet setup;
     private RoomDTOGet room;
     private DayOfWeek day;
     private List<TimeSlotDTOGet> timeSlots;

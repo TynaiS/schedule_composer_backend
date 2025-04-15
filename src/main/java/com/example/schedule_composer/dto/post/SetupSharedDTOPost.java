@@ -10,12 +10,17 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 public class SetupSharedDTOPost {
 
     @NotBlank(message = "Setup-Shared name cannot be blank")
     private String name;
+
+    @NotNull(message = "Group ID's cannot be null")
+    private List<Long> groupIds;
 
     @NotNull(message = "Course ID cannot be null")
     private Long courseId;

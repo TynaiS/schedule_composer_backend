@@ -20,22 +20,22 @@ import java.util.stream.Collectors;
 public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost, ScheduleDTOPatch, Schedule, Long>{
 
     private final ScheduleRepository scheduleRepository;
-    private final SetupService scheduleSetupRegularService;
+    private final SetupService setupService;
     private final RoomService roomService;
     private final TimeSlotService timeSlotService;
-    private final SetupMapper scheduleSetupRegularMapper;
+    private final SetupMapper setupMapper;
     private final RoomMapper roomMapper;
     private final TimeSlotMapper timeSlotMapper;
 
 
 
     @Autowired
-    public ScheduleMapper(ScheduleRepository scheduleRepository, SetupService scheduleSetupRegularService, RoomService roomService, TimeSlotService timeSlotService, CourseMapper courseMapper, SetupMapper scheduleSetupRegularMapper, RoomMapper roomMapper, TimeSlotMapper timeSlotMapper) {
+    public ScheduleMapper(ScheduleRepository scheduleRepository, SetupService setupService, RoomService roomService, TimeSlotService timeSlotService, CourseMapper courseMapper, SetupMapper setupMapper, RoomMapper roomMapper, TimeSlotMapper timeSlotMapper) {
         this.scheduleRepository = scheduleRepository;
-        this.scheduleSetupRegularService = scheduleSetupRegularService;
+        this.setupService = setupService;
         this.roomService = roomService;
         this.timeSlotService = timeSlotService;
-        this.scheduleSetupRegularMapper = scheduleSetupRegularMapper;
+        this.setupMapper = setupMapper;
         this.roomMapper = roomMapper;
         this.timeSlotMapper = timeSlotMapper;
     }
@@ -43,7 +43,7 @@ public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost
     public ScheduleDTOGet fromEntityToGet(Schedule schedule) {
         ScheduleDTOGet scheduleGet = new ScheduleDTOGet(
                 schedule.getId(),
-                scheduleSetupRegularMapper.fromEntityToGet(schedule.getSetup()),
+                setupMapper.fromEntityToGet(schedule.getSetup()),
                 roomMapper.fromEntityToGet(schedule.getRoom()),
                 schedule.getDay(),
                 timeSlotMapper.fromEntityListToGetList(schedule.getTimeSlots()),
@@ -60,13 +60,13 @@ public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost
 
     @Override
     public Schedule fromPostToEntity(ScheduleDTOPost scheduleDTOPost) {
-        Setup scheduleSetupRegular = scheduleSetupRegularService.getEntityById(scheduleDTOPost.getSetupId());
+        Setup setup = setupService.getEntityById(scheduleDTOPost.getSetupId());
         Room room = roomService.getEntityById(scheduleDTOPost.getRoomId());
         List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleDTOPost.getTimeSlotIds());
 
 
         Schedule schedule = Schedule.builder()
-                .setup(scheduleSetupRegular)
+                .setup(setup)
                 .room(room)
                 .day(scheduleDTOPost.getDay())
                 .timeSlots(timeSlots)
@@ -83,8 +83,8 @@ public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost
 
 
         if(scheduleDTOPatch.getSetupId() != null){
-            Setup scheduleSetupRegular = scheduleSetupRegularService.getEntityById(scheduleDTOPatch.getSetupId());
-            existingSchedule.setSetup(scheduleSetupRegular);
+            Setup setup = setupService.getEntityById(scheduleDTOPatch.getSetupId());
+            existingSchedule.setSetup(setup);
         }
 
         if(scheduleDTOPatch.getRoomId() != null){
@@ -96,7 +96,7 @@ public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost
             existingSchedule.setDay(scheduleDTOPatch.getDay());
         }
 
-        if(scheduleDTOPatch.getTimeSlotIds() != null && scheduleDTOPatch.getTimeSlotIds().size() > 0){
+        if(scheduleDTOPatch.getTimeSlotIds() != null){
             List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleDTOPatch.getTimeSlotIds());
             existingSchedule.setTimeSlots(timeSlots);
         }

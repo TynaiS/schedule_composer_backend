@@ -17,30 +17,30 @@ import java.util.stream.Collectors;
 @Service
 public class SetupServiceImpl implements SetupService {
 
-    private final SetupRepository scheduleSetupRegularRepository;
-    private final SetupMapper scheduleSetupRegularMapper;
+    private final SetupRepository setupRepository;
+    private final SetupMapper setupMapper;
 
     @Autowired
-    public SetupServiceImpl(SetupRepository scheduleSetupRegularRepository,SetupMapper scheduleSetupRegularMapper){
-        this.scheduleSetupRegularRepository = scheduleSetupRegularRepository;
-        this.scheduleSetupRegularMapper = scheduleSetupRegularMapper;
+    public SetupServiceImpl(SetupRepository setupRepository,SetupMapper setupMapper){
+        this.setupRepository = setupRepository;
+        this.setupMapper = setupMapper;
     }
 
     @Override
     public SetupDTOGet getById(Long id) {
-        return scheduleSetupRegularMapper.fromEntityToGet(getEntityById(id));
+        return setupMapper.fromEntityToGet(getEntityById(id));
     }
 
     @Override
     public Setup getEntityById(Long id) {
-        Setup entity = scheduleSetupRegularRepository.findById(id)
+        Setup entity = setupRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Setup not found with id: " + id));
         return entity;
     }
 
     @Override
     public Boolean checkIfExists(Long id) {
-        if (!scheduleSetupRegularRepository.existsById(id)) {
+        if (!setupRepository.existsById(id)) {
             throw new EntityNotFoundException("Setup not found with id: " + id);
         }
         return true;
@@ -48,25 +48,25 @@ public class SetupServiceImpl implements SetupService {
 
     @Override
     public List<SetupDTOGet> getAll() {
-        List<Setup> entities = scheduleSetupRegularRepository.findAll();
+        List<Setup> entities = setupRepository.findAll();
 
-        return scheduleSetupRegularMapper.fromEntityListToGetList(entities);
+        return setupMapper.fromEntityListToGetList(entities);
     }
 
     @Override
     public SetupDTOGet create(SetupDTOPost createDto) {
-        Setup savedEntity = scheduleSetupRegularRepository.save(scheduleSetupRegularMapper.fromPostToEntity(createDto));
-        return scheduleSetupRegularMapper.fromEntityToGet(savedEntity);
+        Setup savedEntity = setupRepository.save(setupMapper.fromPostToEntity(createDto));
+        return setupMapper.fromEntityToGet(savedEntity);
     }
 
     @Override
     public SetupDTOGet update(Long id, SetupDTOPatch updateDto) {
-        Setup updatedEntity = scheduleSetupRegularRepository.save(scheduleSetupRegularMapper.fromPatchToEntity(updateDto, id));
-        return scheduleSetupRegularMapper.fromEntityToGet(updatedEntity);
+        Setup updatedEntity = setupRepository.save(setupMapper.fromPatchToEntity(updateDto, id));
+        return setupMapper.fromEntityToGet(updatedEntity);
     }
 
     @Override
     public void deleteById(Long id) {
-        if(checkIfExists(id)) scheduleSetupRegularRepository.deleteById(id);
+        if(checkIfExists(id)) setupRepository.deleteById(id);
     }
 }

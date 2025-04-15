@@ -47,6 +47,21 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public Group checkIfExistsAndGetEntity(Long id) {
+        if (!groupRepository.existsById(id)) {
+            throw new EntityNotFoundException("Group not found with id: " + id);
+        }
+        return getEntityById(id);
+    }
+
+    @Override
+    public List<Group> checkIfAllExistAndGetEntities(List<Long> groupIds) {
+        return groupIds.stream()
+                .map(this::checkIfExistsAndGetEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<GroupDTOGet> getAll() {
         List<Group> entities = groupRepository.findAll();
 

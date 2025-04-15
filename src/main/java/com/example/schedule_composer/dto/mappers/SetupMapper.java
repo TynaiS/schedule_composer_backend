@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Component
 public class SetupMapper implements DTOMapper<SetupDTOGet, SetupDTOPost, SetupDTOPatch, Setup, Long>{
 
-    private final SetupRepository scheduleSetupRegularRepository;
+    private final SetupRepository setupRepository;
     private final GroupService groupService;
     private final CourseService courseService;
     private final TeacherService teacherService;
@@ -31,8 +31,8 @@ public class SetupMapper implements DTOMapper<SetupDTOGet, SetupDTOPost, SetupDT
     private final TeacherMapper teacherMapper;
 
     @Autowired
-    public SetupMapper(SetupRepository scheduleSetupRegularRepository, GroupService groupService, CourseService courseService, TeacherService teacherService, GroupMapper groupMapper, CourseMapper courseMapper, TeacherMapper teacherMapper) {
-        this.scheduleSetupRegularRepository = scheduleSetupRegularRepository;
+    public SetupMapper(SetupRepository setupRepository, GroupService groupService, CourseService courseService, TeacherService teacherService, GroupMapper groupMapper, CourseMapper courseMapper, TeacherMapper teacherMapper) {
+        this.setupRepository = setupRepository;
         this.groupService = groupService;
         this.courseService = courseService;
         this.teacherService = teacherService;
@@ -41,92 +41,92 @@ public class SetupMapper implements DTOMapper<SetupDTOGet, SetupDTOPost, SetupDT
         this.teacherMapper = teacherMapper;
     }
     @Override
-    public SetupDTOGet fromEntityToGet(Setup scheduleSetupRegular) {
-        SetupDTOGet scheduleSetupRegularGet = new SetupDTOGet(
-                scheduleSetupRegular.getId(),
-                groupMapper.fromEntityToGet(scheduleSetupRegular.getGroup()),
-                courseMapper.fromEntityToGet(scheduleSetupRegular.getCourse()),
-                teacherMapper.fromEntityToGet(scheduleSetupRegular.getTeacher()),
-                scheduleSetupRegular.getCoursePriority(),
-                scheduleSetupRegular.getHoursAWeek(),
-                scheduleSetupRegular.getHoursTotal(),
-                scheduleSetupRegular.getWeeksTotal(),
-                scheduleSetupRegular.getHoursInLab(),
-                scheduleSetupRegular.getPreferredRoomType());
-        return scheduleSetupRegularGet;
+    public SetupDTOGet fromEntityToGet(Setup setup) {
+        SetupDTOGet setupGet = new SetupDTOGet(
+                setup.getId(),
+                groupMapper.fromEntityToGet(setup.getGroup()),
+                courseMapper.fromEntityToGet(setup.getCourse()),
+                teacherMapper.fromEntityToGet(setup.getTeacher()),
+                setup.getCoursePriority(),
+                setup.getHoursAWeek(),
+                setup.getHoursTotal(),
+                setup.getWeeksTotal(),
+                setup.getHoursInLab(),
+                setup.getPreferredRoomType());
+        return setupGet;
     }
 
     @Override
-    public List<SetupDTOGet> fromEntityListToGetList(List<Setup> scheduleSetupRegulars) {
-        return scheduleSetupRegulars.stream()
+    public List<SetupDTOGet> fromEntityListToGetList(List<Setup> setups) {
+        return setups.stream()
                 .map(this::fromEntityToGet)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Setup fromPostToEntity(SetupDTOPost scheduleSetupRegularDTOPost) {
-        Group group = groupService.getEntityById(scheduleSetupRegularDTOPost.getGroupId());
-        Course course = courseService.getEntityById(scheduleSetupRegularDTOPost.getCourseId());
-        Teacher teacher = teacherService.getEntityById(scheduleSetupRegularDTOPost.getTeacherId());
+    public Setup fromPostToEntity(SetupDTOPost setupDTOPost) {
+        Group group = groupService.getEntityById(setupDTOPost.getGroupId());
+        Course course = courseService.getEntityById(setupDTOPost.getCourseId());
+        Teacher teacher = teacherService.getEntityById(setupDTOPost.getTeacherId());
 
-        Setup scheduleSetupRegular = Setup.builder()
+        Setup setup = Setup.builder()
                 .group(group)
                 .course(course)
                 .teacher(teacher)
-                .coursePriority(scheduleSetupRegularDTOPost.getCoursePriority())
-                .hoursAWeek(scheduleSetupRegularDTOPost.getHoursAWeek())
-                .hoursTotal(scheduleSetupRegularDTOPost.getHoursTotal())
-                .weeksTotal(scheduleSetupRegularDTOPost.getWeeksTotal())
-                .hoursInLab(scheduleSetupRegularDTOPost.getHoursInLab())
-                .preferredRoomType(scheduleSetupRegularDTOPost.getPreferredRoomType())
+                .coursePriority(setupDTOPost.getCoursePriority())
+                .hoursAWeek(setupDTOPost.getHoursAWeek())
+                .hoursTotal(setupDTOPost.getHoursTotal())
+                .weeksTotal(setupDTOPost.getWeeksTotal())
+                .hoursInLab(setupDTOPost.getHoursInLab())
+                .preferredRoomType(setupDTOPost.getPreferredRoomType())
                 .build();
-        return scheduleSetupRegular;
+        return setup;
     }
 
     @Override
-    public Setup fromPatchToEntity(SetupDTOPatch scheduleSetupRegularDTOPatch, Long scheduleSetupRegularId) {
+    public Setup fromPatchToEntity(SetupDTOPatch setupDTOPatch, Long setupId) {
 
-        Setup existingSetup = scheduleSetupRegularRepository.findById(scheduleSetupRegularId)
-                .orElseThrow(() -> new EntityNotFoundException("Setup not found with id: " + scheduleSetupRegularId));
+        Setup existingSetup = setupRepository.findById(setupId)
+                .orElseThrow(() -> new EntityNotFoundException("Setup not found with id: " + setupId));
 
 
-        if(scheduleSetupRegularDTOPatch.getGroupId() != null){
-            Group group = groupService.getEntityById(scheduleSetupRegularDTOPatch.getGroupId());
+        if(setupDTOPatch.getGroupId() != null){
+            Group group = groupService.getEntityById(setupDTOPatch.getGroupId());
             existingSetup.setGroup(group);
         }
 
-        if(scheduleSetupRegularDTOPatch.getCourseId() != null){
-            Course course = courseService.getEntityById(scheduleSetupRegularDTOPatch.getCourseId());
+        if(setupDTOPatch.getCourseId() != null){
+            Course course = courseService.getEntityById(setupDTOPatch.getCourseId());
             existingSetup.setCourse(course);
         }
 
-        if(scheduleSetupRegularDTOPatch.getTeacherId() != null){
-            Teacher teacher = teacherService.getEntityById(scheduleSetupRegularDTOPatch.getTeacherId());
+        if(setupDTOPatch.getTeacherId() != null){
+            Teacher teacher = teacherService.getEntityById(setupDTOPatch.getTeacherId());
             existingSetup.setTeacher(teacher);
         }
 
-        if(scheduleSetupRegularDTOPatch.getCoursePriority() != null){
-            existingSetup.setCoursePriority(scheduleSetupRegularDTOPatch.getCoursePriority());
+        if(setupDTOPatch.getCoursePriority() != null){
+            existingSetup.setCoursePriority(setupDTOPatch.getCoursePriority());
         }
 
-        if(scheduleSetupRegularDTOPatch.getHoursAWeek() != null){
-            existingSetup.setHoursAWeek(scheduleSetupRegularDTOPatch.getHoursAWeek());
+        if(setupDTOPatch.getHoursAWeek() != null){
+            existingSetup.setHoursAWeek(setupDTOPatch.getHoursAWeek());
         }
 
-        if(scheduleSetupRegularDTOPatch.getHoursTotal() != null){
-            existingSetup.setHoursTotal(scheduleSetupRegularDTOPatch.getHoursTotal());
+        if(setupDTOPatch.getHoursTotal() != null){
+            existingSetup.setHoursTotal(setupDTOPatch.getHoursTotal());
         }
 
-        if(scheduleSetupRegularDTOPatch.getWeeksTotal() != null){
-            existingSetup.setWeeksTotal(scheduleSetupRegularDTOPatch.getWeeksTotal());
+        if(setupDTOPatch.getWeeksTotal() != null){
+            existingSetup.setWeeksTotal(setupDTOPatch.getWeeksTotal());
         }
 
-        if(scheduleSetupRegularDTOPatch.getHoursInLab() != null){
-            existingSetup.setHoursInLab(scheduleSetupRegularDTOPatch.getHoursInLab());
+        if(setupDTOPatch.getHoursInLab() != null){
+            existingSetup.setHoursInLab(setupDTOPatch.getHoursInLab());
         }
 
-        if(scheduleSetupRegularDTOPatch.getPreferredRoomType() != null){
-            existingSetup.setPreferredRoomType(scheduleSetupRegularDTOPatch.getPreferredRoomType());
+        if(setupDTOPatch.getPreferredRoomType() != null){
+            existingSetup.setPreferredRoomType(setupDTOPatch.getPreferredRoomType());
         }
 
         return existingSetup;

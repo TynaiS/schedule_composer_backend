@@ -37,7 +37,7 @@
 --     type room_type_enum NOT NULL
 -- );
 --
--- CREATE TABLE group_course_teacher (
+-- CREATE TABLE setup (
 --     id BIGSERIAL PRIMARY KEY,
 --
 --     group_id BIGINT NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
@@ -52,7 +52,7 @@
 --     preferred_room_type room_type_enum NOT NULL
 -- );
 --
--- CREATE TABLE course_teacher_shared (
+-- CREATE TABLE setup_shared (
 --     id BIGSERIAL PRIMARY KEY,
 --
 --     name VARCHAR(255) NOT NULL,
@@ -67,9 +67,9 @@
 --     preferred_room_type room_type_enum NOT NULL
 -- );
 --
--- CREATE TABLE course_teacher_shared_groups (
+-- CREATE TABLE shared_groups (
 --     id BIGSERIAL PRIMARY KEY,
---     course_teacher_shared_id BIGINT NOT NULL REFERENCES course_teacher_shared(id) ON DELETE CASCADE,
+--     setup_shared_id BIGINT NOT NULL REFERENCES setup_shared(id) ON DELETE CASCADE,
 --     group_id BIGINT NOT NULL REFERENCES groups(id) ON DELETE CASCADE
 --
 -- );
@@ -77,22 +77,20 @@
 --
 -- CREATE TABLE schedule (
 --     id BIGSERIAL PRIMARY KEY,
---     group_course_teacher_id BIGINT NOT NULL REFERENCES group_course_teacher(id) ON DELETE CASCADE,
+--     setup_id BIGINT NOT NULL REFERENCES setup(id) ON DELETE CASCADE,
 --     room_id BIGINT NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
 --     day day_enum NOT NULL,
 --     start_time_slot_id INT NOT NULL REFERENCES time_slots(id) ON DELETE CASCADE,
---     end_time_slot_id INT NOT NULL REFERENCES time_slots(id) ON DELETE CASCADE,
 --     teaching_mode teaching_mode_enum NOT NULL
 -- );
 --
 --
--- CREATE TABLE schedule_shared_courses (
+-- CREATE TABLE schedule_shared (
 --     id BIGSERIAL PRIMARY KEY,
---     course_teacher_shared_id BIGINT NOT NULL REFERENCES course_teacher_shared(id) ON DELETE CASCADE,
+--     setup_shared_id BIGINT NOT NULL REFERENCES setup_shared(id) ON DELETE CASCADE,
 --     room_id BIGINT NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
 --     day day_enum NOT NULL,
 --     start_time_slot_id INT NOT NULL REFERENCES time_slots(id) ON DELETE CASCADE,
---     end_time_slot_id INT NOT NULL REFERENCES time_slots(id) ON DELETE CASCADE,
 --     teaching_mode teaching_mode_enum NOT NULL
 -- );
 --
@@ -138,21 +136,21 @@
 --                                         ('Data Science and Specialty Mathematics', 4), ('Digital Design', 4),
 --                                         ('Cybersecurity Foundation', 4), ('Frontend', 4), ('Graphic Design', 4),
 --                                         ('Public Speaking', 3), ('VR Design', 4), ('Critical Thinking', 3), ('Management', 3);
---
+
 -- INSERT INTO rooms (room_num, type) VALUES
 --                                        ('B101', 'CLASSROOM'), ('B102', 'CLASSROOM'), ('B103', 'CLASSROOM'),
 --                                        ('B104', 'CLASSROOM'), ('B109 (APPLE LAB)', 'LAB'), ('B201', 'CLASSROOM'),
 --                                        ('B202', 'CLASSROOM'), ('B203', 'CLASSROOM'), ('B204', 'CLASSROOM'),
 --                                        ('B205', 'CLASSROOM'), ('BIGLAB', 'LAB'), ('LAB3(210)', 'LAB'),
 --                                        ('LAB4(211)', 'LAB'), ('LAB5(213)', 'LAB'), ('C006/A309', 'LAB');
---
+
 --
 -- INSERT INTO groups (name) VALUES
 --                               ('COMCEH-24'), ('COMSE-24'), ('COMFCI-24'), ('COMSEP-23'), ('COMCEH-23'),
 --                               ('COMSE-23'), ('COMFCI-23'), ('COM-22a'), ('COM-22b'), ('COM-21'),
 --                               ('MATDAIS-24'), ('MATMIE-24'), ('MATDAIS-23'), ('MATMIE-23'), ('MATH-22'),
 --                               ('MATH-21'), ('EEAIR-24'), ('EEAIR-23'), ('IEMIT-24'), ('IEMIT-23');
---
+
 -- INSERT INTO teachers (name, daily_hours, weekly_hours) VALUES
 --                                                            ('Ms. Iskra', 6, 30),
 --                                                            ('Ms. Erika', 6, 30),

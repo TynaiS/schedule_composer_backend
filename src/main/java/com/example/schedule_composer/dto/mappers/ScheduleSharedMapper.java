@@ -18,23 +18,23 @@ import java.util.stream.Collectors;
 @Component
 public class ScheduleSharedMapper implements DTOMapper<ScheduleSharedDTOGet, ScheduleSharedDTOPost, ScheduleSharedDTOPatch, ScheduleShared, Long>{
 
-    private final ScheduleSharedRepository scheduleSharedCourseRepository;
-    private final SetupSharedService scheduleSetupSharedService;
+    private final ScheduleSharedRepository scheduleSharedRepository;
+    private final SetupSharedService setupSharedService;
     private final RoomService roomService;
     private final TimeSlotService timeSlotService;
-    private final SetupSharedMapper scheduleSetupSharedMapper;
+    private final SetupSharedMapper setupSharedMapper;
     private final RoomMapper roomMapper;
     private final TimeSlotMapper timeSlotMapper;
 
 
 
     @Autowired
-    public ScheduleSharedMapper(ScheduleSharedRepository scheduleSharedCourseRepository, SetupSharedService scheduleSetupSharedService, RoomService roomService, TimeSlotService timeSlotService, CourseMapper courseMapper, SetupSharedMapper scheduleSetupSharedMapper, RoomMapper roomMapper, TimeSlotMapper timeSlotMapper) {
-        this.scheduleSharedCourseRepository = scheduleSharedCourseRepository;
-        this.scheduleSetupSharedService = scheduleSetupSharedService;
+    public ScheduleSharedMapper(ScheduleSharedRepository scheduleSharedRepository, SetupSharedService setupSharedService, RoomService roomService, TimeSlotService timeSlotService, CourseMapper courseMapper, SetupSharedMapper setupSharedMapper, RoomMapper roomMapper, TimeSlotMapper timeSlotMapper) {
+        this.scheduleSharedRepository = scheduleSharedRepository;
+        this.setupSharedService = setupSharedService;
         this.roomService = roomService;
         this.timeSlotService = timeSlotService;
-        this.scheduleSetupSharedMapper = scheduleSetupSharedMapper;
+        this.setupSharedMapper = setupSharedMapper;
         this.roomMapper = roomMapper;
         this.timeSlotMapper = timeSlotMapper;
     }
@@ -42,7 +42,7 @@ public class ScheduleSharedMapper implements DTOMapper<ScheduleSharedDTOGet, Sch
     public ScheduleSharedDTOGet fromEntityToGet(ScheduleShared schedule) {
         ScheduleSharedDTOGet scheduleGet = new ScheduleSharedDTOGet(
                 schedule.getId(),
-                scheduleSetupSharedMapper.fromEntityToGet(schedule.getSetupShared()),
+                setupSharedMapper.fromEntityToGet(schedule.getSetupShared()),
                 roomMapper.fromEntityToGet(schedule.getRoom()),
                 schedule.getDay(),
                 timeSlotMapper.fromEntityListToGetList(schedule.getTimeSlots()),
@@ -51,57 +51,57 @@ public class ScheduleSharedMapper implements DTOMapper<ScheduleSharedDTOGet, Sch
     }
 
     @Override
-    public List<ScheduleSharedDTOGet> fromEntityListToGetList(List<ScheduleShared> scheduleSharedCourses) {
-        return scheduleSharedCourses.stream()
+    public List<ScheduleSharedDTOGet> fromEntityListToGetList(List<ScheduleShared> scheduleShareds) {
+        return scheduleShareds.stream()
                 .map(this::fromEntityToGet)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ScheduleShared fromPostToEntity(ScheduleSharedDTOPost scheduleSharedCourseDTOPost) {
-        SetupShared scheduleSetupShared = scheduleSetupSharedService.getEntityById(scheduleSharedCourseDTOPost.getSetupSharedId());
-        Room room = roomService.getEntityById(scheduleSharedCourseDTOPost.getRoomId());
-        List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleSharedCourseDTOPost.getTimeSlotIds());
+    public ScheduleShared fromPostToEntity(ScheduleSharedDTOPost scheduleSharedDTOPost) {
+        SetupShared setupShared = setupSharedService.getEntityById(scheduleSharedDTOPost.getSetupSharedId());
+        Room room = roomService.getEntityById(scheduleSharedDTOPost.getRoomId());
+        List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleSharedDTOPost.getTimeSlotIds());
 
 
         ScheduleShared schedule = ScheduleShared.builder()
-                .setupShared(scheduleSetupShared)
+                .setupShared(setupShared)
                 .room(room)
-                .day(scheduleSharedCourseDTOPost.getDay())
+                .day(scheduleSharedDTOPost.getDay())
                 .timeSlots(timeSlots)
-                .teachingMode(scheduleSharedCourseDTOPost.getTeachingMode())
+                .teachingMode(scheduleSharedDTOPost.getTeachingMode())
                 .build();
         return schedule;
     }
 
     @Override
-    public ScheduleShared fromPatchToEntity(ScheduleSharedDTOPatch scheduleSharedCourseDTOPatch, Long scheduleId) {
+    public ScheduleShared fromPatchToEntity(ScheduleSharedDTOPatch scheduleSharedDTOPatch, Long scheduleId) {
 
-        ScheduleShared existingScheduleShared = scheduleSharedCourseRepository.findById(scheduleId)
+        ScheduleShared existingScheduleShared = scheduleSharedRepository.findById(scheduleId)
                 .orElseThrow(() -> new EntityNotFoundException("Schedule-Shared-Course item not found with id: " + scheduleId));
 
-        if(scheduleSharedCourseDTOPatch.getSetupSharedId() != null){
-            SetupShared scheduleSetupShared = scheduleSetupSharedService.getEntityById(scheduleSharedCourseDTOPatch.getSetupSharedId());
-            existingScheduleShared.setSetupShared(scheduleSetupShared);
+        if(scheduleSharedDTOPatch.getSetupSharedId() != null){
+            SetupShared setupShared = setupSharedService.getEntityById(scheduleSharedDTOPatch.getSetupSharedId());
+            existingScheduleShared.setSetupShared(setupShared);
         }
 
-        if(scheduleSharedCourseDTOPatch.getRoomId() != null){
-            Room room = roomService.getEntityById(scheduleSharedCourseDTOPatch.getRoomId());
+        if(scheduleSharedDTOPatch.getRoomId() != null){
+            Room room = roomService.getEntityById(scheduleSharedDTOPatch.getRoomId());
             existingScheduleShared.setRoom(room);
         }
 
-        if(scheduleSharedCourseDTOPatch.getDay() != null){
-            existingScheduleShared.setDay(scheduleSharedCourseDTOPatch.getDay());
+        if(scheduleSharedDTOPatch.getDay() != null){
+            existingScheduleShared.setDay(scheduleSharedDTOPatch.getDay());
         }
 
-        if(scheduleSharedCourseDTOPatch.getTimeSlotIds() != null && scheduleSharedCourseDTOPatch.getTimeSlotIds().size() > 0){
-            List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleSharedCourseDTOPatch.getTimeSlotIds());
+        if(scheduleSharedDTOPatch.getTimeSlotIds() != null && scheduleSharedDTOPatch.getTimeSlotIds().size() > 0){
+            List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntities(scheduleSharedDTOPatch.getTimeSlotIds());
             existingScheduleShared.setTimeSlots(timeSlots);
         }
 
 
-        if(scheduleSharedCourseDTOPatch.getTeachingMode() != null){
-            existingScheduleShared.setTeachingMode(scheduleSharedCourseDTOPatch.getTeachingMode());
+        if(scheduleSharedDTOPatch.getTeachingMode() != null){
+            existingScheduleShared.setTeachingMode(scheduleSharedDTOPatch.getTeachingMode());
         }
 
         return existingScheduleShared;

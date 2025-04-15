@@ -16,6 +16,10 @@ public interface GroupService {
 
     Boolean checkIfExists(Long id);
 
+    Group checkIfExistsAndGetEntity(Long id);
+
+    List<Group> checkIfAllExistAndGetEntities(List<Long> groupIds);
+
     List<GroupDTOGet> getAll();
 
     GroupDTOGet create(GroupDTOPost createDto);

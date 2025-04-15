@@ -1,5 +1,6 @@
 package com.example.schedule_composer.service;
 
+import com.example.schedule_composer.dto.get.GroupDTOGet;
 import com.example.schedule_composer.dto.get.SetupSharedDTOGet;
 import com.example.schedule_composer.dto.patch.SetupSharedDTOPatch;
 import com.example.schedule_composer.dto.post.SetupSharedDTOPost;
@@ -22,4 +23,16 @@ public interface SetupSharedService {
     SetupSharedDTOGet update(Long id, SetupSharedDTOPatch updateDto);
 
     void deleteById(Long id);
+
+
+    //  ----  Shared groups ----
+
+
+//    GroupDTOGet getGroupById(Long setupSharedId, Long groupId);
+//
+//    List<GroupDTOGet> getAllGroups(Long setupSharedId);
+//
+//    GroupDTOGet addGroup(Long setupSharedId, Long groupId);
+//
+//    void deleteGroupById(Long setupSharedId, Long groupId);
 }
