@@ -7,7 +7,7 @@ public class ApiConstants {
     public static final String SETUP_SHARED_API = BASE_API + "/setup-shared";
     public static final String SETUP_API = BASE_API + "/setup";
     public static final String GROUP_API = BASE_API + "/groups";
-    public static final String DEPARTMENT_API = "/departments";
+    public static final String DEPARTMENT_API = BASE_API + "/departments";
     public static final String ROOM_API = BASE_API + "/rooms";
     public static final String SCHEDULE_API = BASE_API + "/schedule";
     public static final String SCHEDULE_LUNCH_API = BASE_API + "/schedule-lunches";
