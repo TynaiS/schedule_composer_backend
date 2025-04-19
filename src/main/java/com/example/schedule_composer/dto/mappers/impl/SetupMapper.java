@@ -1,6 +1,7 @@
-package com.example.schedule_composer.dto.mappers;
+package com.example.schedule_composer.dto.mappers.impl;
 
 import com.example.schedule_composer.dto.get.SetupDTOGet;
+import com.example.schedule_composer.dto.mappers.DTOMapper;
 import com.example.schedule_composer.dto.patch.SetupDTOPatch;
 import com.example.schedule_composer.dto.post.SetupDTOPost;
 import com.example.schedule_composer.entity.Course;
@@ -13,14 +14,13 @@ import com.example.schedule_composer.service.GroupService;
 import com.example.schedule_composer.service.TeacherService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class SetupMapper implements DTOMapper<SetupDTOGet, SetupDTOPost, SetupDTOPatch, Setup, Long>{
+public class SetupMapper implements DTOMapper<SetupDTOGet, SetupDTOPost, SetupDTOPatch, Setup, Long> {
 
     private final SetupRepository setupRepository;
     private final GroupService groupService;
@@ -75,8 +75,8 @@ public class SetupMapper implements DTOMapper<SetupDTOGet, SetupDTOPost, SetupDT
                 .teacher(teacher)
                 .coursePriority(setupDTOPost.getCoursePriority())
                 .hoursAWeek(setupDTOPost.getHoursAWeek())
-                .hoursTotal(setupDTOPost.getHoursTotal())
-                .weeksTotal(setupDTOPost.getWeeksTotal())
+//                .hoursTotal(setupDTOPost.getHoursTotal())
+//                .weeksTotal(setupDTOPost.getWeeksTotal())
                 .hoursInLab(setupDTOPost.getHoursInLab())
                 .preferredRoomType(setupDTOPost.getPreferredRoomType())
                 .build();
