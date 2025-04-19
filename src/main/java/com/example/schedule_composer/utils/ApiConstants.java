@@ -2,6 +2,7 @@ package com.example.schedule_composer.utils;
 
 public class ApiConstants {
     public static final String BASE_API = "/api/v1";
+    public static final String GENERATOR_API = BASE_API + "/generator";
     public static final String COURSE_API = BASE_API + "/courses";
     public static final String SETUP_SHARED_API = BASE_API + "/setup-shared";
     public static final String SETUP_API = BASE_API + "/setup";
