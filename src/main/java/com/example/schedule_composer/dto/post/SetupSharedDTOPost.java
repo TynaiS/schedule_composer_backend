@@ -1,10 +1,7 @@
 package com.example.schedule_composer.dto.post;
 
-import com.example.schedule_composer.entity.Course;
-import com.example.schedule_composer.entity.Teacher;
 import com.example.schedule_composer.utils.CoursePriority;
 import com.example.schedule_composer.utils.RoomType;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -34,13 +31,13 @@ public class SetupSharedDTOPost {
     @NotNull(message = "Hours per week cannot be null")
     private Integer hoursAWeek;
 
-    @NotNull(message = "Total hours cannot be null")
+//    @NotNull(message = "Total hours cannot be null")
     private Integer hoursTotal;
 
-    @NotNull(message = "Total weeks cannot be null")
+//    @NotNull(message = "Total weeks cannot be null")
     private Integer weeksTotal;
 
-    @NotNull(message = "Lab hours cannot be null")
+//    @NotNull(message = "Lab hours cannot be null")
     private Integer hoursInLab;
 
     @NotNull(message = "Preferred room type cannot be null")
