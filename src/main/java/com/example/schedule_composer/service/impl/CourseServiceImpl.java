@@ -1,7 +1,7 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.CourseDTOGet;
-import com.example.schedule_composer.dto.mappers.CourseMapper;
+import com.example.schedule_composer.dto.mappers.impl.CourseMapper;
 import com.example.schedule_composer.dto.patch.CourseDTOPatch;
 import com.example.schedule_composer.dto.post.CourseDTOPost;
 import com.example.schedule_composer.entity.Course;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -53,6 +52,11 @@ public class CourseServiceImpl implements CourseService {
         List<Course> entities = courseRepository.findAll();
 
         return courseMapper.fromEntityListToGetList(entities);
+    }
+
+    @Override
+    public List<Course> getAllEntities() {
+        return courseRepository.findAll();
     }
 
     @Override

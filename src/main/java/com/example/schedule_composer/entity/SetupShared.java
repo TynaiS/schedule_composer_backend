@@ -43,11 +43,11 @@ public class SetupShared {
     @Column(name = "hours_a_week")
     private Integer hoursAWeek;
 
-    @Column(name = "hours_total")
-    private Integer hoursTotal;
-
-    @Column(name = "weeks_total")
-    private Integer weeksTotal;
+//    @Column(name = "hours_total")
+//    private Integer hoursTotal;
+//
+//    @Column(name = "weeks_total")
+//    private Integer weeksTotal;
 
     @Column(name = "hours_in_lab")
     private Integer hoursInLab;

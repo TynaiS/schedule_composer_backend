@@ -14,8 +14,8 @@ public class SetupDTOPatch {
     private Long teacherId;
     private CoursePriority coursePriority;
     private Integer hoursAWeek;
-    private Integer hoursTotal;
-    private Integer weeksTotal;
+//    private Integer hoursTotal;
+//    private Integer weeksTotal;
     private Integer hoursInLab;
     private RoomType preferredRoomType;
 

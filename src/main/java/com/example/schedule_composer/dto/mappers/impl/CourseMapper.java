@@ -1,20 +1,20 @@
-package com.example.schedule_composer.dto.mappers;
+package com.example.schedule_composer.dto.mappers.impl;
 
 import com.example.schedule_composer.dto.get.CourseDTOGet;
+import com.example.schedule_composer.dto.mappers.DTOMapper;
 import com.example.schedule_composer.dto.patch.CourseDTOPatch;
 import com.example.schedule_composer.dto.post.CourseDTOPost;
 import com.example.schedule_composer.entity.Course;
 import com.example.schedule_composer.repository.CourseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class CourseMapper implements DTOMapper<CourseDTOGet, CourseDTOPost, CourseDTOPatch, Course, Long>{
+public class CourseMapper implements DTOMapper<CourseDTOGet, CourseDTOPost, CourseDTOPatch, Course, Long> {
 
     private final CourseRepository courseRepository;
 

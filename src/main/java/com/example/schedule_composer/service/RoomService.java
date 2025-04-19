@@ -17,6 +17,12 @@ public interface RoomService {
 
     List<RoomDTOGet> getAll();
 
+    List<Room> getAllEntities();
+
+    List<Room> getAllLabEntities();
+
+    List<Room> getAllClassroomEntities();
+
     RoomDTOGet create(RoomDTOPost createDto);
 
     RoomDTOGet update(Long id, RoomDTOPatch updateDto);

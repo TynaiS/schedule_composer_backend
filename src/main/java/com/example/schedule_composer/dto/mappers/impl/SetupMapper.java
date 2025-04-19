@@ -49,8 +49,8 @@ public class SetupMapper implements DTOMapper<SetupDTOGet, SetupDTOPost, SetupDT
                 teacherMapper.fromEntityToGet(setup.getTeacher()),
                 setup.getCoursePriority(),
                 setup.getHoursAWeek(),
-                setup.getHoursTotal(),
-                setup.getWeeksTotal(),
+//                setup.getHoursTotal(),
+//                setup.getWeeksTotal(),
                 setup.getHoursInLab(),
                 setup.getPreferredRoomType());
         return setupGet;
@@ -113,13 +113,13 @@ public class SetupMapper implements DTOMapper<SetupDTOGet, SetupDTOPost, SetupDT
             existingSetup.setHoursAWeek(setupDTOPatch.getHoursAWeek());
         }
 
-        if(setupDTOPatch.getHoursTotal() != null){
-            existingSetup.setHoursTotal(setupDTOPatch.getHoursTotal());
-        }
-
-        if(setupDTOPatch.getWeeksTotal() != null){
-            existingSetup.setWeeksTotal(setupDTOPatch.getWeeksTotal());
-        }
+//        if(setupDTOPatch.getHoursTotal() != null){
+//            existingSetup.setHoursTotal(setupDTOPatch.getHoursTotal());
+//        }
+//
+//        if(setupDTOPatch.getWeeksTotal() != null){
+//            existingSetup.setWeeksTotal(setupDTOPatch.getWeeksTotal());
+//        }
 
         if(setupDTOPatch.getHoursInLab() != null){
             existingSetup.setHoursInLab(setupDTOPatch.getHoursInLab());

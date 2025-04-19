@@ -17,7 +17,11 @@ public interface ScheduleSharedService {
 
     List<ScheduleSharedDTOGet> getAll();
 
+    List<ScheduleShared> getAllEntities();
+
     ScheduleSharedDTOGet create(ScheduleSharedDTOPost createDto);
+
+    ScheduleSharedDTOGet create(ScheduleShared createEntity);
 
     ScheduleSharedDTOGet update(Long id, ScheduleSharedDTOPatch updateDto);
 

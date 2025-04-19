@@ -1,7 +1,8 @@
-package com.example.schedule_composer.dto.mappers;
+package com.example.schedule_composer.dto.mappers.impl;
 
 import com.example.schedule_composer.dto.get.ScheduleDTOGet;
-import com.example.schedule_composer.dto.get.TimeSlotDTOGet;
+import com.example.schedule_composer.dto.mappers.DTOMapper;
+import com.example.schedule_composer.dto.mappers.TimeSlotMapper;
 import com.example.schedule_composer.dto.patch.ScheduleDTOPatch;
 import com.example.schedule_composer.dto.post.ScheduleDTOPost;
 import com.example.schedule_composer.entity.*;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost, ScheduleDTOPatch, Schedule, Long>{
+public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost, ScheduleDTOPatch, Schedule, Long> {
 
     private final ScheduleRepository scheduleRepository;
     private final SetupService setupService;

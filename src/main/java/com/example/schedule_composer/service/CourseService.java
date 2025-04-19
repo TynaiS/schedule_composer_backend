@@ -17,6 +17,8 @@ public interface CourseService{
 
     List<CourseDTOGet> getAll();
 
+    List<Course> getAllEntities();
+
     CourseDTOGet create(CourseDTOPost createDto);
 
     CourseDTOGet update(Long id, CourseDTOPatch updateDto);

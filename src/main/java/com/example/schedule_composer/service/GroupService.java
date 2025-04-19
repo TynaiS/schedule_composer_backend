@@ -22,6 +22,8 @@ public interface GroupService {
 
     List<GroupDTOGet> getAll();
 
+    List<Group> getAllEntities();
+
     GroupDTOGet create(GroupDTOPost createDto);
 
     GroupDTOGet update(Long id, GroupDTOPatch updateDto);

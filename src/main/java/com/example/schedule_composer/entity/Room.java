@@ -1,5 +1,6 @@
 package com.example.schedule_composer.entity;
 
+import com.example.schedule_composer.utils.GroupRoomSize;
 import com.example.schedule_composer.utils.RoomType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,4 +24,7 @@ public class Room {
 
     @Enumerated(EnumType.STRING)
     private RoomType type;
+
+    @Enumerated(EnumType.STRING)
+    private GroupRoomSize size;
 }

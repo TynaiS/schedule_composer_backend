@@ -1,18 +1,18 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.RoomDTOGet;
-import com.example.schedule_composer.dto.mappers.RoomMapper;
+import com.example.schedule_composer.dto.mappers.impl.RoomMapper;
 import com.example.schedule_composer.dto.patch.RoomDTOPatch;
 import com.example.schedule_composer.dto.post.RoomDTOPost;
 import com.example.schedule_composer.entity.Room;
 import com.example.schedule_composer.repository.RoomRepository;
 import com.example.schedule_composer.service.RoomService;
+import com.example.schedule_composer.utils.RoomType;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -51,6 +51,21 @@ public class RoomServiceImpl implements RoomService {
         List<Room> entities = roomRepository.findAll();
 
         return roomMapper.fromEntityListToGetList(entities);
+    }
+
+    @Override
+    public List<Room> getAllEntities() {
+        return roomRepository.findAll();
+    }
+
+    @Override
+    public List<Room> getAllLabEntities() {
+        return roomRepository.findByType(RoomType.LAB);
+    }
+
+    @Override
+    public List<Room> getAllClassroomEntities() {
+        return roomRepository.findByType(RoomType.CLASSROOM);
     }
 
     @Override

@@ -18,6 +18,8 @@ public interface SetupService {
 
     List<SetupDTOGet> getAll();
 
+    List<Setup> getAllEntities();
+
     SetupDTOGet create(SetupDTOPost createDto);
 
     SetupDTOGet update(Long id, SetupDTOPatch updateDto);

@@ -1,5 +1,6 @@
 package com.example.schedule_composer.dto.post;
 
+import com.example.schedule_composer.utils.GroupRoomSize;
 import com.example.schedule_composer.utils.RoomType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,5 +17,8 @@ public class RoomDTOPost {
 
     @NotNull(message = "Room type cannot be null")
     private RoomType type;
+
+    @NotNull(message = "Room size cannot be null")
+    private GroupRoomSize size;
 
 }

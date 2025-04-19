@@ -1,7 +1,7 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.ScheduleSharedDTOGet;
-import com.example.schedule_composer.dto.mappers.ScheduleSharedMapper;
+import com.example.schedule_composer.dto.mappers.impl.ScheduleSharedMapper;
 import com.example.schedule_composer.dto.patch.ScheduleSharedDTOPatch;
 import com.example.schedule_composer.dto.post.ScheduleSharedDTOPost;
 import com.example.schedule_composer.entity.ScheduleShared;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ScheduleSharedServiceImpl implements ScheduleSharedService {
@@ -54,8 +53,19 @@ public class ScheduleSharedServiceImpl implements ScheduleSharedService {
     }
 
     @Override
+    public List<ScheduleShared> getAllEntities() {
+        return scheduleSharedRepository.findAll();
+    }
+
+    @Override
     public ScheduleSharedDTOGet create(ScheduleSharedDTOPost createDto) {
         ScheduleShared savedEntity = scheduleSharedRepository.save(scheduleSharedMapper.fromPostToEntity(createDto));
+        return scheduleSharedMapper.fromEntityToGet(savedEntity);
+    }
+
+    @Override
+    public ScheduleSharedDTOGet create(ScheduleShared createEntity) {
+        ScheduleShared savedEntity = scheduleSharedRepository.save(createEntity);
         return scheduleSharedMapper.fromEntityToGet(savedEntity);
     }
 

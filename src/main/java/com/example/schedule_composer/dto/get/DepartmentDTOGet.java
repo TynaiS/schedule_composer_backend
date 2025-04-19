@@ -1,15 +1,11 @@
 package com.example.schedule_composer.dto.get;
 
-import com.example.schedule_composer.utils.GroupRoomSize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class GroupDTOGet {
+public class DepartmentDTOGet {
     private Long id;
     private String name;
-    private DepartmentDTOGet department;
-    private GroupRoomSize size;
 }
-

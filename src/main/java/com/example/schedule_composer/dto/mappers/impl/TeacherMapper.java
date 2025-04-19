@@ -1,6 +1,7 @@
-package com.example.schedule_composer.dto.mappers;
+package com.example.schedule_composer.dto.mappers.impl;
 
 import com.example.schedule_composer.dto.get.TeacherDTOGet;
+import com.example.schedule_composer.dto.mappers.DTOMapper;
 import com.example.schedule_composer.dto.patch.TeacherDTOPatch;
 import com.example.schedule_composer.dto.post.TeacherDTOPost;
 import com.example.schedule_composer.entity.Teacher;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class TeacherMapper implements DTOMapper<TeacherDTOGet, TeacherDTOPost, TeacherDTOPatch, Teacher, Long>{
+public class TeacherMapper implements DTOMapper<TeacherDTOGet, TeacherDTOPost, TeacherDTOPatch, Teacher, Long> {
 
     private final TeacherRepository teacherRepository;
 

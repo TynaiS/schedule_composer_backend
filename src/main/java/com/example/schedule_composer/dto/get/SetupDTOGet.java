@@ -15,8 +15,8 @@ public class SetupDTOGet {
     private TeacherDTOGet teacher;
     private CoursePriority coursePriority;
     private Integer hoursAWeek;
-    private Integer hoursTotal;
-    private Integer weeksTotal;
+//    private Integer hoursTotal;
+//    private Integer weeksTotal;
     private Integer hoursInLab;
     private RoomType preferredRoomType;
 }

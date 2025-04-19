@@ -1,10 +1,15 @@
-package com.example.schedule_composer.dto.mappers;
+package com.example.schedule_composer.dto.mappers.impl;
 
 import com.example.schedule_composer.dto.get.GroupDTOGet;
+import com.example.schedule_composer.dto.mappers.DTOMapper;
 import com.example.schedule_composer.dto.patch.GroupDTOPatch;
 import com.example.schedule_composer.dto.post.GroupDTOPost;
+import com.example.schedule_composer.entity.Course;
+import com.example.schedule_composer.entity.Department;
 import com.example.schedule_composer.entity.Group;
+import com.example.schedule_composer.entity.Teacher;
 import com.example.schedule_composer.repository.GroupRepository;
+import com.example.schedule_composer.service.DepartmentService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,17 +18,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class GroupMapper implements DTOMapper<GroupDTOGet, GroupDTOPost, GroupDTOPatch, Group, Long>{
+public class GroupMapper implements DTOMapper<GroupDTOGet, GroupDTOPost, GroupDTOPatch, Group, Long> {
 
     private final GroupRepository groupRepository;
 
+    private final DepartmentMapper departmentMapper;
+
+    private final DepartmentService departmentService;
+
     @Autowired
-    public GroupMapper(GroupRepository groupRepository) {
+    public GroupMapper(GroupRepository groupRepository, DepartmentMapper departmentMapper, DepartmentService departmentService) {
         this.groupRepository = groupRepository;
+        this.departmentMapper = departmentMapper;
+        this.departmentService = departmentService;
     }
     @Override
     public GroupDTOGet fromEntityToGet(Group group) {
-        GroupDTOGet groupGet = new GroupDTOGet(group.getId(), group.getName());
+        GroupDTOGet groupGet = new GroupDTOGet(group.getId(), group.getName(), departmentMapper.fromEntityToGet(group.getDepartment()), group.getSize());
         return groupGet;
     }
 
@@ -36,8 +47,12 @@ public class GroupMapper implements DTOMapper<GroupDTOGet, GroupDTOPost, GroupDT
 
     @Override
     public Group fromPostToEntity(GroupDTOPost groupDTOPost) {
+        Department department = departmentService.getEntityById(groupDTOPost.getDepartmentId());
+
         Group group = Group.builder()
                 .name(groupDTOPost.getName())
+                .department(department)
+                .size(groupDTOPost.getSize())
                 .build();
         return group;
     }
@@ -54,6 +69,17 @@ public class GroupMapper implements DTOMapper<GroupDTOGet, GroupDTOPost, GroupDT
             }
             existingGroup.setName(groupDTOPatch.getName());
         }
+
+        if (groupDTOPatch.getDepartmentId() != null){
+            Department department = departmentService.getEntityById(groupDTOPatch.getDepartmentId());
+            existingGroup.setDepartment(department);
+        }
+
+        if (groupDTOPatch.getSize() != null){
+            existingGroup.setSize(groupDTOPatch.getSize());
+        }
+
+
         return existingGroup;
 
     }

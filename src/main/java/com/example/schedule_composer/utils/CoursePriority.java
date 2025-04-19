@@ -7,11 +7,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Priority levels for a course")
 public enum CoursePriority {
     @Schema(description = "High priority course")
-    HIGH,
+    BEFORE_LUNCH,
     @Schema(description = "Medium priority course")
-    MEDIUM,
-    @Schema(description = "Low priority course")
-    LOW;
+    AFTER_LUNCH;
 
     @JsonCreator
     public static CoursePriority fromString(String value) {

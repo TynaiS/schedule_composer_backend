@@ -70,6 +70,11 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     }
 
     @Override
+    public List<TimeSlot> getAllEntities() {
+        return timeSlotRepository.findAll();
+    }
+
+    @Override
     public TimeSlotDTOGet create(TimeSlotDTOPost createDto) {
         TimeSlot savedEntity = timeSlotRepository.save(timeSlotMapper.fromPostToEntity(createDto));
         return timeSlotMapper.fromEntityToGet(savedEntity);

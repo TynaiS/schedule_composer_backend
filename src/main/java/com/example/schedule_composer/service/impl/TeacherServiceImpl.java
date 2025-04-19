@@ -1,7 +1,7 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.TeacherDTOGet;
-import com.example.schedule_composer.dto.mappers.TeacherMapper;
+import com.example.schedule_composer.dto.mappers.impl.TeacherMapper;
 import com.example.schedule_composer.dto.patch.TeacherDTOPatch;
 import com.example.schedule_composer.dto.post.TeacherDTOPost;
 import com.example.schedule_composer.entity.Teacher;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TeacherServiceImpl implements TeacherService {
@@ -51,6 +50,11 @@ public class TeacherServiceImpl implements TeacherService {
         List<Teacher> entities = teacherRepository.findAll();
 
         return teacherMapper.fromEntityListToGetList(entities);
+    }
+
+    @Override
+    public List<Teacher> getAllEntities() {
+        return teacherRepository.findAll();
     }
 
     @Override

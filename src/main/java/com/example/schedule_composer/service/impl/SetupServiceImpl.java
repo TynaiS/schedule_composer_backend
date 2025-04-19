@@ -1,7 +1,7 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.SetupDTOGet;
-import com.example.schedule_composer.dto.mappers.SetupMapper;
+import com.example.schedule_composer.dto.mappers.impl.SetupMapper;
 import com.example.schedule_composer.dto.patch.SetupDTOPatch;
 import com.example.schedule_composer.dto.post.SetupDTOPost;
 import com.example.schedule_composer.entity.Setup;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SetupServiceImpl implements SetupService {
@@ -51,6 +50,11 @@ public class SetupServiceImpl implements SetupService {
         List<Setup> entities = setupRepository.findAll();
 
         return setupMapper.fromEntityListToGetList(entities);
+    }
+
+    @Override
+    public List<Setup> getAllEntities() {
+        return setupRepository.findAll();
     }
 
     @Override

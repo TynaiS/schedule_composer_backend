@@ -1,7 +1,7 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.ScheduleDTOGet;
-import com.example.schedule_composer.dto.mappers.ScheduleMapper;
+import com.example.schedule_composer.dto.mappers.impl.ScheduleMapper;
 import com.example.schedule_composer.dto.patch.ScheduleDTOPatch;
 import com.example.schedule_composer.dto.post.ScheduleDTOPost;
 import com.example.schedule_composer.entity.Schedule;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -54,8 +53,19 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public List<Schedule> getAllEntities() {
+        return scheduleRepository.findAll();
+    }
+
+    @Override
     public ScheduleDTOGet create(ScheduleDTOPost createDto) {
         Schedule savedEntity = scheduleRepository.save(scheduleMapper.fromPostToEntity(createDto));
+        return scheduleMapper.fromEntityToGet(savedEntity);
+    }
+
+    @Override
+    public ScheduleDTOGet create(Schedule createEntity) {
+        Schedule savedEntity = scheduleRepository.save(createEntity);
         return scheduleMapper.fromEntityToGet(savedEntity);
     }
 

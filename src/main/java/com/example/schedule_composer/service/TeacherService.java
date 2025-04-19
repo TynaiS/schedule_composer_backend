@@ -17,6 +17,8 @@ public interface TeacherService {
 
     List<TeacherDTOGet> getAll();
 
+    List<Teacher> getAllEntities();
+
     TeacherDTOGet create(TeacherDTOPost createDto);
 
     TeacherDTOGet update(Long id, TeacherDTOPatch updateDto);

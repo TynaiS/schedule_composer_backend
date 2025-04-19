@@ -17,6 +17,8 @@ public interface ScheduleLunchService {
 
     List<ScheduleLunchDTOGet> getAll();
 
+    List<ScheduleLunch> getAllEntities();
+
     ScheduleLunchDTOGet create(ScheduleLunchDTOPost createDto);
 
     ScheduleLunchDTOGet update(Long id, ScheduleLunchDTOPatch updateDto);

@@ -1,6 +1,7 @@
-package com.example.schedule_composer.dto.mappers;
+package com.example.schedule_composer.dto.mappers.impl;
 
 import com.example.schedule_composer.dto.get.RoomDTOGet;
+import com.example.schedule_composer.dto.mappers.DTOMapper;
 import com.example.schedule_composer.dto.patch.RoomDTOPatch;
 import com.example.schedule_composer.dto.post.RoomDTOPost;
 import com.example.schedule_composer.entity.Room;
@@ -8,13 +9,12 @@ import com.example.schedule_composer.repository.RoomRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class RoomMapper implements DTOMapper<RoomDTOGet, RoomDTOPost, RoomDTOPatch, Room, Long>{
+public class RoomMapper implements DTOMapper<RoomDTOGet, RoomDTOPost, RoomDTOPatch, Room, Long> {
 
     private final RoomRepository roomRepository;
 
@@ -24,7 +24,7 @@ public class RoomMapper implements DTOMapper<RoomDTOGet, RoomDTOPost, RoomDTOPat
     }
     @Override
     public RoomDTOGet fromEntityToGet(Room room) {
-        RoomDTOGet roomGet = new RoomDTOGet(room.getId(), room.getRoomNum(), room.getType());
+        RoomDTOGet roomGet = new RoomDTOGet(room.getId(), room.getRoomNum(), room.getType(), room.getSize());
         return roomGet;
     }
 
@@ -40,6 +40,7 @@ public class RoomMapper implements DTOMapper<RoomDTOGet, RoomDTOPost, RoomDTOPat
         Room room = Room.builder()
                 .roomNum(roomDTOPost.getRoomNum())
                 .type(roomDTOPost.getType())
+                .size(roomDTOPost.getSize())
                 .build();
         return room;
     }
@@ -55,6 +56,10 @@ public class RoomMapper implements DTOMapper<RoomDTOGet, RoomDTOPost, RoomDTOPat
                 throw new IllegalArgumentException("Room number cannot be blank");
             }
             existingRoom.setRoomNum(roomDTOPatch.getRoomNum());
+        }
+
+        if (roomDTOPatch.getSize() != null){
+            existingRoom.setSize(roomDTOPatch.getSize());
         }
 
         return existingRoom;

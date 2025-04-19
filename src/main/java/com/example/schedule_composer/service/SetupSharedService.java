@@ -4,6 +4,7 @@ import com.example.schedule_composer.dto.get.GroupDTOGet;
 import com.example.schedule_composer.dto.get.SetupSharedDTOGet;
 import com.example.schedule_composer.dto.patch.SetupSharedDTOPatch;
 import com.example.schedule_composer.dto.post.SetupSharedDTOPost;
+import com.example.schedule_composer.entity.Setup;
 import com.example.schedule_composer.entity.SetupShared;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public interface SetupSharedService {
     Boolean checkIfExists(Long id);
 
     List<SetupSharedDTOGet> getAll();
+
+    List<SetupShared> getAllEntities();
 
     SetupSharedDTOGet create(SetupSharedDTOPost createDto);
 

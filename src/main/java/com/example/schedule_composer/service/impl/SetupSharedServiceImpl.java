@@ -1,23 +1,18 @@
 package com.example.schedule_composer.service.impl;
 
-import com.example.schedule_composer.dto.get.GroupDTOGet;
 import com.example.schedule_composer.dto.get.SetupSharedDTOGet;
-import com.example.schedule_composer.dto.mappers.GroupMapper;
-import com.example.schedule_composer.dto.mappers.SetupSharedMapper;
+import com.example.schedule_composer.dto.mappers.impl.SetupSharedMapper;
 import com.example.schedule_composer.dto.patch.SetupSharedDTOPatch;
 import com.example.schedule_composer.dto.post.SetupSharedDTOPost;
-import com.example.schedule_composer.entity.Group;
+import com.example.schedule_composer.entity.Setup;
 import com.example.schedule_composer.entity.SetupShared;
 import com.example.schedule_composer.repository.SetupSharedRepository;
-import com.example.schedule_composer.service.GroupService;
 import com.example.schedule_composer.service.SetupSharedService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SetupSharedServiceImpl implements SetupSharedService {
@@ -56,6 +51,11 @@ public class SetupSharedServiceImpl implements SetupSharedService {
         List<SetupShared> entities = setupSharedRepository.findAll();
 
         return setupSharedMapper.fromEntityListToGetList(entities);
+    }
+
+    @Override
+    public List<SetupShared> getAllEntities() {
+        return setupSharedRepository.findAll();
     }
 
     @Override

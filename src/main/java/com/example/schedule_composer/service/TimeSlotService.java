@@ -23,6 +23,8 @@ public interface TimeSlotService {
 
     List<TimeSlotDTOGet> getAll();
 
+    List<TimeSlot> getAllEntities();
+
     TimeSlotDTOGet create(TimeSlotDTOPost createDto);
 
     TimeSlotDTOGet update(Long id, TimeSlotDTOPatch updateDto);

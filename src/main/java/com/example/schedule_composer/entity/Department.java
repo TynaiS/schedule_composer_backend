@@ -1,27 +1,20 @@
 package com.example.schedule_composer.entity;
 
-import com.example.schedule_composer.utils.GroupRoomSize;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Service;
 
 @Entity
-@Table(name = "groups")
+@Table(name = "departments")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Group {
+public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "department_id", referencedColumnName = "id")
-    private Department department;
-
-    @Enumerated(EnumType.STRING)
-    private GroupRoomSize size;
 }

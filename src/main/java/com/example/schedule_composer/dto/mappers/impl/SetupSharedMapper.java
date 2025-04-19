@@ -52,8 +52,8 @@ public class SetupSharedMapper implements DTOMapper<SetupSharedDTOGet, SetupShar
                 teacherMapper.fromEntityToGet(setupShared.getTeacher()),
                 setupShared.getCoursePriority(),
                 setupShared.getHoursAWeek(),
-                setupShared.getHoursTotal(),
-                setupShared.getWeeksTotal(),
+//                setupShared.getHoursTotal(),
+//                setupShared.getWeeksTotal(),
                 setupShared.getHoursInLab(),
                 setupShared.getPreferredRoomType());
         return setupSharedGet;
@@ -124,13 +124,13 @@ public class SetupSharedMapper implements DTOMapper<SetupSharedDTOGet, SetupShar
             existingSetupShared.setHoursAWeek(setupSharedDTOPatch.getHoursAWeek());
         }
 
-        if(setupSharedDTOPatch.getHoursTotal() != null){
-            existingSetupShared.setHoursTotal(setupSharedDTOPatch.getHoursTotal());
-        }
-
-        if(setupSharedDTOPatch.getWeeksTotal() != null){
-            existingSetupShared.setWeeksTotal(setupSharedDTOPatch.getWeeksTotal());
-        }
+//        if(setupSharedDTOPatch.getHoursTotal() != null){
+//            existingSetupShared.setHoursTotal(setupSharedDTOPatch.getHoursTotal());
+//        }
+//
+//        if(setupSharedDTOPatch.getWeeksTotal() != null){
+//            existingSetupShared.setWeeksTotal(setupSharedDTOPatch.getWeeksTotal());
+//        }
 
         if(setupSharedDTOPatch.getHoursInLab() != null){
             existingSetupShared.setHoursInLab(setupSharedDTOPatch.getHoursInLab());

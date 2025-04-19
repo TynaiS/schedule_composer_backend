@@ -1,7 +1,7 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.ScheduleLunchDTOGet;
-import com.example.schedule_composer.dto.mappers.ScheduleLunchMapper;
+import com.example.schedule_composer.dto.mappers.impl.ScheduleLunchMapper;
 import com.example.schedule_composer.dto.patch.ScheduleLunchDTOPatch;
 import com.example.schedule_composer.dto.post.ScheduleLunchDTOPost;
 import com.example.schedule_composer.entity.ScheduleLunch;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ScheduleLunchServiceImpl implements ScheduleLunchService {
@@ -51,6 +50,11 @@ public class ScheduleLunchServiceImpl implements ScheduleLunchService {
         List<ScheduleLunch> entities = scheduleLunchRepository.findAll();
 
         return scheduleLunchMapper.fromEntityListToGetList(entities);
+    }
+
+    @Override
+    public List<ScheduleLunch> getAllEntities() {
+        return scheduleLunchRepository.findAll();
     }
 
     @Override

@@ -32,7 +32,7 @@ public class SetupDTOPost {
 //    @NotNull(message = "Total weeks cannot be null")
 //    private Integer weeksTotal;
 
-//    @NotNull(message = "Lab hours cannot be null")
+    @NotNull(message = "Lab hours cannot be null")
     private Integer hoursInLab;
 
     @NotNull(message = "Preferred room type cannot be null")
