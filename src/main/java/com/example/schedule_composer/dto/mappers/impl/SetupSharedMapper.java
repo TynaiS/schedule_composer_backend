@@ -1,6 +1,7 @@
-package com.example.schedule_composer.dto.mappers;
+package com.example.schedule_composer.dto.mappers.impl;
 
 import com.example.schedule_composer.dto.get.SetupSharedDTOGet;
+import com.example.schedule_composer.dto.mappers.DTOMapper;
 import com.example.schedule_composer.dto.patch.SetupSharedDTOPatch;
 import com.example.schedule_composer.dto.post.SetupSharedDTOPost;
 import com.example.schedule_composer.entity.Course;
@@ -13,14 +14,13 @@ import com.example.schedule_composer.service.GroupService;
 import com.example.schedule_composer.service.TeacherService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class SetupSharedMapper implements DTOMapper<SetupSharedDTOGet, SetupSharedDTOPost, SetupSharedDTOPatch, SetupShared, Long>{
+public class SetupSharedMapper implements DTOMapper<SetupSharedDTOGet, SetupSharedDTOPost, SetupSharedDTOPatch, SetupShared, Long> {
 
     private final SetupSharedRepository setupSharedRepository;
     private final CourseService courseService;
@@ -79,8 +79,8 @@ public class SetupSharedMapper implements DTOMapper<SetupSharedDTOGet, SetupShar
                 .teacher(teacher)
                 .coursePriority(setupSharedDTOPost.getCoursePriority())
                 .hoursAWeek(setupSharedDTOPost.getHoursAWeek())
-                .hoursTotal(setupSharedDTOPost.getHoursTotal())
-                .weeksTotal(setupSharedDTOPost.getWeeksTotal())
+//                .hoursTotal(setupSharedDTOPost.getHoursTotal())
+//                .weeksTotal(setupSharedDTOPost.getWeeksTotal())
                 .hoursInLab(setupSharedDTOPost.getHoursInLab())
                 .preferredRoomType(setupSharedDTOPost.getPreferredRoomType())
                 .build();
