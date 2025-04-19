@@ -32,10 +32,10 @@ public class SetupSharedDTOPost {
     private Integer hoursAWeek;
 
 //    @NotNull(message = "Total hours cannot be null")
-    private Integer hoursTotal;
+//    private Integer hoursTotal;
 
 //    @NotNull(message = "Total weeks cannot be null")
-    private Integer weeksTotal;
+//    private Integer weeksTotal;
 
 //    @NotNull(message = "Lab hours cannot be null")
     private Integer hoursInLab;
