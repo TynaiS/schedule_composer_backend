@@ -43,6 +43,14 @@ public class SetupSharedController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/group-id/{groupId}")
+    @Operation(summary = "Get all setup-shared entities by groupId", description = "Retrieves a list of all setup-shared's with specific groupId")
+    public ResponseEntity<List<SetupSharedDTOGet>> getAllByGroupId(
+            @PathVariable("groupId") Long groupId) {
+        List<SetupSharedDTOGet> result = setupSharedService.getAllByGroupId(groupId);
+        return ResponseEntity.ok(result);
+    }
+
 
     @PostMapping()
     @Operation(summary = "Create setup-shared relation", description = "Creates new setup-shared relation")

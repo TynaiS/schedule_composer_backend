@@ -4,7 +4,6 @@ import com.example.schedule_composer.dto.get.SetupSharedDTOGet;
 import com.example.schedule_composer.dto.mappers.impl.SetupSharedMapper;
 import com.example.schedule_composer.dto.patch.SetupSharedDTOPatch;
 import com.example.schedule_composer.dto.post.SetupSharedDTOPost;
-import com.example.schedule_composer.entity.Setup;
 import com.example.schedule_composer.entity.SetupShared;
 import com.example.schedule_composer.repository.SetupSharedRepository;
 import com.example.schedule_composer.service.SetupSharedService;
@@ -49,6 +48,13 @@ public class SetupSharedServiceImpl implements SetupSharedService {
     @Override
     public List<SetupSharedDTOGet> getAll() {
         List<SetupShared> entities = setupSharedRepository.findAll();
+
+        return setupSharedMapper.fromEntityListToGetList(entities);
+    }
+
+    @Override
+    public List<SetupSharedDTOGet> getAllByGroupId(Long groupId) {
+        List<SetupShared> entities = setupSharedRepository.findByGroupsId(groupId);
 
         return setupSharedMapper.fromEntityListToGetList(entities);
     }

@@ -36,14 +36,14 @@ public class SetupController {
     }
 
     @GetMapping()
-    @Operation(summary = "Get all setup", description = "Retrieves a list of all setup's")
+    @Operation(summary = "Get all setup", description = "Retrieves a list of all setups")
     public ResponseEntity<List<SetupDTOGet>> getAll() {
         List<SetupDTOGet> result = setupService.getAll();
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/group-id/{groupId}")
-    @Operation(summary = "Get all setup entities by groupId", description = "Retrieves a list of all setup's with specific groupId")
+    @Operation(summary = "Get all setup entities by groupId", description = "Retrieves a list of all setups with specific groupId")
     public ResponseEntity<List<SetupDTOGet>> getAllByGroupId(
             @PathVariable("groupId") Long groupId) {
         List<SetupDTOGet> result = setupService.getAllByGroupId(groupId);
