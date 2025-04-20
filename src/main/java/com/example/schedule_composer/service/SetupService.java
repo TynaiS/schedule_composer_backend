@@ -18,6 +18,8 @@ public interface SetupService {
 
     List<SetupDTOGet> getAll();
 
+    List<SetupDTOGet> getAllByGroupId(Long groupId);
+
     List<Setup> getAllEntities();
 
     SetupDTOGet create(SetupDTOPost createDto);

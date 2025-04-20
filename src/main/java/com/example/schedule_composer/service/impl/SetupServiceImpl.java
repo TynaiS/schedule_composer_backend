@@ -53,6 +53,13 @@ public class SetupServiceImpl implements SetupService {
     }
 
     @Override
+    public List<SetupDTOGet> getAllByGroupId(Long groupId) {
+        List<Setup> entities = setupRepository.findByGroupId(groupId);
+
+        return setupMapper.fromEntityListToGetList(entities);
+    }
+
+    @Override
     public List<Setup> getAllEntities() {
         return setupRepository.findAll();
     }

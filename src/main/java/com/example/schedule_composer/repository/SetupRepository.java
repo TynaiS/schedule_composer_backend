@@ -11,4 +11,5 @@ import java.util.List;
 public interface SetupRepository extends JpaRepository<Setup, Long> {
     List<Setup> findAll();
 
+    List<Setup> findByGroupId(Long groupId);
 }

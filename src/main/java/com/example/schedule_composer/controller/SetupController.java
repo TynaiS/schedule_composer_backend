@@ -42,6 +42,14 @@ public class SetupController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/group-id/{groupId}")
+    @Operation(summary = "Get all setup entities by groupId", description = "Retrieves a list of all setup's with specific groupId")
+    public ResponseEntity<List<SetupDTOGet>> getAllByGroupId(
+            @PathVariable("groupId") Long groupId) {
+        List<SetupDTOGet> result = setupService.getAllByGroupId(groupId);
+        return ResponseEntity.ok(result);
+    }
+
     @PostMapping
     @Operation(summary = "Create setup relation", description = "Creates new setup relation")
     public ResponseEntity<SetupDTOGet> create(
