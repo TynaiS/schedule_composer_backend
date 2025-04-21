@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SetupSharedDTOPatch {
-    private String name;
+    private Long nameId;
     private List<Long> groupIds;
     private Long courseId;
     private Long teacherId;

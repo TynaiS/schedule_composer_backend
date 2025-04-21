@@ -12,7 +12,7 @@ import java.util.List;
 public class SetupSharedDTOGet {
 
     private Long id;
-    private String name;
+    private SetupSharedNameDTOGet name;
     private List<GroupDTOGet> groups;
     private CourseDTOGet course;
     private TeacherDTOGet teacher;

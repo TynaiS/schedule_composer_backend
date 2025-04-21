@@ -18,7 +18,10 @@ public class SetupShared {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "name_id", referencedColumnName = "id")
+    private SetupSharedName name;
 
     @ManyToMany
     @JoinTable(

@@ -4,13 +4,11 @@ import com.example.schedule_composer.dto.get.SetupSharedDTOGet;
 import com.example.schedule_composer.dto.mappers.DTOMapper;
 import com.example.schedule_composer.dto.patch.SetupSharedDTOPatch;
 import com.example.schedule_composer.dto.post.SetupSharedDTOPost;
-import com.example.schedule_composer.entity.Course;
-import com.example.schedule_composer.entity.Group;
-import com.example.schedule_composer.entity.SetupShared;
-import com.example.schedule_composer.entity.Teacher;
+import com.example.schedule_composer.entity.*;
 import com.example.schedule_composer.service.CourseService;
 import com.example.schedule_composer.repository.SetupSharedRepository;
 import com.example.schedule_composer.service.GroupService;
+import com.example.schedule_composer.service.SetupSharedNameService;
 import com.example.schedule_composer.service.TeacherService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,27 +24,30 @@ public class SetupSharedMapper implements DTOMapper<SetupSharedDTOGet, SetupShar
     private final CourseService courseService;
     private final TeacherService teacherService;
     private final GroupService groupService;
+    private final SetupSharedNameService setupSharedNameService;
     private final CourseMapper courseMapper;
     private final TeacherMapper teacherMapper;
     private final GroupMapper groupMapper;
-
+    private final SetupSharedNameMapper setupSharedNameMapper;
 
 
     @Autowired
-    public SetupSharedMapper(SetupSharedRepository setupSharedRepository, CourseService courseService, TeacherService teacherService, GroupService groupService, CourseMapper courseMapper, TeacherMapper teacherMapper, GroupMapper groupMapper) {
+    public SetupSharedMapper(SetupSharedRepository setupSharedRepository, CourseService courseService, TeacherService teacherService, GroupService groupService, SetupSharedNameService setupSharedNameService, CourseMapper courseMapper, TeacherMapper teacherMapper, GroupMapper groupMapper, SetupSharedNameMapper setupSharedNameMapper) {
         this.setupSharedRepository = setupSharedRepository;
         this.courseService = courseService;
         this.teacherService = teacherService;
         this.groupService = groupService;
+        this.setupSharedNameService = setupSharedNameService;
         this.courseMapper = courseMapper;
         this.teacherMapper = teacherMapper;
         this.groupMapper = groupMapper;
+        this.setupSharedNameMapper = setupSharedNameMapper;
     }
     @Override
     public SetupSharedDTOGet fromEntityToGet(SetupShared setupShared) {
         SetupSharedDTOGet setupSharedGet = new SetupSharedDTOGet(
                 setupShared.getId(),
-                setupShared.getName(),
+                setupSharedNameMapper.fromEntityToGet(setupShared.getName()),
                 groupMapper.fromEntityListToGetList(setupShared.getGroups()),
                 courseMapper.fromEntityToGet(setupShared.getCourse()),
                 teacherMapper.fromEntityToGet(setupShared.getTeacher()),
@@ -68,12 +69,14 @@ public class SetupSharedMapper implements DTOMapper<SetupSharedDTOGet, SetupShar
 
     @Override
     public SetupShared fromPostToEntity(SetupSharedDTOPost setupSharedDTOPost) {
+        SetupSharedName name = setupSharedNameService.getEntityById(setupSharedDTOPost.getNameId());
         Course course = courseService.getEntityById(setupSharedDTOPost.getCourseId());
         Teacher teacher = teacherService.getEntityById(setupSharedDTOPost.getTeacherId());
         List<Group> groups = groupService.checkIfAllExistAndGetEntities(setupSharedDTOPost.getGroupIds());
 
+
         SetupShared setupShared = SetupShared.builder()
-                .name(setupSharedDTOPost.getName())
+                .name(name)
                 .groups(groups)
                 .course(course)
                 .teacher(teacher)
@@ -94,11 +97,12 @@ public class SetupSharedMapper implements DTOMapper<SetupSharedDTOGet, SetupShar
                 .orElseThrow(() -> new EntityNotFoundException("Setup-Shared not found with id: " + setupSharedId));
 
 
-        if (setupSharedDTOPatch.getName() != null){
-            if(setupSharedDTOPatch.getName().isBlank()){
+        if (setupSharedDTOPatch.getNameId() != null){
+            SetupSharedName name = setupSharedNameService.checkIfExistsAndGetEntity(setupSharedDTOPatch.getNameId());
+            if(name.getName().isBlank()){
                 throw new IllegalArgumentException("Setup-Shared name cannot be blank");
             }
-            existingSetupShared.setName(setupSharedDTOPatch.getName());
+            existingSetupShared.setName(name);
         }
 
         if(setupSharedDTOPatch.getGroupIds() != null){

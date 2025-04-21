@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class SetupSharedDTOPost {
 
-    @NotBlank(message = "Setup-Shared name cannot be blank")
-    private String name;
+    @NotNull(message = "Setup-Shared name id cannot be null")
+    private Long nameId;
 
     @NotNull(message = "Group ID's cannot be null")
     private List<Long> groupIds;
