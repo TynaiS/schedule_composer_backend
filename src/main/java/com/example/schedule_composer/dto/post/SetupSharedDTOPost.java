@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class SetupSharedDTOPost {
 
-    @NotNull(message = "Setup-Shared name id cannot be null")
-    private Long nameId;
+    @NotNull(message = "Setup-Shared set id cannot be null")
+    private Long setId;
 
     @NotNull(message = "Group ID's cannot be null")
     private List<Long> groupIds;
@@ -27,15 +27,6 @@ public class SetupSharedDTOPost {
 
     @NotNull(message = "Course priority cannot be null")
     private CoursePriority coursePriority;
-
-    @NotNull(message = "Hours per week cannot be null")
-    private Integer hoursAWeek;
-
-//    @NotNull(message = "Total hours cannot be null")
-//    private Integer hoursTotal;
-
-//    @NotNull(message = "Total weeks cannot be null")
-//    private Integer weeksTotal;
 
     @NotNull(message = "Lab hours cannot be null")
     private Integer hoursInLab;

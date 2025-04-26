@@ -20,8 +20,8 @@ public class SetupShared {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "name_id", referencedColumnName = "id")
-    private SetupSharedName name;
+    @JoinColumn(name = "set_id", referencedColumnName = "id")
+    private SetupSharedSet set;
 
     @ManyToMany
     @JoinTable(
@@ -43,14 +43,6 @@ public class SetupShared {
     @Column(name = "course_priority")
     private CoursePriority coursePriority;
 
-    @Column(name = "hours_a_week")
-    private Integer hoursAWeek;
-
-//    @Column(name = "hours_total")
-//    private Integer hoursTotal;
-//
-//    @Column(name = "weeks_total")
-//    private Integer weeksTotal;
 
     @Column(name = "hours_in_lab")
     private Integer hoursInLab;

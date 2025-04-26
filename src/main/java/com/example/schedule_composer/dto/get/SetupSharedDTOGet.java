@@ -12,14 +12,11 @@ import java.util.List;
 public class SetupSharedDTOGet {
 
     private Long id;
-    private SetupSharedNameDTOGet name;
+    private SetupSharedSetDTOGet set;
     private List<GroupDTOGet> groups;
     private CourseDTOGet course;
     private TeacherDTOGet teacher;
     private CoursePriority coursePriority;
-    private Integer hoursAWeek;
-//    private Integer hoursTotal;
-//    private Integer weeksTotal;
     private Integer hoursInLab;
     private RoomType preferredRoomType;
 }

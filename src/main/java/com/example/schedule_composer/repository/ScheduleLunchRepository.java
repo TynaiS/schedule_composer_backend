@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ScheduleLunchRepository extends JpaRepository<ScheduleLunch, Long> {
+    @Override
     List<ScheduleLunch> findAll();
 }

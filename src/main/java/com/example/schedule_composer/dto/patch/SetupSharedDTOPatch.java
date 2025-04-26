@@ -13,14 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SetupSharedDTOPatch {
-    private Long nameId;
+    private Long setId;
     private List<Long> groupIds;
     private Long courseId;
     private Long teacherId;
     private CoursePriority coursePriority;
-    private Integer hoursAWeek;
-//    private Integer hoursTotal;
-//    private Integer weeksTotal;
     private Integer hoursInLab;
     private RoomType preferredRoomType;
 }

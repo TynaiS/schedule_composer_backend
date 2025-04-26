@@ -7,15 +7,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "setup_shared_names")
+@Table(name = "setup_shared_sets")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SetupSharedName {
+public class SetupSharedSet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Column(name = "hours_a_week")
+    private Integer hoursAWeek;
+
 }

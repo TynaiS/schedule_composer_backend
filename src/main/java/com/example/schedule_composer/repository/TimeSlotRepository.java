@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface TimeSlotRepository extends JpaRepository<TimeSlot, Long> {
+    @Override
     List<TimeSlot> findAll();
 }
 

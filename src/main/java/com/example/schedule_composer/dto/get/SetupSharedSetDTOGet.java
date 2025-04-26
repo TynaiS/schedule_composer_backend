@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class SetupSharedNameDTOGet {
+public class SetupSharedSetDTOGet {
     private Long id;
     private String name;
-
+    private Integer hoursAWeek;
 }
 

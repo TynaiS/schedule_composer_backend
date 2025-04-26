@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
+    @Override
     List<Course> findAll();
 }

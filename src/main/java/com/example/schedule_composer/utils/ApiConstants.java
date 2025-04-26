@@ -5,7 +5,7 @@ public class ApiConstants {
     public static final String GENERATOR_API = BASE_API + "/generator";
     public static final String COURSE_API = BASE_API + "/courses";
     public static final String SETUP_SHARED_API = BASE_API + "/setup-shared";
-    public static final String SETUP_SHARED_NAME_API = BASE_API + "/setup-shared-names";
+    public static final String SETUP_SHARED_SET_API = BASE_API + "/setup-shared-sets";
     public static final String SETUP_API = BASE_API + "/setup";
     public static final String GROUP_API = BASE_API + "/groups";
     public static final String DEPARTMENT_API = BASE_API + "/departments";

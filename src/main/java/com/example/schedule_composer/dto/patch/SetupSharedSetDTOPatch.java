@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SetupSharedNameDTOPatch {
+public class SetupSharedSetDTOPatch {
     private String name;
+    private Integer hoursAWeek;
+
 }

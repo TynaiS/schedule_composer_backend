@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface SetupRepository extends JpaRepository<Setup, Long> {
+    @Override
     List<Setup> findAll();
 
     List<Setup> findByGroupId(Long groupId);

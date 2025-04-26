@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ScheduleSharedRepository extends JpaRepository<ScheduleShared, Long> {
+    @Override
     List<ScheduleShared> findAll();
 
 }
