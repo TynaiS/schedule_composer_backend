@@ -17,6 +17,17 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   jackson:
     time-format: HH:mm
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "schedulecomposerapp@gmail.com"
+    password: "zwrr qyyb seei javu"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 springdoc:
   api-docs:
     path: /api-docs
@@ -24,6 +35,9 @@ springdoc:
   swagger-ui:
     enabled: true
 
+
+jwt:
+  secret: 2jZA6EAK3oiiMtlYc7EPaGIqbeWFbn0v8yRYTsqgRbo=
 
 
 
