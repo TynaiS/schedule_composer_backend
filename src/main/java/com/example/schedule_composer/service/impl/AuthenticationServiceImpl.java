@@ -5,6 +5,7 @@ import com.example.schedule_composer.dto.post.*;
 import com.example.schedule_composer.email.MailBody;
 import com.example.schedule_composer.entity.RefreshToken;
 import com.example.schedule_composer.entity.User;
+import com.example.schedule_composer.exception.EmailAlreadyExistsException;
 import com.example.schedule_composer.exception.VerificationCodeExpiredException;
 import com.example.schedule_composer.repository.UserRepository;
 import com.example.schedule_composer.security.JwtService;
@@ -39,9 +40,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public String register(RegisterDTOPost request)
         {
-//        var userAlreadyRegistered = repository.findByEmail(request.getEmail()).isPresent();
+        var userAlreadyRegistered = userRepository.existsByEmail(request.getEmail());
 
-//        if (!userAlreadyRegistered) {
+        if (!userAlreadyRegistered) {
 
             String verificationCode = OtpGenerator.otpGenerator();
 
@@ -63,11 +64,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userRepository.save(user);
             return "Account verification email sent";
 
-//        } else {
-//            return AuthenticationDTOGet.builder()
-//                    .message("This email is already registered")
-//                    .build();
-//        }
+        } else {
+            throw new EmailAlreadyExistsException("Account with email " + request.getEmail() + " already exists");
+        }
 
     }
 

@@ -122,15 +122,15 @@ public class GlobalExceptionHandler {
     }
 
 
-//    @ExceptionHandler(EmailAlreadyExistsException.class)
-//    public ResponseEntity<ErrorResponse> handleEmailConflict(EmailAlreadyExistsException ex) {
-//        ErrorResponse errorResponse = new ErrorResponse(
-//                HttpStatus.CONFLICT.value(),
-//                "Email Conflict",
-//                ex.getMessage()
-//        );
-//        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
-//    }
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleEmailConflict(EmailAlreadyExistsException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                "Email Conflict",
+                ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
 
 
 }
