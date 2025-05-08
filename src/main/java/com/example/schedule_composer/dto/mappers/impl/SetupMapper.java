@@ -13,6 +13,7 @@ import com.example.schedule_composer.service.CourseService;
 import com.example.schedule_composer.service.GroupService;
 import com.example.schedule_composer.service.TeacherService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class SetupMapper implements DTOMapper<SetupDTOGet, SetupDTOPost, SetupDTOPatch, Setup, Long> {
 
     private final SetupRepository setupRepository;
@@ -30,16 +32,6 @@ public class SetupMapper implements DTOMapper<SetupDTOGet, SetupDTOPost, SetupDT
     private final CourseMapper courseMapper;
     private final TeacherMapper teacherMapper;
 
-    @Autowired
-    public SetupMapper(SetupRepository setupRepository, GroupService groupService, CourseService courseService, TeacherService teacherService, GroupMapper groupMapper, CourseMapper courseMapper, TeacherMapper teacherMapper) {
-        this.setupRepository = setupRepository;
-        this.groupService = groupService;
-        this.courseService = courseService;
-        this.teacherService = teacherService;
-        this.groupMapper = groupMapper;
-        this.courseMapper = courseMapper;
-        this.teacherMapper = teacherMapper;
-    }
     @Override
     public SetupDTOGet fromEntityToGet(Setup setup) {
         SetupDTOGet setupGet = new SetupDTOGet(

@@ -1,7 +1,6 @@
 package com.example.schedule_composer.factory;
 
 import com.example.schedule_composer.service.OAuth2UserInfo;
-import com.example.schedule_composer.service.impl.oauth2.GithubOAuth2UserInfo;
 import com.example.schedule_composer.service.impl.oauth2.GoogleOAuth2UserInfo;
 
 import java.util.Map;

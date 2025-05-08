@@ -11,6 +11,7 @@ import com.example.schedule_composer.entity.Teacher;
 import com.example.schedule_composer.repository.GroupRepository;
 import com.example.schedule_composer.service.DepartmentService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class GroupMapper implements DTOMapper<GroupDTOGet, GroupDTOPost, GroupDTOPatch, Group, Long> {
 
     private final GroupRepository groupRepository;
@@ -26,12 +28,6 @@ public class GroupMapper implements DTOMapper<GroupDTOGet, GroupDTOPost, GroupDT
 
     private final DepartmentService departmentService;
 
-    @Autowired
-    public GroupMapper(GroupRepository groupRepository, DepartmentMapper departmentMapper, DepartmentService departmentService) {
-        this.groupRepository = groupRepository;
-        this.departmentMapper = departmentMapper;
-        this.departmentService = departmentService;
-    }
     @Override
     public GroupDTOGet fromEntityToGet(Group group) {
         GroupDTOGet groupGet = new GroupDTOGet(group.getId(), group.getName(), departmentMapper.fromEntityToGet(group.getDepartment()), group.getSize());

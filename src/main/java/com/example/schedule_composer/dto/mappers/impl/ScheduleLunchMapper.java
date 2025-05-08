@@ -12,6 +12,7 @@ import com.example.schedule_composer.service.GroupService;
 import com.example.schedule_composer.repository.ScheduleLunchRepository;
 import com.example.schedule_composer.service.TimeSlotService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class
 ScheduleLunchMapper implements DTOMapper<ScheduleLunchDTOGet, ScheduleLunchDTOPost, ScheduleLunchDTOPatch, ScheduleLunch, Long> {
 
@@ -28,15 +30,6 @@ ScheduleLunchMapper implements DTOMapper<ScheduleLunchDTOGet, ScheduleLunchDTOPo
     private final GroupMapper groupMapper;
     private final TimeSlotMapper timeSlotMapper;
 
-
-    @Autowired
-    public ScheduleLunchMapper(ScheduleLunchRepository scheduleLunchRepository, GroupService groupService, TimeSlotService timeSlotService, CourseMapper courseMapper, GroupMapper groupMapper, TimeSlotMapper timeSlotMapper) {
-        this.scheduleLunchRepository = scheduleLunchRepository;
-        this.groupService = groupService;
-        this.timeSlotService = timeSlotService;
-        this.groupMapper = groupMapper;
-        this.timeSlotMapper = timeSlotMapper;
-    }
     @Override
     public ScheduleLunchDTOGet fromEntityToGet(ScheduleLunch scheduleLunch) {
         ScheduleLunchDTOGet scheduleLunchGet = new ScheduleLunchDTOGet(
