@@ -1,5 +1,6 @@
 package com.example.schedule_composer.entity;
 
+import com.example.schedule_composer.utils.AuthProvider;
 import com.example.schedule_composer.utils.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -26,7 +27,7 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "The name field cannot be blank")
@@ -37,9 +38,15 @@ public class User implements UserDetails {
     @Email(message = "Please enter email in proper format!")
     private String email;
 
-    @NotBlank(message = "The name field cannot be blank")
-    @Size(min = 5, message = "The password must have at least 5 characters")
+//    @NotBlank(message = "The name field cannot be blank")
+//    @Size(min = 5, message = "The password must have at least 5 characters")
     private String password;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @OneToOne(mappedBy = "user")
     private RefreshToken refreshToken;
@@ -53,6 +60,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private boolean isEmailVerified = false;
 
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
 
 
     @Enumerated(EnumType.STRING)
@@ -66,9 +75,20 @@ public class User implements UserDetails {
 
     private boolean isCredentialsNonExpired = true;
 
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override

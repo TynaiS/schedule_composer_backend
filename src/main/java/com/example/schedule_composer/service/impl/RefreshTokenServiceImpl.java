@@ -19,6 +19,10 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
+
+    private static final long REFRESH_TOKEN_EXPIRATION = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+
     @Override
     public RefreshToken createRefreshToken(String email) {
         User user = userRepository.findByEmail(email)
@@ -27,10 +31,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         RefreshToken refreshToken = user.getRefreshToken();
 
         if(refreshToken == null) {
-            long refreshTokenValidity = 5*60*60*10000;
             refreshToken = RefreshToken.builder()
-                    .refreshToken(UUID.randomUUID().toString())
-                    .expirationTime(Instant.now().plusMillis(refreshTokenValidity))
+                    .refreshToken(UUID.randomUUID().toString() + user.getId())
+                    .expirationTime(Instant.now().plusMillis(REFRESH_TOKEN_EXPIRATION))
                     .build();
 
             refreshTokenRepository.save(refreshToken);

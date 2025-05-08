@@ -1,3 +1,5 @@
+jwt:
+  secret: 2jZA6EAK3oiiMtlYc7EPaGIqbeWFbn0v8yRYTsqgRbo=
 spring:
   application:
     name: schedule_composer
@@ -8,7 +10,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
@@ -28,22 +30,33 @@ spring:
           auth: true
           starttls:
             enable: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            provider: google
+            client-id: 147094010419-8nabfgrhe7tc3n4udlhrvrenthfskm4a.apps.googleusercontent.com
+            client-secret: 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
+            scope: profile, email
+          github:
+            client-id: Ov23li2hRairLeiMUcX0
+            client-secret: e0890ca26dea10b105f819da041957133662e648
+            scope: read:user,user:email
+
 springdoc:
   api-docs:
-    path: /api-docs
     enabled: true
   swagger-ui:
     enabled: true
+    path: /api-docs
 
 
-jwt:
-  secret: 2jZA6EAK3oiiMtlYc7EPaGIqbeWFbn0v8yRYTsqgRbo=
 
 
 
 #spring:
-#  application:
-#    name: schedule_composer
+
 #  datasource:
 #    url: jdbc:h2:~/tes
 #    driver-class-name: org.h2.Driver
@@ -53,6 +66,7 @@ jwt:
 #  h2:
 #    console:
 #      enabled: true
+#      path: /h2-console
 #
 #  jpa:
 #    database-platform: org.hibernate.dialect.H2Dialect
@@ -67,9 +81,3 @@ jwt:
 #      platform: h2
 #      mode: never
 #
-#springdoc:
-#  api-docs:
-#    path: /api-docs
-#    enabled: true
-#  swagger-ui:
-#    enabled: true

@@ -19,10 +19,10 @@ import java.time.Instant;
 public class RefreshToken {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, unique = true)
     @NotBlank(message = "Please enter refresh token")
     private String refreshToken;
 

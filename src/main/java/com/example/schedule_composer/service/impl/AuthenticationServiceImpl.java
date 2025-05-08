@@ -99,6 +99,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public String verifyUser(VerifyUserDTOPost input) {
         User user = userService.getByEmail(input.getEmail());
+        if(user.isEmailVerified()){
+            return "Account is already verified";
+        }
         if (user.getVerificationCodeExpiresAt().isBefore(LocalDateTime.now())) {
             throw new VerificationCodeExpiredException("Verification code has expired");
         }
