@@ -3,20 +3,6 @@ jwt:
 spring:
   application:
     name: schedule_composer
-  datasource:
-    url: jdbc:postgresql://localhost:5432/schedule_composer
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
   jackson:
     time-format: HH:mm
   mail:
@@ -39,45 +25,59 @@ spring:
             client-id: 147094010419-8nabfgrhe7tc3n4udlhrvrenthfskm4a.apps.googleusercontent.com
             client-secret: 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
             scope: profile, email
-          github:
-            client-id: Ov23li2hRairLeiMUcX0
-            client-secret: e0890ca26dea10b105f819da041957133662e648
-            scope: read:user,user:email
+  profiles:
+    active: prod
 
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
     enabled: true
-    path: /api-docs
+    path: /swagger-ui.html
 
 
 
+---
+# Dev profile
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:~/tes
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
 
-#spring:
-
-#  datasource:
-#    url: jdbc:h2:~/tes
-#    driver-class-name: org.h2.Driver
-#    username: sa
-#    password: ""
-#
-#  h2:
-#    console:
-#      enabled: true
-#      path: /h2-console
-#
-#  jpa:
-#    database-platform: org.hibernate.dialect.H2Dialect
-#    properties:
-#      hibernate:
-#        format_sql: true
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#  sql:
-#    init:
-#      platform: h2
-#      mode: never
-#
+---
+# Prod profile
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://localhost:5432/schedule_composer
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: create
+    show-sql: true
