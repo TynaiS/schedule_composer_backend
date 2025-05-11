@@ -78,7 +78,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
         if(fp.getExpirationTime().isBefore(LocalDateTime.now())) {
             forgotPasswordRepository.deleteById(fp.getId());
-            throw new VerificationCodeExpiredException("Verification code has expired");
+            throw new VerificationCodeExpiredException("Verification code expired");
         }
 
         String encodedPassword = passwordEncoder.encode(resetPasswordDTOPost.getNewPassword());

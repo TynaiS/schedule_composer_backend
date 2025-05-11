@@ -24,6 +24,7 @@ public class JwtService {
     private String SECRET_KEY;
 
     private static final long ACCESS_TOKEN_EXPIRATION = 15 * 60 * 1000; // 15 minutes
+//    private static final long ACCESS_TOKEN_EXPIRATION = 1 * 60 * 1000; // 1 minute
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

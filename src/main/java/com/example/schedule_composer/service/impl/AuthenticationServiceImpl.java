@@ -102,7 +102,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return "Account is already verified";
         }
         if (user.getVerificationCodeExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new VerificationCodeExpiredException("Verification code has expired");
+            throw new VerificationCodeExpiredException("Verification code expired");
         }
         if (passwordEncoder.matches(input.getVerificationCode(), user.getVerificationCode())) {
             user.setEnabled(true);

@@ -1,17 +1,12 @@
 package com.example.schedule_composer.security;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.CredentialsExpiredException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter  {
            @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
-//        try{
+        try{
             final String authHeader = request.getHeader("Authorization");
             final String jwt;
             final String userEmail;
@@ -72,12 +67,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter  {
                 }
             }
             filterChain.doFilter(request, response);
-//        }catch (ExpiredJwtException e) {
-//            SecurityContextHolder.clearContext();
-//            throw new BadCredentialsException("JWT has expired. Please log in again.");
-//        } catch (Exception e) {
-//            SecurityContextHolder.clearContext();
-//            throw new InsufficientAuthenticationException("JWT is invalid. Please provide a valid token.");
-//        }
+        }catch (RuntimeException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setContentType("application/json");
+            response.getWriter().write(
+                    String.format("{\"status\":400,\"error\":\"Jwt Exception\",\"message\":\"%s\"}", e.getMessage())
+            );
+            return;
+        }
     }
 }
