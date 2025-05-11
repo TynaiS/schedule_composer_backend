@@ -7,6 +7,7 @@ import com.example.schedule_composer.dto.post.RoomDTOPost;
 import com.example.schedule_composer.entity.Room;
 import com.example.schedule_composer.repository.RoomRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,14 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class RoomMapper implements DTOMapper<RoomDTOGet, RoomDTOPost, RoomDTOPatch, Room, Long> {
 
     private final RoomRepository roomRepository;
 
-    @Autowired
-    public RoomMapper(RoomRepository roomRepository) {
-        this.roomRepository = roomRepository;
-    }
     @Override
     public RoomDTOGet fromEntityToGet(Room room) {
         RoomDTOGet roomGet = new RoomDTOGet(room.getId(), room.getRoomNum(), room.getType(), room.getSize());

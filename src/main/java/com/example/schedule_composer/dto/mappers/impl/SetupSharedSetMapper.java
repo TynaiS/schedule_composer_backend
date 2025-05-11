@@ -7,6 +7,7 @@ import com.example.schedule_composer.dto.post.SetupSharedSetDTOPost;
 import com.example.schedule_composer.entity.SetupSharedSet;
 import com.example.schedule_composer.repository.SetupSharedSetRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,14 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class SetupSharedSetMapper implements DTOMapper<SetupSharedSetDTOGet, SetupSharedSetDTOPost, SetupSharedSetDTOPatch, SetupSharedSet, Long> {
 
     private final SetupSharedSetRepository setupSharedSetRepository;
 
-    @Autowired
-    public SetupSharedSetMapper(SetupSharedSetRepository setupSharedSetRepository) {
-        this.setupSharedSetRepository = setupSharedSetRepository;
-    }
     @Override
     public SetupSharedSetDTOGet fromEntityToGet(SetupSharedSet setupSharedSet) {
         SetupSharedSetDTOGet setupSharedSetGet = new SetupSharedSetDTOGet(setupSharedSet.getId(), setupSharedSet.getName(), setupSharedSet.getHoursAWeek());

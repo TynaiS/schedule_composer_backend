@@ -11,6 +11,7 @@ import com.example.schedule_composer.service.SetupSharedService;
 import com.example.schedule_composer.service.RoomService;
 import com.example.schedule_composer.service.TimeSlotService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class ScheduleSharedMapper implements DTOMapper<ScheduleSharedDTOGet, ScheduleSharedDTOPost, ScheduleSharedDTOPatch, ScheduleShared, Long> {
 
     private final ScheduleSharedRepository scheduleSharedRepository;
@@ -29,17 +31,6 @@ public class ScheduleSharedMapper implements DTOMapper<ScheduleSharedDTOGet, Sch
     private final TimeSlotMapper timeSlotMapper;
 
 
-
-    @Autowired
-    public ScheduleSharedMapper(ScheduleSharedRepository scheduleSharedRepository, SetupSharedService setupSharedService, RoomService roomService, TimeSlotService timeSlotService, CourseMapper courseMapper, SetupSharedMapper setupSharedMapper, RoomMapper roomMapper, TimeSlotMapper timeSlotMapper) {
-        this.scheduleSharedRepository = scheduleSharedRepository;
-        this.setupSharedService = setupSharedService;
-        this.roomService = roomService;
-        this.timeSlotService = timeSlotService;
-        this.setupSharedMapper = setupSharedMapper;
-        this.roomMapper = roomMapper;
-        this.timeSlotMapper = timeSlotMapper;
-    }
     @Override
     public ScheduleSharedDTOGet fromEntityToGet(ScheduleShared schedule) {
         ScheduleSharedDTOGet scheduleGet = new ScheduleSharedDTOGet(

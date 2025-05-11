@@ -11,6 +11,7 @@ import com.example.schedule_composer.service.SetupService;
 import com.example.schedule_composer.service.RoomService;
 import com.example.schedule_composer.service.TimeSlotService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost, ScheduleDTOPatch, Schedule, Long> {
 
     private final ScheduleRepository scheduleRepository;
@@ -29,17 +31,6 @@ public class ScheduleMapper implements DTOMapper<ScheduleDTOGet, ScheduleDTOPost
     private final TimeSlotMapper timeSlotMapper;
 
 
-
-    @Autowired
-    public ScheduleMapper(ScheduleRepository scheduleRepository, SetupService setupService, RoomService roomService, TimeSlotService timeSlotService, CourseMapper courseMapper, SetupMapper setupMapper, RoomMapper roomMapper, TimeSlotMapper timeSlotMapper) {
-        this.scheduleRepository = scheduleRepository;
-        this.setupService = setupService;
-        this.roomService = roomService;
-        this.timeSlotService = timeSlotService;
-        this.setupMapper = setupMapper;
-        this.roomMapper = roomMapper;
-        this.timeSlotMapper = timeSlotMapper;
-    }
     @Override
     public ScheduleDTOGet fromEntityToGet(Schedule schedule) {
         ScheduleDTOGet scheduleGet = new ScheduleDTOGet(

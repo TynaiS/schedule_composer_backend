@@ -7,6 +7,7 @@ import com.example.schedule_composer.dto.post.CourseDTOPost;
 import com.example.schedule_composer.entity.Course;
 import com.example.schedule_composer.repository.CourseRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,14 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class CourseMapper implements DTOMapper<CourseDTOGet, CourseDTOPost, CourseDTOPatch, Course, Long> {
 
     private final CourseRepository courseRepository;
 
-    @Autowired
-    public CourseMapper(CourseRepository courseRepository) {
-        this.courseRepository = courseRepository;
-    }
     @Override
     public CourseDTOGet fromEntityToGet(Course course) {
         CourseDTOGet courseGet = new CourseDTOGet(course.getId(), course.getName(), course.getCredits());

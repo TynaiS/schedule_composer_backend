@@ -11,6 +11,7 @@ import com.example.schedule_composer.service.GroupService;
 import com.example.schedule_composer.service.SetupSharedSetService;
 import com.example.schedule_composer.service.TeacherService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class SetupSharedMapper implements DTOMapper<SetupSharedDTOGet, SetupSharedDTOPost, SetupSharedDTOPatch, SetupShared, Long> {
 
     private final SetupSharedRepository setupSharedRepository;
@@ -31,18 +33,6 @@ public class SetupSharedMapper implements DTOMapper<SetupSharedDTOGet, SetupShar
     private final SetupSharedSetMapper setupSharedSetMapper;
 
 
-    @Autowired
-    public SetupSharedMapper(SetupSharedRepository setupSharedRepository, CourseService courseService, TeacherService teacherService, GroupService groupService, SetupSharedSetService setupSharedSetService, CourseMapper courseMapper, TeacherMapper teacherMapper, GroupMapper groupMapper, SetupSharedSetMapper setupSharedSetMapper) {
-        this.setupSharedRepository = setupSharedRepository;
-        this.courseService = courseService;
-        this.teacherService = teacherService;
-        this.groupService = groupService;
-        this.setupSharedSetService = setupSharedSetService;
-        this.courseMapper = courseMapper;
-        this.teacherMapper = teacherMapper;
-        this.groupMapper = groupMapper;
-        this.setupSharedSetMapper = setupSharedSetMapper;
-    }
     @Override
     public SetupSharedDTOGet fromEntityToGet(SetupShared setupShared) {
         SetupSharedDTOGet setupSharedGet = new SetupSharedDTOGet(

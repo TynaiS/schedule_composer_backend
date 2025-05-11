@@ -15,4 +15,11 @@ public class ApiConstants {
     public static final String SCHEDULE_SHARED_API = BASE_API + "/schedule-shared";
     public static final String TEACHER_API = BASE_API + "/teachers";
     public static final String TIME_SLOT_API = BASE_API + "/time-slots";
+
+
+
+    public static final String AUTHENTICATION = BASE_API + "/auth";
+    public static final String FORGOT_PASSWORD = BASE_API + "/forgot-password";
+    public static final String USER = BASE_API + "/user";
+
 }

@@ -9,6 +9,7 @@ import com.example.schedule_composer.repository.TimeSlotRepository;
 import com.example.schedule_composer.utils.TimeSlotOrdered;
 import com.example.schedule_composer.utils.TimeSlotValidator;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,16 +20,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
+@RequiredArgsConstructor
 public class TimeSlotMapperImpl implements TimeSlotMapper {
 
     private final TimeSlotRepository timeSlotRepository;
     private final TimeSlotValidator timeSlotValidator;
-
-    @Autowired
-    public TimeSlotMapperImpl(TimeSlotRepository timeSlotRepository,  TimeSlotValidator timeSlotValidator) {
-        this.timeSlotRepository = timeSlotRepository;
-        this.timeSlotValidator = timeSlotValidator;
-    }
 
     @Override
     public TimeSlotDTOGet fromEntityToGet(TimeSlot timeSlot) {
