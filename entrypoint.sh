@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Create log directory if it doesn't exist
 mkdir -p /logs
 
