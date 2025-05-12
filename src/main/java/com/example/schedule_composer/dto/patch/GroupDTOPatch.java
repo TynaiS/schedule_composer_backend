@@ -1,6 +1,6 @@
 package com.example.schedule_composer.dto.patch;
 
-import com.example.schedule_composer.utils.GroupRoomSize;
+import com.example.schedule_composer.utils.types.GroupRoomSize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.example.schedule_composer.entity;
 
-import com.example.schedule_composer.utils.TeachingMode;
+import com.example.schedule_composer.utils.types.TeachingMode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

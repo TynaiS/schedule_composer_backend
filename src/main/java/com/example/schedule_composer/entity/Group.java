@@ -1,9 +1,8 @@
 package com.example.schedule_composer.entity;
 
-import com.example.schedule_composer.utils.GroupRoomSize;
+import com.example.schedule_composer.utils.types.GroupRoomSize;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 @Entity
 @Table(name = "groups")

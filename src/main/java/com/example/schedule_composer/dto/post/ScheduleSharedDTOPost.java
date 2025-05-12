@@ -1,9 +1,6 @@
 package com.example.schedule_composer.dto.post;
 
-import com.example.schedule_composer.dto.get.SetupSharedDTOGet;
-import com.example.schedule_composer.dto.get.RoomDTOGet;
-import com.example.schedule_composer.dto.get.TimeSlotDTOGet;
-import com.example.schedule_composer.utils.TeachingMode;
+import com.example.schedule_composer.utils.types.TeachingMode;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

@@ -7,7 +7,7 @@ import com.example.schedule_composer.dto.post.RoomDTOPost;
 import com.example.schedule_composer.entity.Room;
 import com.example.schedule_composer.repository.RoomRepository;
 import com.example.schedule_composer.service.RoomService;
-import com.example.schedule_composer.utils.RoomType;
+import com.example.schedule_composer.utils.types.RoomType;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

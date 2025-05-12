@@ -1,11 +1,10 @@
 package com.example.schedule_composer.entity;
 
-import com.example.schedule_composer.utils.AuthProvider;
-import com.example.schedule_composer.utils.UserRole;
+import com.example.schedule_composer.utils.types.AuthProvider;
+import com.example.schedule_composer.utils.types.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

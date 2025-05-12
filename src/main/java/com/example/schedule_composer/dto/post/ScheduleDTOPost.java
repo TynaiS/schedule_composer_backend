@@ -1,19 +1,12 @@
 package com.example.schedule_composer.dto.post;
 
-import com.example.schedule_composer.dto.get.SetupDTOGet;
-import com.example.schedule_composer.dto.get.RoomDTOGet;
-import com.example.schedule_composer.dto.get.TimeSlotDTOGet;
-import com.example.schedule_composer.entity.TimeSlot;
-import com.example.schedule_composer.utils.TeachingMode;
+import com.example.schedule_composer.utils.types.TeachingMode;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 
 import java.time.DayOfWeek;
-import java.time.LocalTime;
 import java.util.List;
 
 @Getter

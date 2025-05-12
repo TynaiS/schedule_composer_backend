@@ -1,6 +1,6 @@
 package com.example.schedule_composer.dto.post;
 
-import com.example.schedule_composer.utils.GroupRoomSize;
+import com.example.schedule_composer.utils.types.GroupRoomSize;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

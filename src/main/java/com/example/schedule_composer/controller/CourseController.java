@@ -5,18 +5,16 @@ import com.example.schedule_composer.dto.patch.CourseDTOPatch;
 import com.example.schedule_composer.dto.post.CourseDTOPost;
 import com.example.schedule_composer.service.CourseService;
 import com.example.schedule_composer.utils.ApiConstants;
-import com.example.schedule_composer.utils.CoursePriority;
-import com.example.schedule_composer.utils.TeachingMode;
+import com.example.schedule_composer.utils.types.CoursePriority;
+import com.example.schedule_composer.utils.types.TeachingMode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController

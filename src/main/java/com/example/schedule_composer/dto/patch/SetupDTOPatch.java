@@ -1,7 +1,7 @@
 package com.example.schedule_composer.dto.patch;
 
-import com.example.schedule_composer.utils.CoursePriority;
-import com.example.schedule_composer.utils.RoomType;
+import com.example.schedule_composer.utils.types.CoursePriority;
+import com.example.schedule_composer.utils.types.RoomType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

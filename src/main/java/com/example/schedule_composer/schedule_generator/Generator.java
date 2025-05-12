@@ -3,8 +3,8 @@
 //import com.example.schedule_composer.entity.*;
 //import com.example.schedule_composer.service.*;
 //import com.example.schedule_composer.utils.RandomUtils;
-//import com.example.schedule_composer.utils.RoomType;
-//import com.example.schedule_composer.utils.TeachingMode;
+//import com.example.schedule_composer.utils.types.RoomType;
+//import com.example.schedule_composer.utils.types.TeachingMode;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Component;
 //

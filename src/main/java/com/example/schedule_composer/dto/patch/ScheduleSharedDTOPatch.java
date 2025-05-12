@@ -1,6 +1,6 @@
 package com.example.schedule_composer.dto.patch;
 
-import com.example.schedule_composer.utils.TeachingMode;
+import com.example.schedule_composer.utils.types.TeachingMode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
