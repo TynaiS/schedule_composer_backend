@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-alpine
+FROM alpine/java:21-jdk
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
 COPY entrypoint.sh /entrypoint.sh
