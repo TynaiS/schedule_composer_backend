@@ -1,7 +1,7 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.RoomDTOGet;
-import com.example.schedule_composer.dto.mappers.impl.RoomMapper;
+import com.example.schedule_composer.mappers.impl.RoomMapper;
 import com.example.schedule_composer.dto.patch.RoomDTOPatch;
 import com.example.schedule_composer.dto.post.RoomDTOPost;
 import com.example.schedule_composer.entity.Room;

@@ -1,6 +1,15 @@
 jwt:
   secret: 2jZA6EAK3oiiMtlYc7EPaGIqbeWFbn0v8yRYTsqgRbo=
 spring:
+#  jpa:
+#    properties:
+#      javax:
+#        persistence:
+#          schema-generation:
+#            scripts:
+#              action: create
+#              create-target: ddl.sql
+
   application:
     name: schedule_composer
   jackson:
@@ -78,6 +87,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
     hibernate:
       ddl-auto: update
     show-sql: true

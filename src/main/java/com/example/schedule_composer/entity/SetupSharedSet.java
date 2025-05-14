@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "setup_shared_sets")
+@Table(name = "setup_shared_set")
 @Data
 @Builder
 @AllArgsConstructor

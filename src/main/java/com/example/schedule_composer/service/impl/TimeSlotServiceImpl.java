@@ -1,7 +1,7 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.TimeSlotDTOGet;
-import com.example.schedule_composer.dto.mappers.TimeSlotMapper;
+import com.example.schedule_composer.mappers.TimeSlotMapper;
 import com.example.schedule_composer.dto.patch.TimeSlotDTOPatch;
 import com.example.schedule_composer.dto.post.TimeSlotDTOPost;
 import com.example.schedule_composer.entity.TimeSlot;

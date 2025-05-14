@@ -1,7 +1,7 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.SetupSharedDTOGet;
-import com.example.schedule_composer.dto.mappers.impl.SetupSharedMapper;
+import com.example.schedule_composer.mappers.impl.SetupSharedMapper;
 import com.example.schedule_composer.dto.patch.SetupSharedDTOPatch;
 import com.example.schedule_composer.dto.post.SetupSharedDTOPost;
 import com.example.schedule_composer.entity.SetupShared;

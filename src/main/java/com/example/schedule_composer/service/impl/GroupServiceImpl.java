@@ -1,7 +1,7 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.GroupDTOGet;
-import com.example.schedule_composer.dto.mappers.impl.GroupMapper;
+import com.example.schedule_composer.mappers.impl.GroupMapper;
 import com.example.schedule_composer.dto.patch.GroupDTOPatch;
 import com.example.schedule_composer.dto.post.GroupDTOPost;
 import com.example.schedule_composer.entity.Group;

@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 
 @Entity
-@Table
+@Table(name = "refresh_token")
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class RefreshToken {
 
     @Id

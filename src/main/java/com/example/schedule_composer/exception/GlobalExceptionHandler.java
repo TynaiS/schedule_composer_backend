@@ -111,11 +111,11 @@ public class GlobalExceptionHandler {
 //        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
 //    }
 
-    @ExceptionHandler(VerificationCodeExpiredException.class)
-    public ResponseEntity<ErrorResponse> handleVerificationCodeExpiredException(VerificationCodeExpiredException ex) {
+    @ExceptionHandler(VerificationCodeException.class)
+    public ResponseEntity<ErrorResponse> handleVerificationCodeExpiredException(VerificationCodeException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
-                "Code expired",
+                "Verification Error",
                 ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
@@ -143,4 +143,14 @@ public class GlobalExceptionHandler {
     }
 
 
+
+    @ExceptionHandler(AccountAlreadyVerifiedException.class)
+    public ResponseEntity<ErrorResponse> handleAccountAlreadyVerifiedException(AccountAlreadyVerifiedException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                "Conflict",
+                ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
 }

@@ -23,9 +23,9 @@
 //    private final RoomService roomService;
 //    private final TeacherService teacherService;
 //
-//    private final ScheduleService scheduleService;
-//    private final ScheduleSharedService scheduleSharedService;
-//    private final ScheduleLunchService scheduleLunchService;
+//    private final ScheduleItemService scheduleService;
+//    private final ScheduleSharedItemService scheduleSharedService;
+//    private final ScheduleLunchItemService scheduleLunchService;
 //    private final SetupService setupService;
 //    private final SetupSharedService setupSharedService;
 //
@@ -36,9 +36,9 @@
 //            GroupService groupService,
 //            RoomService roomService,
 //            TeacherService teacherService,
-//            ScheduleService scheduleService,
-//            ScheduleSharedService scheduleSharedService,
-//            ScheduleLunchService scheduleLunchService,
+//            ScheduleItemService scheduleService,
+//            ScheduleSharedItemService scheduleSharedService,
+//            ScheduleLunchItemService scheduleLunchService,
 //            SetupService setupService,
 //            SetupSharedService setupSharedService
 //            ) {
@@ -83,9 +83,9 @@
 //                boolean isTeacherSame = false;
 //                boolean isRoomSame = false;
 //
-//                // Checking each SetupShared item with the ScheduleShared items
+//                // Checking each SetupShared item with the ScheduleSharedItem items
 //
-//                for(ScheduleShared scheduleSharedItem : scheduleSharedService.getAllEntities()){
+//                for(ScheduleSharedItem scheduleSharedItem : scheduleSharedService.getAllEntities()){
 //
 //                    isTeacherSame = scheduleSharedItem.getSetupShared().getTeacher().getId() == currSetupShared.getTeacher().getId();
 //                    isRoomSame = randomRoom.getId() == scheduleSharedItem.getRoom().getId();
@@ -117,9 +117,9 @@
 //                    }
 //                }
 //
-//                // Checking each SetupShared item with the Schedule items
+//                // Checking each SetupShared item with the ScheduleItem items
 //
-//                for(Schedule scheduleItem : scheduleService.getAllEntities()){
+//                for(ScheduleItem scheduleItem : scheduleService.getAllEntities()){
 //
 //                    isTeacherSame = scheduleItem.getSetup().getTeacher().getId() == currSetupShared.getTeacher().getId();
 //                    isRoomSame = randomRoom.getId() == scheduleItem.getRoom().getId();
@@ -152,7 +152,7 @@
 //                }
 //
 //                if(canBeAdded){
-//                    ScheduleShared newItem = ScheduleShared.builder()
+//                    ScheduleSharedItem newItem = ScheduleSharedItem.builder()
 //                            .setupShared(currSetupShared)
 //                            .room(randomRoom)
 //                            .day(randomDayOfWeek)
