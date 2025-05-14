@@ -2,21 +2,18 @@ package com.example.schedule_composer.security;
 
 import com.example.schedule_composer.entity.User;
 import com.example.schedule_composer.entity.oauth2.UserPrincipal;
-import com.example.schedule_composer.exception.EmailAlreadyExistsException;
 import com.example.schedule_composer.factory.OAuth2UserInfoFactory;
 import com.example.schedule_composer.repository.UserRepository;
 import com.example.schedule_composer.service.OAuth2UserInfo;
-import com.example.schedule_composer.utils.AuthProvider;
-import com.example.schedule_composer.utils.UserRole;
+import com.example.schedule_composer.utils.types.AuthProvider;
+import com.example.schedule_composer.utils.types.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 

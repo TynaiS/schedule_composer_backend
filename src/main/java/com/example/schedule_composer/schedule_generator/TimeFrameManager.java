@@ -1,6 +1,6 @@
 package com.example.schedule_composer.schedule_generator;
 
-import com.example.schedule_composer.dto.mappers.TimeSlotMapper;
+import com.example.schedule_composer.mappers.TimeSlotMapper;
 import com.example.schedule_composer.entity.TimeSlot;
 import com.example.schedule_composer.repository.TimeSlotRepository;
 import com.example.schedule_composer.utils.TimeSlotOrdered;

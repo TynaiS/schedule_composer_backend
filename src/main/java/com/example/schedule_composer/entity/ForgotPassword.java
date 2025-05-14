@@ -2,19 +2,17 @@ package com.example.schedule_composer.entity;
 
 import com.example.schedule_composer.entity.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
+@Table(name = "forgot_password")
+@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ForgotPassword {
 
     @Id

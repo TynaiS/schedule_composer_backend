@@ -1,6 +1,5 @@
 package com.example.schedule_composer.entity;
 
-import com.example.schedule_composer.utils.RoomType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "time_slots")
+@Table(name = "time_slot")
 @Data
 @Builder
 @AllArgsConstructor

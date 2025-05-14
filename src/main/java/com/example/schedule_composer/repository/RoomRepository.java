@@ -2,7 +2,7 @@ package com.example.schedule_composer.repository;
 
 
 import com.example.schedule_composer.entity.Room;
-import com.example.schedule_composer.utils.RoomType;
+import com.example.schedule_composer.utils.types.RoomType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.CourseDTOGet;
-import com.example.schedule_composer.dto.mappers.impl.CourseMapper;
+import com.example.schedule_composer.mappers.impl.CourseMapper;
 import com.example.schedule_composer.dto.patch.CourseDTOPatch;
 import com.example.schedule_composer.dto.post.CourseDTOPost;
 import com.example.schedule_composer.entity.Course;

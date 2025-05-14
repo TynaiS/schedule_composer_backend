@@ -5,7 +5,7 @@ import lombok.*;
 import org.springframework.stereotype.Service;
 
 @Entity
-@Table(name = "departments")
+@Table(name = "department")
 @Data
 @Builder
 @AllArgsConstructor

@@ -1,7 +1,7 @@
 package com.example.schedule_composer.entity;
 
-import com.example.schedule_composer.utils.GroupRoomSize;
-import com.example.schedule_composer.utils.RoomType;
+import com.example.schedule_composer.utils.types.GroupRoomSize;
+import com.example.schedule_composer.utils.types.RoomType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "rooms")
+@Table(name = "room")
 @Data
 @Builder
 @AllArgsConstructor

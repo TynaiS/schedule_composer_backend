@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         info = @Info(
-                title = "Schedule Composer API",
+                title = "ScheduleItem Composer API",
                 version = "1.0",
                 description = ""
         )

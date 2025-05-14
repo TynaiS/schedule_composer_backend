@@ -2,12 +2,10 @@ package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.post.EmailDTOPost;
 import com.example.schedule_composer.dto.post.ResetPasswordDTOPost;
-import com.example.schedule_composer.dto.post.SetupSharedSetDTOPost;
-import com.example.schedule_composer.dto.post.TimeSlotDTOPost;
 import com.example.schedule_composer.email.MailBody;
 import com.example.schedule_composer.entity.ForgotPassword;
 import com.example.schedule_composer.entity.User;
-import com.example.schedule_composer.exception.VerificationCodeExpiredException;
+import com.example.schedule_composer.exception.VerificationCodeException;
 import com.example.schedule_composer.repository.ForgotPasswordRepository;
 import com.example.schedule_composer.repository.UserRepository;
 import com.example.schedule_composer.service.ForgotPasswordService;
@@ -47,7 +45,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
             String verificationCode = OtpGenerator.otpGenerator();
             ForgotPassword fp = ForgotPassword.builder()
                     .verificationCode(passwordEncoder.encode(verificationCode))
-                    .expirationTime(LocalDateTime.now().plusMinutes(1))
+                    .expirationTime(LocalDateTime.now().plusMinutes(5))
                     .user(user)
                     .build();
 
@@ -70,15 +68,15 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         User user = userService.getByEmail(email);
 
         ForgotPassword fp = forgotPasswordRepository.findByUser(user)
-                .orElseThrow(() -> new RuntimeException("No reset request found for email: " + email));
+                .orElseThrow(() -> new EntityNotFoundException("No reset request found for email: " + email));
 
         if (!passwordEncoder.matches(verificationCode, fp.getVerificationCode())) {
-            throw new RuntimeException("Invalid verification code for email: " + email);
+            throw new VerificationCodeException("Invalid verification code");
         }
 
         if(fp.getExpirationTime().isBefore(LocalDateTime.now())) {
             forgotPasswordRepository.deleteById(fp.getId());
-            throw new VerificationCodeExpiredException("Verification code expired");
+            throw new VerificationCodeException("Verification code expired");
         }
 
         String encodedPassword = passwordEncoder.encode(resetPasswordDTOPost.getNewPassword());
@@ -94,7 +92,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         String htmlMessage = "<html>"
                 + "<body style=\"font-family: Arial, sans-serif;\">"
                 + "<div style=\"background-color: #f5f5f5; padding: 20px;\">"
-                + "<h2 style=\"color: #333;\">Welcome to Schedule Composer app!</h2>"
+                + "<h2 style=\"color: #333;\">Welcome to ScheduleItem Composer app!</h2>"
                 + "<p style=\"font-size: 16px;\">Please enter the verification code below to update password:</p>"
                 + "<div style=\"background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1);\">"
                 + "<h3 style=\"color: #333;\">Verification Code:</h3>"

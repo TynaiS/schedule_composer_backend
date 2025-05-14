@@ -1,7 +1,7 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.TeacherDTOGet;
-import com.example.schedule_composer.dto.mappers.impl.TeacherMapper;
+import com.example.schedule_composer.mappers.impl.TeacherMapper;
 import com.example.schedule_composer.dto.patch.TeacherDTOPatch;
 import com.example.schedule_composer.dto.post.TeacherDTOPost;
 import com.example.schedule_composer.entity.Teacher;

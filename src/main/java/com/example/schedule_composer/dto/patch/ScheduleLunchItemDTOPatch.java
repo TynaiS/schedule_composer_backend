@@ -1,0 +1,17 @@
+package com.example.schedule_composer.dto.patch;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.DayOfWeek;
+import java.util.List;
+
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ScheduleLunchItemDTOPatch {
+    private Long groupId;
+    private DayOfWeek day;
+    private List<Long> timeSlotIds;
+}

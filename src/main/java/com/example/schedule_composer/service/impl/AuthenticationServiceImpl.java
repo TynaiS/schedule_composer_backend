@@ -5,18 +5,18 @@ import com.example.schedule_composer.dto.post.*;
 import com.example.schedule_composer.email.MailBody;
 import com.example.schedule_composer.entity.RefreshToken;
 import com.example.schedule_composer.entity.User;
+import com.example.schedule_composer.exception.AccountAlreadyVerifiedException;
 import com.example.schedule_composer.exception.EmailAlreadyExistsException;
-import com.example.schedule_composer.exception.VerificationCodeExpiredException;
+import com.example.schedule_composer.exception.VerificationCodeException;
 import com.example.schedule_composer.repository.UserRepository;
 import com.example.schedule_composer.security.JwtService;
 import com.example.schedule_composer.service.AuthenticationService;
 import com.example.schedule_composer.service.EmailService;
 import com.example.schedule_composer.service.RefreshTokenService;
 import com.example.schedule_composer.utils.OtpGenerator;
-import com.example.schedule_composer.utils.UserRole;
+import com.example.schedule_composer.utils.types.UserRole;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,7 +57,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .isEnabled(false)
                     .isEmailVerified(false)
                     .verificationCode(passwordEncoder.encode(verificationCode))
-                    .verificationCodeExpiresAt(LocalDateTime.now().plusMinutes(1))
+                    .verificationCodeExpiresAt(LocalDateTime.now().plusMinutes(5))
                     .build();
             System.out.println(verificationCode + "  " + user.getVerificationCode());
             sendVerificationEmail(user, verificationCode);
@@ -99,19 +99,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public String verifyUser(VerifyUserDTOPost input) {
         User user = userService.getByEmail(input.getEmail());
         if(user.isEmailVerified()){
-            return "Account is already verified";
-        }
-        if (user.getVerificationCodeExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new VerificationCodeExpiredException("Verification code expired");
-        }
-        if (passwordEncoder.matches(input.getVerificationCode(), user.getVerificationCode())) {
+            throw new AccountAlreadyVerifiedException("Account is already verified");
+        } else if(!passwordEncoder.matches(input.getVerificationCode(), user.getVerificationCode())) {
+            throw new VerificationCodeException("Invalid verification code");
+        }else if(user.getVerificationCodeExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new VerificationCodeException("Verification code expired");
+        } else if(passwordEncoder.matches(input.getVerificationCode(), user.getVerificationCode())) {
             user.setEnabled(true);
             user.setEmailVerified(true);
             user.setVerificationCode(null);
             user.setVerificationCodeExpiresAt(null);
             userRepository.save(user);
         } else {
-            throw new RuntimeException("Invalid verification code");
+            throw new VerificationCodeException("Invalid verification code");
         }
 
         return "Account verified successfully";
@@ -122,11 +122,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String email = emailDTO.getEmail();
         User user = userService.getByEmail(email);
         if (user.isEmailVerified()) {
-            throw new RuntimeException("Account is already verified");
+            throw new AccountAlreadyVerifiedException("Account is already verified");
         }
         String verificationCode = OtpGenerator.otpGenerator();
         user.setVerificationCode(passwordEncoder.encode(verificationCode));
-        user.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(1));
+        user.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(5));
         sendVerificationEmail(user, verificationCode);
         userRepository.save(user);
         return "Account verification email resent";
@@ -140,7 +140,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String htmlMessage = "<html>"
                 + "<body style=\"font-family: Arial, sans-serif;\">"
                 + "<div style=\"background-color: #f5f5f5; padding: 20px;\">"
-                + "<h2 style=\"color: #333;\">Welcome to Schedule Composer app!</h2>"
+                + "<h2 style=\"color: #333;\">Welcome to ScheduleItem Composer app!</h2>"
                 + "<p style=\"font-size: 16px;\">Please enter the verification code below to continue:</p>"
                 + "<div style=\"background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1);\">"
                 + "<h3 style=\"color: #333;\">Verification Code:</h3>"

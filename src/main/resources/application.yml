@@ -1,6 +1,15 @@
 jwt:
   secret: 2jZA6EAK3oiiMtlYc7EPaGIqbeWFbn0v8yRYTsqgRbo=
 spring:
+#  jpa:
+#    properties:
+#      javax:
+#        persistence:
+#          schema-generation:
+#            scripts:
+#              action: create
+#              create-target: ddl.sql
+
   application:
     name: schedule_composer
   jackson:
@@ -16,15 +25,15 @@ spring:
           auth: true
           starttls:
             enable: true
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            provider: google
-            client-id: 147094010419-8nabfgrhe7tc3n4udlhrvrenthfskm4a.apps.googleusercontent.com
-            client-secret: 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
-            scope: profile, email
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            provider: google
+#            client-id: 147094010419-8nabfgrhe7tc3n4udlhrvrenthfskm4a.apps.googleusercontent.com
+#            client-secret: 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
+#            scope: profile, email
   profiles:
     active: prod
 
@@ -78,6 +87,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
     hibernate:
       ddl-auto: update
     show-sql: true

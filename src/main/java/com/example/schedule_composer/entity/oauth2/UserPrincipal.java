@@ -1,7 +1,7 @@
 package com.example.schedule_composer.entity.oauth2;
 
 import com.example.schedule_composer.entity.User;
-import com.example.schedule_composer.utils.UserRole;
+import com.example.schedule_composer.utils.types.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

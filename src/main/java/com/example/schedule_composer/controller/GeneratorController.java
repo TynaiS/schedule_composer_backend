@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GeneratorController {
     @PostMapping("/generate")
     public ResponseEntity<String> generateSchedule() {
-        return ResponseEntity.ok("Schedule generated successfully!");
+        return ResponseEntity.ok("ScheduleItem generated successfully!");
     }
 
 }
