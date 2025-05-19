@@ -3,71 +3,88 @@ package com.example.schedule_composer.controller;
 import com.example.schedule_composer.dto.get.RoomDTOGet;
 import com.example.schedule_composer.dto.patch.RoomDTOPatch;
 import com.example.schedule_composer.dto.post.RoomDTOPost;
+import com.example.schedule_composer.entity.User;
 import com.example.schedule_composer.service.RoomService;
 import com.example.schedule_composer.utils.ApiConstants;
 import com.example.schedule_composer.utils.types.RoomType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(ApiConstants.ROOM_API)
-@Tag(name = "Room API", description = "Endpoints for managing rooms")
+@RequiredArgsConstructor
+@RequestMapping(ApiConstants.SCHEDULE_API + "/{scheduleId}" + ApiConstants.ROOM_API)
+@Tag(name = "Room API", description = "Endpoints for managing Rooms inside of Schedule")
 public class RoomController {
 
     private final RoomService roomService;
 
-    @Autowired
-    public RoomController(RoomService roomService) {
-        this.roomService = roomService;
-    }
 
-
-    @GetMapping("/{id}")
-    @Operation(summary = "Get room by ID", description = "Retrieves a specific room by its ID")
-    public ResponseEntity<RoomDTOGet> getById(@PathVariable("id") Long id) {
-        RoomDTOGet room = roomService.getById(id);
+    @GetMapping("/{roomId}")
+    @Operation(summary = "Get Room by ID", description = "Retrieves a specific Room by its ID for Schedule")
+    public ResponseEntity<RoomDTOGet> getById(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("roomId") Long roomId) {
+        Long userId = user.getId();
+        RoomDTOGet room = roomService.getByIdForUserSchedule(userId, scheduleId, roomId);
         return ResponseEntity.ok(room);
     }
 
-    @GetMapping()
-    @Operation(summary = "Get all rooms", description = "Retrieves a list of all rooms")
-    public ResponseEntity<List<RoomDTOGet>> getAll() {
-        List<RoomDTOGet> rooms = roomService.getAll();
+    @GetMapping
+    @Operation(summary = "Get all Rooms", description = "Retrieves all Rooms for Schedule")
+    public ResponseEntity<List<RoomDTOGet>> getAll(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId) {
+        Long userId = user.getId();
+        List<RoomDTOGet> rooms = roomService.getAllForUserSchedule(userId, scheduleId);
         return ResponseEntity.ok(rooms);
     }
 
-    @PostMapping()
-    @Operation(summary = "Create room", description = "Creates new room")
+    @PostMapping
+    @Operation(summary = "Create Room", description = "Creates a new Room for Schedule")
     public ResponseEntity<RoomDTOGet> create(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
             @Valid @RequestBody RoomDTOPost request) {
-        RoomDTOGet savedEntity = roomService.create(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
+        Long userId = user.getId();
+        RoomDTOGet savedRoom = roomService.createForUserSchedule(userId, scheduleId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedRoom);
     }
 
-    @PatchMapping("/{id}")
-    @Operation(summary = "Update room", description = "Updates an existing room")
+
+    @PatchMapping("/{roomId}")
+    @Operation(summary = "Update Room", description = "Updates an existing Room for Schedule")
     public ResponseEntity<RoomDTOGet> update(
-            @PathVariable Long id,
-            @RequestBody RoomDTOPatch patchRequest) {
-        RoomDTOGet updated = roomService.update(id, patchRequest);
-        return ResponseEntity.ok(updated);
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("roomId") Long roomId,
+            @Valid @RequestBody RoomDTOPatch patchRequest) {
+        Long userId = user.getId();
+        RoomDTOGet updatedRoom = roomService.updateForUserSchedule(userId, scheduleId, roomId, patchRequest);
+        return ResponseEntity.ok(updatedRoom);
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete room by ID", description = "Deletes a specific room by its ID")
-    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
-        roomService.deleteById(id);
+    @DeleteMapping("/{roomId}")
+    @Operation(summary = "Delete Room", description = "Deletes a specific Room for Schedule")
+    public ResponseEntity<Void> deleteById(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("roomId") Long roomId) {
+        Long userId = user.getId();
+        roomService.deleteByIdForUserSchedule(userId, scheduleId, roomId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/room-types")
+    @Operation(summary = "Get Room types", description = "Retrieves all possible Room types")
     public ResponseEntity<List<RoomType>> getRoomTypes() {
         return ResponseEntity.ok(List.of(RoomType.values()));
     }

@@ -12,19 +12,20 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class ScheduleSharedItemDTOPost {
-    @NotNull(message = "Setup-Shared ID cannot be null")
-    private Long setupSharedId;
+
+    @NotNull(message = "SetupItem-Shared ID cannot be null")
+    private Long setupSharedItemId;
 
     @NotNull(message = "Room ID cannot be null")
     private Long roomId;
 
-    @NotNull(message = "Day of the week cannot be null")
+    @NotNull(message = "DayOfWeek cannot be null")
     private DayOfWeek day;
 
-    @NotNull(message = "Time Slots cannot be null")
-    @Size(min = 1, message = "Time Slots cannot be empty")
+    @NotNull(message = "TimeSlots cannot be null")
+    @Size(min = 1, message = "TimeSlots cannot be empty")
     private List<Long> timeSlotIds;
 
-    @NotNull(message = "Teaching Mode cannot be null")
+    @NotNull(message = "TeachingMode cannot be null")
     private TeachingMode teachingMode;
 }

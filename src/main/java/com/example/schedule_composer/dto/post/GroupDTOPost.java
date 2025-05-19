@@ -13,7 +13,7 @@ public class GroupDTOPost {
     @NotBlank(message = "Group name cannot be blank")
     private String name;
 
-    @NotNull(message = "Department id cannot be null")
+    @NotNull(message = "Department ID cannot be null")
     private Long departmentId;
 
     @NotNull(message = "Group size cannot be null")

@@ -25,21 +25,29 @@ public class ScheduleSharedItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "setup_shared_id", referencedColumnName = "id")
-    private SetupShared setupShared;
+    @JoinColumn(name = "schedule_version_id", nullable = false)
+    private ScheduleVersion scheduleVersion;
+
+    @ManyToOne
+    @JoinColumn(name = "setup_shared_item_id", referencedColumnName = "id")
+    private SetupSharedItem setupSharedItem;
 
     @ManyToOne
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private DayOfWeek day;
 
     @ManyToMany
     @JoinTable(
-            name = TABLE_NAME + "_time_slots",
+            name = TABLE_NAME + "_time_slot",
             joinColumns = @JoinColumn(name = TABLE_NAME + "_id"),
-            inverseJoinColumns = @JoinColumn(name = "time_slot_id")
+            inverseJoinColumns = @JoinColumn(name = "time_slot_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {TABLE_NAME + "_id", "time_slot_id"})
+
     )
     private List<TimeSlot> timeSlots;
 

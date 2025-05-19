@@ -11,7 +11,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class RoomDTOPost {
 
-
     @NotBlank(message = "Room number cannot be blank")
     private String roomNum;
 

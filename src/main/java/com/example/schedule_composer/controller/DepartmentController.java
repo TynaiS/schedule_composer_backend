@@ -3,67 +3,81 @@ package com.example.schedule_composer.controller;
 import com.example.schedule_composer.dto.get.DepartmentDTOGet;
 import com.example.schedule_composer.dto.patch.DepartmentDTOPatch;
 import com.example.schedule_composer.dto.post.DepartmentDTOPost;
+import com.example.schedule_composer.entity.User;
 import com.example.schedule_composer.service.DepartmentService;
 import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(ApiConstants.DEPARTMENT_API)
-@Tag(name = "Department API", description = "Endpoints for managing student departments")
+@RequiredArgsConstructor
+@RequestMapping(ApiConstants.SCHEDULE_API + "/{scheduleId}" + ApiConstants.DEPARTMENT_API)
+@Tag(name = "Department API", description = "Endpoints for managing student Departments inside of Schedule")
 public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-    @Autowired
-    public DepartmentController(DepartmentService departmentService) {
-        this.departmentService = departmentService;
-    }
 
-
-
-    @GetMapping("/{id}")
-    @Operation(summary = "Get department by ID", description = "Retrieves a specific student department by its ID")
-    public ResponseEntity<DepartmentDTOGet> getById(@PathVariable("id") Long id) {
-        DepartmentDTOGet department = departmentService.getById(id);
+    @GetMapping("/{departmentId}")
+    @Operation(summary = "Get Department by ID", description = "Retrieves a specific Department by its ID for Schedule")
+    public ResponseEntity<DepartmentDTOGet> getById(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("departmentId") Long departmentId) {
+        Long userId = user.getId();
+        DepartmentDTOGet department = departmentService.getByIdForUserSchedule(userId, scheduleId, departmentId);
         return ResponseEntity.ok(department);
     }
 
     @GetMapping()
-    @Operation(summary = "Get all departments", description = "Retrieves a list of all student departments")
-    public ResponseEntity<List<DepartmentDTOGet>> getAll() {
-        List<DepartmentDTOGet> departments = departmentService.getAll();
+    @Operation(summary = "Get all Departments", description = "Retrieves a list of all student Departments for Schedule")
+    public ResponseEntity<List<DepartmentDTOGet>> getAll(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId) {
+        Long userId = user.getId();
+        List<DepartmentDTOGet> departments = departmentService.getAllForUserSchedule(userId, scheduleId);
         return ResponseEntity.ok(departments);
     }
 
     @PostMapping()
-    @Operation(summary = "Create department", description = "Creates new department")
+    @Operation(summary = "Create Department", description = "Creates new Department for Schedule")
     public ResponseEntity<DepartmentDTOGet> create(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
             @Valid @RequestBody DepartmentDTOPost request) {
-        DepartmentDTOGet savedEntity = departmentService.create(request);
+        Long userId = user.getId();
+        DepartmentDTOGet savedEntity = departmentService.createForUserSchedule(userId, scheduleId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
-    @PatchMapping("/{id}")
-    @Operation(summary = "Update department", description = "Updates an existing department")
+    @PatchMapping("/{departmentId}")
+    @Operation(summary = "Update Department", description = "Updates an existing Department for Schedule")
     public ResponseEntity<DepartmentDTOGet> update(
-            @PathVariable Long id,
-            @RequestBody DepartmentDTOPatch patchRequest) {
-        DepartmentDTOGet updated = departmentService.update(id, patchRequest);
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("departmentId") Long departmentId,
+            @Valid @RequestBody DepartmentDTOPatch patchRequest) {
+        Long userId = user.getId();
+        DepartmentDTOGet updated = departmentService.updateForUserSchedule(userId, scheduleId, departmentId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete department by ID", description = "Deletes a specific department by its ID")
-    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
-        departmentService.deleteById(id);
+    @DeleteMapping("/{departmentId}")
+    @Operation(summary = "Delete Department by ID", description = "Deletes a specific Department by its ID for Schedule")
+    public ResponseEntity<Void> deleteById(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("departmentId") Long departmentId) {
+        Long userId = user.getId();
+        departmentService.deleteByIdForUserSchedule(userId, scheduleId, departmentId);
         return ResponseEntity.noContent().build();
     }
 

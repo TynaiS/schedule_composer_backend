@@ -10,18 +10,24 @@ import java.util.List;
 public interface ScheduleLunchItemService {
 
     ScheduleLunchItemDTOGet getById(Long id);
-
-    ScheduleLunchItem getEntityById(Long id);
-
-    Boolean checkIfExists(Long id);
-
+    ScheduleLunchItemDTOGet create(ScheduleLunchItemDTOPost createDto);
+    ScheduleLunchItemDTOGet update(Long id, ScheduleLunchItemDTOPatch updateDto);
+    void deleteById(Long id);
     List<ScheduleLunchItemDTOGet> getAll();
 
+
+    ScheduleLunchItem getEntityById(Long id);
+    Boolean checkIfExists(Long id);
     List<ScheduleLunchItem> getAllEntities();
 
-    ScheduleLunchItemDTOGet create(ScheduleLunchItemDTOPost createDto);
 
-    ScheduleLunchItemDTOGet update(Long id, ScheduleLunchItemDTOPatch updateDto);
 
-    void deleteById(Long id);
+    ScheduleLunchItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleLunchItemId);
+    List<ScheduleLunchItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId);
+    ScheduleLunchItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, ScheduleLunchItemDTOPost request);
+    ScheduleLunchItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleLunchItemId, ScheduleLunchItemDTOPatch patchRequest);
+    void deleteByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleLunchItemId);
+
+    ScheduleLunchItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleLunchItemId);
+    List<ScheduleLunchItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId);
 }

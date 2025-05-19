@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class TeacherDTOPost {
+
     @NotBlank(message = "Teacher Name cannot be blank")
     private String name;
 

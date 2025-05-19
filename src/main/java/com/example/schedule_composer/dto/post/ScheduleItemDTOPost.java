@@ -13,19 +13,19 @@ import java.util.List;
 @AllArgsConstructor
 public class ScheduleItemDTOPost {
 
-    @NotNull(message = "Setup item ID cannot be null")
-    private Long setupId;
+    @NotNull(message = "SetupItem ID cannot be null")
+    private Long setupItemId;
 
     @NotNull(message = "Room ID cannot be null")
     private Long roomId;
 
-    @NotNull(message = "Day of the week cannot be null")
+    @NotNull(message = "DayOfWeek cannot be null")
     private DayOfWeek day;
 
-    @NotNull(message = "Time Slots cannot be null")
-    @Size(min = 1, message = "Time Slots cannot be empty")
+    @NotNull(message = "TimeSlots cannot be null")
+    @Size(min = 1, message = "TimeSlots cannot be empty")
     private List<Long> timeSlotIds;
 
-    @NotNull(message = "Teaching Mode cannot be null")
+    @NotNull(message = "TeachingMode cannot be null")
     private TeachingMode teachingMode;
 }

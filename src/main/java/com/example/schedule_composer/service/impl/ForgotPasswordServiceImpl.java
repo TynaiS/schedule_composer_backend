@@ -41,7 +41,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         String message = "";
         String email = emailDTO.getEmail();
         if(userService.checkIsExists(email)){
-            User user = userService.getByEmail(email);
+            User user = userService.getEntityByEmail(email);
             String verificationCode = OtpGenerator.otpGenerator();
             ForgotPassword fp = ForgotPassword.builder()
                     .verificationCode(passwordEncoder.encode(verificationCode))
@@ -65,7 +65,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         String email = resetPasswordDTOPost.getEmail();
         String verificationCode = resetPasswordDTOPost.getVerificationCode();
 
-        User user = userService.getByEmail(email);
+        User user = userService.getEntityByEmail(email);
 
         ForgotPassword fp = forgotPasswordRepository.findByUser(user)
                 .orElseThrow(() -> new EntityNotFoundException("No reset request found for email: " + email));

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "groups")
+@Table(name = "_group")
 @Data
 @Builder
 @AllArgsConstructor
@@ -16,6 +16,10 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "schedule_id", nullable = false)
+    private Schedule schedule;
 
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id")

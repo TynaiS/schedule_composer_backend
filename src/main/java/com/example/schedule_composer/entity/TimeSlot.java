@@ -19,6 +19,10 @@ public class TimeSlot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "schedule_id", nullable = false)
+    private Schedule schedule;
+
     @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
 

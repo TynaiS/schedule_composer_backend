@@ -11,4 +11,7 @@ import java.util.List;
 public interface GroupRepository extends JpaRepository<Group, Long> {
     @Override
     List<Group> findAll();
+
+    List<Group> findAllByScheduleId(Long scheduleId);
+
 }

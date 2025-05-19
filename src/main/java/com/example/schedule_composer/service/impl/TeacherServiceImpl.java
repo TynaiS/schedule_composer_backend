@@ -1,29 +1,27 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.TeacherDTOGet;
-import com.example.schedule_composer.mappers.impl.TeacherMapper;
 import com.example.schedule_composer.dto.patch.TeacherDTOPatch;
 import com.example.schedule_composer.dto.post.TeacherDTOPost;
+import com.example.schedule_composer.entity.Schedule;
 import com.example.schedule_composer.entity.Teacher;
+import com.example.schedule_composer.mappers.TeacherMapper;
 import com.example.schedule_composer.repository.TeacherRepository;
+import com.example.schedule_composer.service.ScheduleService;
 import com.example.schedule_composer.service.TeacherService;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
     private final TeacherMapper teacherMapper;
-
-    @Autowired
-    public TeacherServiceImpl(TeacherRepository teacherRepository,TeacherMapper teacherMapper){
-        this.teacherRepository = teacherRepository;
-        this.teacherMapper = teacherMapper;
-    }
+    private final ScheduleService scheduleService;
 
     @Override
     public TeacherDTOGet getById(Long id) {
@@ -31,10 +29,33 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public TeacherDTOGet create(TeacherDTOPost createDto) {
+        Teacher savedEntity = teacherRepository.save(teacherMapper.fromPostToEntity(createDto));
+        return teacherMapper.fromEntityToGet(savedEntity);
+    }
+
+    @Override
+    public TeacherDTOGet update(Long id, TeacherDTOPatch updateDto) {
+        Teacher existing = getEntityById(id);
+        Teacher updatedEntity = teacherRepository.save(teacherMapper.fromPatchToEntity(updateDto, existing));
+        return teacherMapper.fromEntityToGet(updatedEntity);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        if (checkIfExists(id)) teacherRepository.deleteById(id);
+    }
+
+    @Override
+    public List<TeacherDTOGet> getAll() {
+        List<Teacher> entities = teacherRepository.findAll();
+        return teacherMapper.fromEntityListToGetList(entities);
+    }
+
+    @Override
     public Teacher getEntityById(Long id) {
-        Teacher entity = teacherRepository.findById(id)
+        return teacherRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Teacher not found with id: " + id));
-        return entity;
     }
 
     @Override
@@ -46,31 +67,59 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public List<TeacherDTOGet> getAll() {
-        List<Teacher> entities = teacherRepository.findAll();
-
-        return teacherMapper.fromEntityListToGetList(entities);
-    }
-
-    @Override
     public List<Teacher> getAllEntities() {
         return teacherRepository.findAll();
     }
 
     @Override
-    public TeacherDTOGet create(TeacherDTOPost createDto) {
-        Teacher savedEntity = teacherRepository.save(teacherMapper.fromPostToEntity(createDto));
-        return teacherMapper.fromEntityToGet(savedEntity);
+    public TeacherDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long teacherId) {
+        return teacherMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, scheduleId, teacherId));
     }
 
     @Override
-    public TeacherDTOGet update(Long id, TeacherDTOPatch updateDto) {
-        Teacher updatedEntity = teacherRepository.save(teacherMapper.fromPatchToEntity(updateDto, id));
-        return teacherMapper.fromEntityToGet(updatedEntity);
+    public List<TeacherDTOGet> getAllForUserSchedule(Long userId, Long scheduleId) {
+        return teacherMapper.fromEntityListToGetList(getAllEntitiesForUserSchedule(userId, scheduleId));
     }
 
     @Override
-    public void deleteById(Long id) {
-        if(checkIfExists(id)) teacherRepository.deleteById(id);
+    public TeacherDTOGet createForUserSchedule(Long userId, Long scheduleId, TeacherDTOPost request) {
+        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
+
+        Teacher teacher = teacherMapper.fromPostToEntity(request);
+        teacher.setSchedule(schedule);
+        Teacher saved = teacherRepository.save(teacher);
+        return teacherMapper.fromEntityToGet(saved);
+    }
+
+    @Override
+    public TeacherDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long teacherId, TeacherDTOPatch patchRequest) {
+        Teacher teacher = getEntityByIdForUserSchedule(userId, scheduleId, teacherId);
+
+        teacher = teacherMapper.fromPatchToEntity(patchRequest, teacher);
+        Teacher updated = teacherRepository.save(teacher);
+        return teacherMapper.fromEntityToGet(updated);
+    }
+
+    @Override
+    public void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long teacherId) {
+        Teacher teacher = getEntityByIdForUserSchedule(userId, scheduleId, teacherId);
+
+        teacherRepository.delete(teacher);
+    }
+
+    @Override
+    public Teacher getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long teacherId) {
+        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
+
+        Teacher teacher = getEntityById(teacherId);
+        scheduleService.checkScheduleId(schedule, teacher.getSchedule().getId(), "Teacher");
+        return teacher;
+    }
+
+    @Override
+    public List<Teacher> getAllEntitiesForUserSchedule(Long userId, Long scheduleId) {
+        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
+
+        return teacherRepository.findAllByScheduleId(schedule.getId());
     }
 }

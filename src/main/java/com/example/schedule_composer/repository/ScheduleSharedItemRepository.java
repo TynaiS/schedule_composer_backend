@@ -11,4 +11,5 @@ public interface ScheduleSharedItemRepository extends JpaRepository<ScheduleShar
     @Override
     List<ScheduleSharedItem> findAll();
 
+    List<ScheduleSharedItem> findAllByScheduleVersionId(Long scheduleVersionId);
 }

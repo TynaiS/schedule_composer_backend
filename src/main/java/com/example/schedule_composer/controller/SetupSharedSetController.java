@@ -3,66 +3,90 @@ package com.example.schedule_composer.controller;
 import com.example.schedule_composer.dto.get.SetupSharedSetDTOGet;
 import com.example.schedule_composer.dto.patch.SetupSharedSetDTOPatch;
 import com.example.schedule_composer.dto.post.SetupSharedSetDTOPost;
+import com.example.schedule_composer.entity.User;
 import com.example.schedule_composer.service.SetupSharedSetService;
 import com.example.schedule_composer.utils.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(ApiConstants.SETUP_SHARED_SET_API)
-@Tag(name = "SetupSharedSet API", description = "Endpoints for managing setupSharedSet")
+@RequiredArgsConstructor
+@RequestMapping(ApiConstants.SCHEDULE_API + "/{scheduleId}" +
+        ApiConstants.SCHEDULE_VERSION_API + "/{scheduleVersionId}" +
+        ApiConstants.SETUP_SHARED_SET_API
+)
+@Tag(name = "SetupSharedSet API", description = "Endpoints for managing SetupSharedSets of ScheduleVersion of Schedule")
 public class SetupSharedSetController {
 
     private final SetupSharedSetService setupSharedSetService;
 
-    @Autowired
-    public SetupSharedSetController(SetupSharedSetService setupSharedSetService) {
-        this.setupSharedSetService = setupSharedSetService;
-    }
 
-
-    @GetMapping("/{id}")
-    @Operation(summary = "Get setupSharedSet by ID", description = "Retrieves a specific student setupSharedSet by its ID")
-    public ResponseEntity<SetupSharedSetDTOGet> getById(@PathVariable("id") Long id) {
-        SetupSharedSetDTOGet setupSharedSet = setupSharedSetService.getById(id);
+    @GetMapping("/{setupSharedSetId}")
+    @Operation(summary = "Get SetupSharedSet by ID", description = "Retrieves a specific student SetupSharedSet by its ID for ScheduleVersion")
+    public ResponseEntity<SetupSharedSetDTOGet> getById(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("scheduleVersionId") Long scheduleVersionId,
+            @PathVariable("setupSharedSetId") Long setupSharedSetId) {
+        Long userId = user.getId();
+        SetupSharedSetDTOGet setupSharedSet = setupSharedSetService.getByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, setupSharedSetId);
         return ResponseEntity.ok(setupSharedSet);
     }
 
     @GetMapping()
-    @Operation(summary = "Get all setupSharedSets", description = "Retrieves a list of all student setupSharedSets")
-    public ResponseEntity<List<SetupSharedSetDTOGet>> getAll() {
-        List<SetupSharedSetDTOGet> setupSharedSets = setupSharedSetService.getAll();
+    @Operation(summary = "Get all SetupSharedSets", description = "Retrieves a list of all student SetupSharedSets for ScheduleVersion")
+    public ResponseEntity<List<SetupSharedSetDTOGet>> getAll(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("scheduleVersionId") Long scheduleVersionId) {
+        Long userId = user.getId();
+        List<SetupSharedSetDTOGet> setupSharedSets = setupSharedSetService.getAllForUserScheduleVersion(userId, scheduleId, scheduleVersionId);
         return ResponseEntity.ok(setupSharedSets);
     }
 
     @PostMapping()
-    @Operation(summary = "Create setupSharedSet", description = "Creates new setupSharedSet")
+    @Operation(summary = "Create SetupSharedSet", description = "Creates new SetupSharedSet for ScheduleVersion")
     public ResponseEntity<SetupSharedSetDTOGet> create(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("scheduleVersionId") Long scheduleVersionId,
             @Valid @RequestBody SetupSharedSetDTOPost request) {
-        SetupSharedSetDTOGet savedEntity = setupSharedSetService.create(request);
+        Long userId = user.getId();
+        SetupSharedSetDTOGet savedEntity = setupSharedSetService.createForUserScheduleVersion(userId, scheduleId, scheduleVersionId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
-    @PatchMapping("/{id}")
-    @Operation(summary = "Update setupSharedSet", description = "Updates an existing setupSharedSet")
+    @PatchMapping("/{setupSharedSetId}")
+    @Operation(summary = "Update SetupSharedSet", description = "Updates an existing SetupSharedSet for ScheduleVersion")
     public ResponseEntity<SetupSharedSetDTOGet> update(
-            @PathVariable Long id,
-            @RequestBody SetupSharedSetDTOPatch patchRequest) {
-        SetupSharedSetDTOGet updated = setupSharedSetService.update(id, patchRequest);
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("scheduleVersionId") Long scheduleVersionId,
+            @PathVariable("setupSharedSetId") Long setupSharedSetId,
+            @Valid @RequestBody SetupSharedSetDTOPatch patchRequest) {
+        Long userId = user.getId();
+        SetupSharedSetDTOGet updated = setupSharedSetService.updateForUserScheduleVersion(userId, scheduleId, scheduleVersionId, setupSharedSetId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete setupSharedSet by ID", description = "Deletes a specific setupSharedSet by its ID")
-    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
-        setupSharedSetService.deleteById(id);
+    @DeleteMapping("/{setupSharedSetId}")
+    @Operation(summary = "Delete SetupSharedSet by ID", description = "Deletes a specific SetupSharedSet by its ID for ScheduleVersion")
+    public ResponseEntity<Void> deleteById(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("scheduleVersionId") Long scheduleVersionId,
+            @PathVariable("setupSharedSetId") Long setupSharedSetId) {
+        Long userId = user.getId();
+        setupSharedSetService.deleteByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, setupSharedSetId);
         return ResponseEntity.noContent().build();
     }
 

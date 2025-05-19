@@ -11,4 +11,7 @@ import java.util.List;
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     @Override
     List<Teacher> findAll();
+
+    List<Teacher> findAllByScheduleId(Long scheduleId);
+
 }

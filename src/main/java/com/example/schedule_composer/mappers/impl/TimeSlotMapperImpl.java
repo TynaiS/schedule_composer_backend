@@ -1,14 +1,11 @@
 package com.example.schedule_composer.mappers.impl;
 
 import com.example.schedule_composer.dto.get.TimeSlotDTOGet;
-import com.example.schedule_composer.mappers.TimeSlotMapper;
 import com.example.schedule_composer.dto.patch.TimeSlotDTOPatch;
 import com.example.schedule_composer.dto.post.TimeSlotDTOPost;
 import com.example.schedule_composer.entity.TimeSlot;
-import com.example.schedule_composer.repository.TimeSlotRepository;
+import com.example.schedule_composer.mappers.TimeSlotMapper;
 import com.example.schedule_composer.utils.TimeSlotOrdered;
-import com.example.schedule_composer.utils.TimeSlotValidator;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +19,14 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class TimeSlotMapperImpl implements TimeSlotMapper {
 
-    private final TimeSlotRepository timeSlotRepository;
-    private final TimeSlotValidator timeSlotValidator;
-
     @Override
     public TimeSlotDTOGet fromEntityToGet(TimeSlot timeSlot) {
-        TimeSlotDTOGet timeSlotGet = new TimeSlotDTOGet(timeSlot.getId(), timeSlot.getStartTime(), timeSlot.getEndTime());
+        TimeSlotDTOGet timeSlotGet = TimeSlotDTOGet.builder()
+                .id(timeSlot.getId())
+                .scheduleId(timeSlot.getSchedule().getId())
+                .startTime(timeSlot.getStartTime())
+                .endTime(timeSlot.getEndTime())
+                .build();
         return timeSlotGet;
     }
 
@@ -57,11 +56,7 @@ public class TimeSlotMapperImpl implements TimeSlotMapper {
     }
 
     @Override
-    public TimeSlot fromPatchToEntity(TimeSlotDTOPatch timeSlotDTOPatch, Long timeSlotId) {
-
-        TimeSlot existingTimeSlot = timeSlotRepository.findById(timeSlotId)
-                .orElseThrow(() -> new EntityNotFoundException("Time slot not found with id: " + timeSlotId));
-
+    public TimeSlot fromPatchToEntity(TimeSlotDTOPatch timeSlotDTOPatch, TimeSlot timeSlotToUpdate) {
 
         LocalTime newStartTime = timeSlotDTOPatch.getStartTime();
         LocalTime newEndTime = timeSlotDTOPatch.getEndTime();
@@ -70,25 +65,25 @@ public class TimeSlotMapperImpl implements TimeSlotMapper {
             if (newStartTime.isAfter(newEndTime) || newStartTime.equals(newEndTime)) {
                 throw new IllegalArgumentException("Start time must be before end time");
             }
-            existingTimeSlot.setStartTime(newStartTime);
-            existingTimeSlot.setEndTime(newEndTime);
+            timeSlotToUpdate.setStartTime(newStartTime);
+            timeSlotToUpdate.setEndTime(newEndTime);
         }
 
 
         else if (newStartTime != null) {
-            if (existingTimeSlot.getEndTime() != null && newStartTime.isAfter(existingTimeSlot.getEndTime())) {
+            if (timeSlotToUpdate.getEndTime() != null && newStartTime.isAfter(timeSlotToUpdate.getEndTime())) {
                 throw new IllegalArgumentException("Start time must be before end time");
             }
-            existingTimeSlot.setStartTime(newStartTime);
+            timeSlotToUpdate.setStartTime(newStartTime);
         }
         else if (newEndTime != null) {
-            if (existingTimeSlot.getStartTime() != null && newEndTime.isBefore(existingTimeSlot.getStartTime())) {
+            if (timeSlotToUpdate.getStartTime() != null && newEndTime.isBefore(timeSlotToUpdate.getStartTime())) {
                 throw new IllegalArgumentException("Start time must be before end time");
             }
-            existingTimeSlot.setEndTime(newEndTime);
+            timeSlotToUpdate.setEndTime(newEndTime);
         }
 
-        return existingTimeSlot;
+        return timeSlotToUpdate;
     }
 
 

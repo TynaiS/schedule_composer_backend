@@ -11,4 +11,7 @@ import java.util.List;
 public interface ScheduleLunchItemRepository extends JpaRepository<ScheduleLunchItem, Long> {
     @Override
     List<ScheduleLunchItem> findAll();
+
+    List<ScheduleLunchItem> findAllByScheduleVersionId(Long scheduleVersionId);
+
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ScheduleItemDTOPatch {
-    private Long setupId;
+    private Long setupItemId;
     private Long roomId;
     private DayOfWeek day;
     private List<Long> timeSlotIds;
