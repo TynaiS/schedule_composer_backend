@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class SetupSharedSetDTOPost {
+
     @NotBlank(message = "SetupSharedSet name cannot be blank")
     private String name;
 

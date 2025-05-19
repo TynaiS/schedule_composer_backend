@@ -74,6 +74,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter  {
                     String.format("{\"status\":400,\"error\":\"Jwt Exception\",\"message\":\"%s\"}", e.getMessage())
             );
             return;
+
+//            SecurityContextHolder.clearContext();
+//            throw e;
         }
     }
 }

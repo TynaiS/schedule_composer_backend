@@ -26,8 +26,8 @@
 //    private final ScheduleItemService scheduleService;
 //    private final ScheduleSharedItemService scheduleSharedService;
 //    private final ScheduleLunchItemService scheduleLunchService;
-//    private final SetupService setupService;
-//    private final SetupSharedService setupSharedService;
+//    private final SetupItemService setupItemService;
+//    private final SetupSharedItemService setupSharedItemService;
 //
 //    @Autowired
 //    public Generator(
@@ -39,8 +39,8 @@
 //            ScheduleItemService scheduleService,
 //            ScheduleSharedItemService scheduleSharedService,
 //            ScheduleLunchItemService scheduleLunchService,
-//            SetupService setupService,
-//            SetupSharedService setupSharedService
+//            SetupItemService setupItemService,
+//            SetupSharedItemService setupSharedItemService
 //            ) {
 //        this.timeFrameManager = timeFrameManager;
 //        this.courseService = courseService;
@@ -50,13 +50,13 @@
 //        this.scheduleService = scheduleService;
 //        this.scheduleSharedService = scheduleSharedService;
 //        this.scheduleLunchService = scheduleLunchService;
-//        this.setupService = setupService;
-//        this.setupSharedService = setupSharedService;
+//        this.setupItemService = setupItemService;
+//        this.setupSharedItemService = setupSharedItemService;
 //    }
 //
 //    public void generate() {
-//        List<Setup> setups = setupService.getAllEntities();
-//        List<SetupShared> setupsShared = setupSharedService.getAllEntities();
+//        List<SetupItem> setups = setupItemService.getAllEntities();
+//        List<SetupSharedItem> setupsShared = setupSharedItemService.getAllEntities();
 //
 //        List<Room> labRooms = roomService.getAllEntities();
 //        List<Room> classRooms = roomService.getAllEntities();
@@ -66,9 +66,9 @@
 //        Collections.shuffle(labRooms);
 //        Collections.shuffle(classRooms);
 //
-//        // Attempting to distribute SetupShared items
+//        // Attempting to distribute SetupSharedItem items
 //
-//        for(SetupShared currSetupShared : setupsShared) {
+//        for(SetupSharedItem currSetupShared : setupsShared) {
 //            boolean canBeAdded = true;
 //            DayOfWeek randomDayOfWeek;
 //            List<TimeSlot> randomtimeFrame;
@@ -83,11 +83,11 @@
 //                boolean isTeacherSame = false;
 //                boolean isRoomSame = false;
 //
-//                // Checking each SetupShared item with the ScheduleSharedItem items
+//                // Checking each SetupSharedItem item with the ScheduleSharedItem items
 //
 //                for(ScheduleSharedItem scheduleSharedItem : scheduleSharedService.getAllEntities()){
 //
-//                    isTeacherSame = scheduleSharedItem.getSetupShared().getTeacher().getId() == currSetupShared.getTeacher().getId();
+//                    isTeacherSame = scheduleSharedItem.getSetupSharedItem().getTeacher().getId() == currSetupShared.getTeacher().getId();
 //                    isRoomSame = randomRoom.getId() == scheduleSharedItem.getRoom().getId();
 //
 //                    for(TimeSlot scheduleSharedTimeSlot : scheduleSharedItem.getTimeSlots()) {
@@ -117,11 +117,11 @@
 //                    }
 //                }
 //
-//                // Checking each SetupShared item with the ScheduleItem items
+//                // Checking each SetupSharedItem item with the ScheduleItem items
 //
 //                for(ScheduleItem scheduleItem : scheduleService.getAllEntities()){
 //
-//                    isTeacherSame = scheduleItem.getSetup().getTeacher().getId() == currSetupShared.getTeacher().getId();
+//                    isTeacherSame = scheduleItem.getSetupItem().getTeacher().getId() == currSetupShared.getTeacher().getId();
 //                    isRoomSame = randomRoom.getId() == scheduleItem.getRoom().getId();
 //
 //                    for(TimeSlot scheduleTimeSlot : scheduleItem.getTimeSlots()) {
@@ -153,7 +153,7 @@
 //
 //                if(canBeAdded){
 //                    ScheduleSharedItem newItem = ScheduleSharedItem.builder()
-//                            .setupShared(currSetupShared)
+//                            .setupSharedItem(currSetupShared)
 //                            .room(randomRoom)
 //                            .day(randomDayOfWeek)
 //                            .timeSlots(randomtimeFrame)

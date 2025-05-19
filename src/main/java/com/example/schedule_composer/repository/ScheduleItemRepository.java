@@ -11,4 +11,6 @@ import java.util.List;
 public interface ScheduleItemRepository extends JpaRepository<ScheduleItem, Long> {
     @Override
     List<ScheduleItem> findAll();
+
+    List<ScheduleItem> findAllByScheduleVersionId(Long scheduleVersionId);
 }

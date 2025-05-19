@@ -5,7 +5,7 @@ This is a backend part of the **Schedule composer**, app that allows to create c
 [![Deploy App](https://github.com/TynaiS/schedule_composer_backend/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/TynaiS/schedule_composer_backend/actions/workflows/deploy.yml)
 
 ## How to run
-To setup database: 
+To setupItem database: 
   1) Create your PostgreSQL database locally.
   2) Change these lines
      "

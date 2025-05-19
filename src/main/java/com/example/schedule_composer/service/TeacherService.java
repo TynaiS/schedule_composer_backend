@@ -10,18 +10,24 @@ import java.util.List;
 public interface TeacherService {
 
     TeacherDTOGet getById(Long id);
-
-    Teacher getEntityById(Long id);
-
-    Boolean checkIfExists(Long id);
-
+    TeacherDTOGet create(TeacherDTOPost createDto);
+    TeacherDTOGet update(Long id, TeacherDTOPatch updateDto);
+    void deleteById(Long id);
     List<TeacherDTOGet> getAll();
 
+
+    Teacher getEntityById(Long id);
+    Boolean checkIfExists(Long id);
     List<Teacher> getAllEntities();
 
-    TeacherDTOGet create(TeacherDTOPost createDto);
 
-    TeacherDTOGet update(Long id, TeacherDTOPatch updateDto);
+    TeacherDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long teacherId);
+    List<TeacherDTOGet> getAllForUserSchedule(Long userId, Long scheduleId);
+    TeacherDTOGet createForUserSchedule(Long userId, Long scheduleId, TeacherDTOPost request);
+    TeacherDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long teacherId, TeacherDTOPatch patchRequest);
+    void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long teacherId);
 
-    void deleteById(Long id);
+
+    Teacher getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long teacherId);
+    List<Teacher> getAllEntitiesForUserSchedule(Long userId, Long scheduleId);
 }

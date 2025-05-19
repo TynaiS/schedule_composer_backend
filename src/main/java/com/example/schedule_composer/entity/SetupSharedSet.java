@@ -17,6 +17,11 @@ public class SetupSharedSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "schedule_version_id", nullable = false)
+    private ScheduleVersion scheduleVersion;
+
     private String name;
 
     @Column(name = "hours_a_week")

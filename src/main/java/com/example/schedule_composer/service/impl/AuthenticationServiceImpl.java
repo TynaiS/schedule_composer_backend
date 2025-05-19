@@ -72,7 +72,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationDTOGet login(LoginDTOPost loginRequest) {
-        User user = userService.getByEmail(loginRequest.getEmail());
+        User user = userService.getEntityByEmail(loginRequest.getEmail());
 
         if (!(user.isEmailVerified())) {
             throw new IllegalStateException("Email is not verified.");
@@ -97,7 +97,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String verifyUser(VerifyUserDTOPost input) {
-        User user = userService.getByEmail(input.getEmail());
+        User user = userService.getEntityByEmail(input.getEmail());
         if(user.isEmailVerified()){
             throw new AccountAlreadyVerifiedException("Account is already verified");
         } else if(!passwordEncoder.matches(input.getVerificationCode(), user.getVerificationCode())) {
@@ -120,7 +120,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public String resendVerificationCode(EmailDTOPost emailDTO) {
         String email = emailDTO.getEmail();
-        User user = userService.getByEmail(email);
+        User user = userService.getEntityByEmail(email);
         if (user.isEmailVerified()) {
             throw new AccountAlreadyVerifiedException("Account is already verified");
         }

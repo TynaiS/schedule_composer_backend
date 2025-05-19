@@ -24,17 +24,24 @@ public class ScheduleLunchItem {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "schedule_version_id", nullable = false)
+    private ScheduleVersion scheduleVersion;
+
+    @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = false)
     private Group group;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private DayOfWeek day;
 
     @ManyToMany
     @JoinTable(
-            name = TABLE_NAME + "_time_slots",
+            name = TABLE_NAME + "_time_slot",
             joinColumns = @JoinColumn(name = TABLE_NAME + "_id"),
-            inverseJoinColumns = @JoinColumn(name = "time_slot_id")
+            inverseJoinColumns = @JoinColumn(name = "time_slot_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {TABLE_NAME + "_id", "time_slot_id"})
+
     )
     private List<TimeSlot> timeSlots;
 }

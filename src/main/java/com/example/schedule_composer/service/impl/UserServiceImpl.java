@@ -7,9 +7,11 @@ import com.example.schedule_composer.repository.UserRepository;
 import com.example.schedule_composer.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +20,13 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User getByEmail(String email) {
+    public User getEntityById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+    }
+
+    @Override
+    public User getEntityByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
     }
@@ -32,7 +40,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByVerificationCode(String token) {
+    public List<User> checkIfAllExistAndGetEntities(List<String> usersEmails) {
+        return usersEmails.stream()
+                .map(this::getEntityByEmail)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public User getEntityByVerificationCode(String token) {
         return userRepository.findByVerificationCode(token)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with verification token: " + token));
     }
@@ -53,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String changePassword(ChangePasswordDTOPost dto, String email) {
-        User user = getByEmail(email);
+        User user = getEntityByEmail(email);
 
         if (!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
             throw new IncorrectPasswordException("Old password is incorrect");

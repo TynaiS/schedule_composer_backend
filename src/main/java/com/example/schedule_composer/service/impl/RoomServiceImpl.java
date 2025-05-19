@@ -1,30 +1,28 @@
 package com.example.schedule_composer.service.impl;
 
 import com.example.schedule_composer.dto.get.RoomDTOGet;
-import com.example.schedule_composer.mappers.impl.RoomMapper;
+import com.example.schedule_composer.entity.Schedule;
+import com.example.schedule_composer.mappers.impl.RoomMapperImpl;
 import com.example.schedule_composer.dto.patch.RoomDTOPatch;
 import com.example.schedule_composer.dto.post.RoomDTOPost;
 import com.example.schedule_composer.entity.Room;
 import com.example.schedule_composer.repository.RoomRepository;
 import com.example.schedule_composer.service.RoomService;
+import com.example.schedule_composer.service.ScheduleService;
 import com.example.schedule_composer.utils.types.RoomType;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
-    private final RoomMapper roomMapper;
-
-    @Autowired
-    public RoomServiceImpl(RoomRepository roomRepository,RoomMapper roomMapper){
-        this.roomRepository = roomRepository;
-        this.roomMapper = roomMapper;
-    }
+    private final RoomMapperImpl roomMapper;
+    private final ScheduleService scheduleService;
 
     @Override
     public RoomDTOGet getById(Long id) {
@@ -32,25 +30,26 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room getEntityById(Long id) {
-        Room entity = roomRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Room not found with id: " + id));
-        return entity;
+    public RoomDTOGet create(RoomDTOPost createDto) {
+        Room savedEntity = roomRepository.save(roomMapper.fromPostToEntity(createDto));
+        return roomMapper.fromEntityToGet(savedEntity);
     }
 
     @Override
-    public Boolean checkIfExists(Long id) {
-        if (!roomRepository.existsById(id)) {
-            throw new EntityNotFoundException("Room not found with id: " + id);
-        }
-        return true;
+    public RoomDTOGet update(Long id, RoomDTOPatch updateDto) {
+        Room existing = getEntityById(id);
+        Room updatedEntity = roomRepository.save(roomMapper.fromPatchToEntity(updateDto, existing));
+        return roomMapper.fromEntityToGet(updatedEntity);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        if (checkIfExists(id)) roomRepository.deleteById(id);
     }
 
     @Override
     public List<RoomDTOGet> getAll() {
-        List<Room> entities = roomRepository.findAll();
-
-        return roomMapper.fromEntityListToGetList(entities);
+        return roomMapper.fromEntityListToGetList(roomRepository.findAll());
     }
 
     @Override
@@ -69,19 +68,68 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDTOGet create(RoomDTOPost createDto) {
-        Room savedEntity = roomRepository.save(roomMapper.fromPostToEntity(createDto));
-        return roomMapper.fromEntityToGet(savedEntity);
+    public Room getEntityById(Long id) {
+        return roomRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Room not found with id: " + id));
     }
 
     @Override
-    public RoomDTOGet update(Long id, RoomDTOPatch updateDto) {
-        Room updatedEntity = roomRepository.save(roomMapper.fromPatchToEntity(updateDto, id));
-        return roomMapper.fromEntityToGet(updatedEntity);
+    public Boolean checkIfExists(Long id) {
+        if (!roomRepository.existsById(id)) {
+            throw new EntityNotFoundException("Room not found with id: " + id);
+        }
+        return true;
     }
 
     @Override
-    public void deleteById(Long id) {
-        if(checkIfExists(id)) roomRepository.deleteById(id);
+    public RoomDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long roomId) {
+        return roomMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, scheduleId, roomId));
+    }
+
+    @Override
+    public List<RoomDTOGet> getAllForUserSchedule(Long userId, Long scheduleId) {
+        return roomMapper.fromEntityListToGetList(getAllEntitiesForUserSchedule(userId, scheduleId));
+    }
+
+    @Override
+    public RoomDTOGet createForUserSchedule(Long userId, Long scheduleId, RoomDTOPost request) {
+        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
+
+        Room room = roomMapper.fromPostToEntity(request);
+        room.setSchedule(schedule);
+        Room saved = roomRepository.save(room);
+        return roomMapper.fromEntityToGet(saved);
+    }
+
+    @Override
+    public RoomDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long roomId, RoomDTOPatch patchRequest) {
+        Room room = getEntityByIdForUserSchedule(userId, scheduleId, roomId);
+
+        room = roomMapper.fromPatchToEntity(patchRequest, room);
+        Room updated = roomRepository.save(room);
+        return roomMapper.fromEntityToGet(updated);
+    }
+
+    @Override
+    public void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long roomId) {
+        Room room = getEntityByIdForUserSchedule(userId, scheduleId, roomId);
+
+        roomRepository.delete(room);
+    }
+
+    @Override
+    public Room getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long roomId) {
+        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
+
+        Room room = getEntityById(roomId);
+        scheduleService.checkScheduleId(schedule, room.getSchedule().getId(), "Room");
+        return room;
+    }
+
+    @Override
+    public List<Room> getAllEntitiesForUserSchedule(Long userId, Long scheduleId) {
+        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
+
+        return roomRepository.findAllByScheduleId(schedule.getId());
     }
 }

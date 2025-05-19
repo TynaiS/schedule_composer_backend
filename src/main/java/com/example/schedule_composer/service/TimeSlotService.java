@@ -4,30 +4,33 @@ import com.example.schedule_composer.dto.get.TimeSlotDTOGet;
 import com.example.schedule_composer.dto.patch.TimeSlotDTOPatch;
 import com.example.schedule_composer.dto.post.TimeSlotDTOPost;
 import com.example.schedule_composer.entity.TimeSlot;
-import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public interface TimeSlotService {
 
     TimeSlotDTOGet getById(Long id);
-
-    TimeSlot getEntityById(Long id);
-
-    Boolean checkIfExists(Long id);
-
-    TimeSlot checkIfExistsAndGetEntity(Long id);
-
-    List<TimeSlot> checkIfAllExistAndGetEntities(List<Long> timeSlotIds);
-
+    TimeSlotDTOGet create(TimeSlotDTOPost createDto);
+    TimeSlotDTOGet update(Long id, TimeSlotDTOPatch updateDto);
+    void deleteById(Long id);
     List<TimeSlotDTOGet> getAll();
 
+
+    TimeSlot getEntityById(Long id);
+    Boolean checkIfExists(Long id);
+    TimeSlot checkIfExistsAndGetEntity(Long id);
+    List<TimeSlot> checkIfAllExistAndGetEntities(List<Long> timeSlotIds);
     List<TimeSlot> getAllEntities();
 
-    TimeSlotDTOGet create(TimeSlotDTOPost createDto);
 
-    TimeSlotDTOGet update(Long id, TimeSlotDTOPatch updateDto);
+    TimeSlotDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long timeSlotId);
+    List<TimeSlotDTOGet> getAllForUserSchedule(Long userId, Long scheduleId);
+    TimeSlotDTOGet createForUserSchedule(Long userId, Long scheduleId, TimeSlotDTOPost request);
+    TimeSlotDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long timeSlotId, TimeSlotDTOPatch request);
+    void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long timeSlotId);
 
-    void deleteById(Long id);
+
+    TimeSlot getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long timeSlotId);
+    List<TimeSlot> getAllEntitiesForUserSchedule(Long userId, Long scheduleId);
+    List<TimeSlot> checkIfAllExistAndGetEntitiesForUserSchedule(Long userId, Long scheduleId, List<Long> timeSlotIds);
 }

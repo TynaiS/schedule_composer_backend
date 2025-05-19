@@ -37,7 +37,7 @@
 --     type room_type_enum NOT NULL
 -- );
 --
--- CREATE TABLE setup (
+-- CREATE TABLE setupItem (
 --     id BIGSERIAL PRIMARY KEY,
 --
 --     group_id BIGINT NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
@@ -77,7 +77,7 @@
 --
 -- CREATE TABLE scheduleItem (
 --     id BIGSERIAL PRIMARY KEY,
---     setup_id BIGINT NOT NULL REFERENCES setup(id) ON DELETE CASCADE,
+--     setup_id BIGINT NOT NULL REFERENCES setupItem(id) ON DELETE CASCADE,
 --     room_id BIGINT NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
 --     day day_enum NOT NULL,
 --     start_time_slot_id INT NOT NULL REFERENCES time_slots(id) ON DELETE CASCADE,

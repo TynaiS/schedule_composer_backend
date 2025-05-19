@@ -12,7 +12,7 @@ public interface TimeSlotMapper {
         TimeSlotDTOGet fromEntityToGet(TimeSlot entity);
         List<TimeSlotDTOGet> fromEntityListToGetList(List<TimeSlot> entities);
         TimeSlot fromPostToEntity(TimeSlotDTOPost postDto);
-        TimeSlot fromPatchToEntity(TimeSlotDTOPatch patchDto, Long id);
+        TimeSlot fromPatchToEntity(TimeSlotDTOPatch patchDto, TimeSlot timeSlotToUpdate);
         List<TimeSlotOrdered> fromEntityListToOrderedList(List<TimeSlot> timeSlots);
         List<TimeSlot> fromOrderedListToEntityList(List<TimeSlotOrdered> timeSlotsOrdered);
 }

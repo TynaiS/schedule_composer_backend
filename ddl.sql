@@ -103,7 +103,7 @@
         time_slot_id bigint not null
     );
 
-    create table setup (
+    create table setupItem (
         hours_a_week integer,
         hours_in_lab integer,
         course_id bigint,
@@ -176,7 +176,7 @@
     alter table if exists schedule_item 
        add constraint FKot6y8b6k7twu73s0km1ca8wi1 
        foreign key (setup_id) 
-       references setup;
+       references setupItem;
 
     alter table if exists schedule_item_time_slots 
        add constraint FKleq5wxqnnh0m6y54jp3kg91tg 
@@ -223,17 +223,17 @@
        foreign key (schedule_shared_item_id) 
        references schedule_shared_item;
 
-    alter table if exists setup 
+    alter table if exists setupItem
        add constraint FKey3t6h75g71t8a36meu4amf32 
        foreign key (course_id) 
        references course;
 
-    alter table if exists setup 
+    alter table if exists setupItem
        add constraint FK9lp0q3mkx6wxfwtmbn2y12atl 
        foreign key (group_id) 
        references _group;
 
-    alter table if exists setup 
+    alter table if exists setupItem
        add constraint FKq4t2k2olp7st9yhwnyxm12w20 
        foreign key (teacher_id) 
        references teacher;
@@ -367,7 +367,7 @@
         time_slot_id bigint not null
     );
 
-    create table setup (
+    create table setupItem (
         hours_a_week integer,
         hours_in_lab integer,
         course_id bigint,
@@ -440,7 +440,7 @@
     alter table if exists schedule_item 
        add constraint FKot6y8b6k7twu73s0km1ca8wi1 
        foreign key (setup_id) 
-       references setup;
+       references setupItem;
 
     alter table if exists schedule_item_time_slots 
        add constraint FKleq5wxqnnh0m6y54jp3kg91tg 
@@ -487,17 +487,17 @@
        foreign key (schedule_shared_item_id) 
        references schedule_shared_item;
 
-    alter table if exists setup 
+    alter table if exists setupItem
        add constraint FKey3t6h75g71t8a36meu4amf32 
        foreign key (course_id) 
        references course;
 
-    alter table if exists setup 
+    alter table if exists setupItem
        add constraint FK9lp0q3mkx6wxfwtmbn2y12atl 
        foreign key (group_id) 
        references _group;
 
-    alter table if exists setup 
+    alter table if exists setupItem
        add constraint FKq4t2k2olp7st9yhwnyxm12w20 
        foreign key (teacher_id) 
        references teacher;
@@ -631,7 +631,7 @@
         time_slot_id bigint not null
     );
 
-    create table setup (
+    create table setupItem (
         hours_a_week integer,
         hours_in_lab integer,
         course_id bigint,
@@ -704,7 +704,7 @@
     alter table if exists schedule_item 
        add constraint FKot6y8b6k7twu73s0km1ca8wi1 
        foreign key (setup_id) 
-       references setup;
+       references setupItem;
 
     alter table if exists schedule_item_time_slots 
        add constraint FKleq5wxqnnh0m6y54jp3kg91tg 
@@ -751,17 +751,17 @@
        foreign key (schedule_shared_item_id) 
        references schedule_shared_item;
 
-    alter table if exists setup 
+    alter table if exists setupItem
        add constraint FKey3t6h75g71t8a36meu4amf32 
        foreign key (course_id) 
        references course;
 
-    alter table if exists setup 
+    alter table if exists setupItem
        add constraint FK9lp0q3mkx6wxfwtmbn2y12atl 
        foreign key (group_id) 
        references _group;
 
-    alter table if exists setup 
+    alter table if exists setupItem
        add constraint FKq4t2k2olp7st9yhwnyxm12w20 
        foreign key (teacher_id) 
        references teacher;

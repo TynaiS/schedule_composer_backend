@@ -10,22 +10,26 @@ import java.util.List;
 public interface DepartmentService {
 
     DepartmentDTOGet getById(Long id);
-
-    Department getEntityById(Long id);
-
-    Boolean checkIfExists(Long id);
-
-    Department checkIfExistsAndGetEntity(Long id);
-
-    List<Department> checkIfAllExistAndGetEntities(List<Long> groupIds);
-
+    DepartmentDTOGet create(DepartmentDTOPost createDto);
+    DepartmentDTOGet update(Long id, DepartmentDTOPatch updateDto);
+    void deleteById(Long id);
     List<DepartmentDTOGet> getAll();
 
+
+    Department getEntityById(Long id);
+    Boolean checkIfExists(Long id);
+    Department checkIfExistsAndGetEntity(Long id);
+    List<Department> checkIfAllExistAndGetEntities(List<Long> groupIds);
     List<Department> getAllEntities();
 
-    DepartmentDTOGet create(DepartmentDTOPost createDto);
 
-    DepartmentDTOGet update(Long id, DepartmentDTOPatch updateDto);
+    DepartmentDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long departmentId);
+    List<DepartmentDTOGet> getAllForUserSchedule(Long userId, Long scheduleId);
+    DepartmentDTOGet createForUserSchedule(Long userId, Long scheduleId, DepartmentDTOPost request);
+    DepartmentDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long departmentId, DepartmentDTOPatch patchRequest);
+    void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long departmentId);
 
-    void deleteById(Long id);
+
+    Department getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long departmentId);
+    List<Department> getAllEntitiesForUserSchedule(Long userId, Long scheduleId);
 }
