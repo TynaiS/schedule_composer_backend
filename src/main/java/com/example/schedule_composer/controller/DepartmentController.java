@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ApiConstants.SCHEDULE_API + "/{scheduleId}" + ApiConstants.DEPARTMENT_API)
+@RequestMapping(ApiConstants.DEPARTMENT_API)
 @Tag(name = "Department API", description = "Endpoints for managing student Departments inside of Schedule")
 public class DepartmentController {
 
@@ -30,14 +30,13 @@ public class DepartmentController {
     @Operation(summary = "Get Department by ID", description = "Retrieves a specific Department by its ID for Schedule")
     public ResponseEntity<DepartmentDTOGet> getById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("departmentId") Long departmentId) {
         Long userId = user.getId();
-        DepartmentDTOGet department = departmentService.getByIdForUserSchedule(userId, scheduleId, departmentId);
+        DepartmentDTOGet department = departmentService.getByIdForUserSchedule(userId, departmentId);
         return ResponseEntity.ok(department);
     }
 
-    @GetMapping()
+    @GetMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Get all Departments", description = "Retrieves a list of all student Departments for Schedule")
     public ResponseEntity<List<DepartmentDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -47,7 +46,7 @@ public class DepartmentController {
         return ResponseEntity.ok(departments);
     }
 
-    @PostMapping()
+    @PostMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Create Department", description = "Creates new Department for Schedule")
     public ResponseEntity<DepartmentDTOGet> create(
             @AuthenticationPrincipal User user,
@@ -62,11 +61,10 @@ public class DepartmentController {
     @Operation(summary = "Update Department", description = "Updates an existing Department for Schedule")
     public ResponseEntity<DepartmentDTOGet> update(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("departmentId") Long departmentId,
             @Valid @RequestBody DepartmentDTOPatch patchRequest) {
         Long userId = user.getId();
-        DepartmentDTOGet updated = departmentService.updateForUserSchedule(userId, scheduleId, departmentId, patchRequest);
+        DepartmentDTOGet updated = departmentService.updateForUserSchedule(userId,departmentId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -74,10 +72,9 @@ public class DepartmentController {
     @Operation(summary = "Delete Department by ID", description = "Deletes a specific Department by its ID for Schedule")
     public ResponseEntity<Void> deleteById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("departmentId") Long departmentId) {
         Long userId = user.getId();
-        departmentService.deleteByIdForUserSchedule(userId, scheduleId, departmentId);
+        departmentService.deleteByIdForUserSchedule(userId, departmentId);
         return ResponseEntity.noContent().build();
     }
 

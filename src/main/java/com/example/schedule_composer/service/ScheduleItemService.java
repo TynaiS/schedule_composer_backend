@@ -23,12 +23,12 @@ public interface ScheduleItemService {
 
 
 
-    ScheduleItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleItemId);
-    List<ScheduleItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId);
-    ScheduleItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, ScheduleItemDTOPost request);
-    ScheduleItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleItemId, ScheduleItemDTOPatch patchRequest);
-    void deleteByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleItemId);
+    ScheduleItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleItemId);
+    List<ScheduleItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleVersionId);
+    ScheduleItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, ScheduleItemDTOPost request);
+    ScheduleItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleItemId, ScheduleItemDTOPatch patchRequest);
+    void deleteByIdForUserScheduleVersion(Long userId, Long scheduleItemId);
 
-    ScheduleItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleItemId);
-    List<ScheduleItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId);
+    ScheduleItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleItemId);
+    List<ScheduleItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId);
 }

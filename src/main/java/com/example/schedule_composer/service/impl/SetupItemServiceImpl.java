@@ -83,29 +83,29 @@ public class SetupItemServiceImpl implements SetupItemService {
     }
 
     @Override
-    public SetupItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupItemId) {
-        return setupItemMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, setupItemId));
+    public SetupItemDTOGet getByIdForUserScheduleVersion(Long userId, Long setupItemId) {
+        return setupItemMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, setupItemId));
     }
 
     @Override
-    public List<SetupItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId) {
-        return setupItemMapper.fromEntityListToGetList(getAllEntitiesForUserScheduleVersion(userId, scheduleId, scheduleVersionId));
+    public List<SetupItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleVersionId) {
+        return setupItemMapper.fromEntityListToGetList(getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId));
     }
 
     @Override
-    public List<SetupItemDTOGet> getAllByGroupIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long groupId) {
-        return setupItemMapper.fromEntityListToGetList(getAllEntitiesByGroupIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, groupId));
+    public List<SetupItemDTOGet> getAllByGroupIdForUserScheduleVersion(Long userId, Long scheduleVersionId, Long groupId) {
+        return setupItemMapper.fromEntityListToGetList(getAllEntitiesByGroupIdForUserScheduleVersion(userId, scheduleVersionId, groupId));
     }
 
     @Override
-    public SetupItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, SetupItemDTOPost request) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+    public SetupItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, SetupItemDTOPost request) {
+        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUser(userId, scheduleVersionId);
 
         SetupItem setupItem = setupItemMapper.fromPostToEntity(request);
 
-        Group group = groupService.getEntityByIdForUserSchedule(userId, scheduleId, request.getGroupId());
-        Course course = courseService.getEntityByIdForUserSchedule(userId, scheduleId, request.getCourseId());
-        Teacher teacher = teacherService.getEntityByIdForUserSchedule(userId, scheduleId, request.getTeacherId());
+        Group group = groupService.getEntityByIdForUserSchedule(userId, request.getGroupId());
+        Course course = courseService.getEntityByIdForUserSchedule(userId, request.getCourseId());
+        Teacher teacher = teacherService.getEntityByIdForUser(userId, request.getTeacherId());
 
         setupItem.setScheduleVersion(scheduleVersion);
         setupItem.setGroup(group);
@@ -116,23 +116,23 @@ public class SetupItemServiceImpl implements SetupItemService {
     }
 
     @Override
-    public SetupItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupItemId, SetupItemDTOPatch patchRequest) {
-        SetupItem setupItem = getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, setupItemId);
+    public SetupItemDTOGet updateForUserScheduleVersion(Long userId, Long setupItemId, SetupItemDTOPatch patchRequest) {
+        SetupItem setupItem = getEntityByIdForUserScheduleVersion(userId, setupItemId);
 
         setupItem = setupItemMapper.fromPatchToEntity(patchRequest, setupItem);
 
         if(patchRequest.getGroupId() != null){
-            Group group = groupService.getEntityByIdForUserSchedule(userId, scheduleId, patchRequest.getGroupId());
+            Group group = groupService.getEntityByIdForUserSchedule(userId, patchRequest.getGroupId());
             setupItem.setGroup(group);
         }
 
         if(patchRequest.getCourseId() != null){
-            Course course = courseService.getEntityByIdForUserSchedule(userId, scheduleId, patchRequest.getCourseId());
+            Course course = courseService.getEntityByIdForUserSchedule(userId, patchRequest.getCourseId());
             setupItem.setCourse(course);
         }
 
         if(patchRequest.getTeacherId() != null){
-            Teacher teacher = teacherService.getEntityByIdForUserSchedule(userId, scheduleId, patchRequest.getTeacherId());
+            Teacher teacher = teacherService.getEntityByIdForUser(userId, patchRequest.getTeacherId());
             setupItem.setTeacher(teacher);
         }
 
@@ -140,33 +140,31 @@ public class SetupItemServiceImpl implements SetupItemService {
     }
 
     @Override
-    public void deleteByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupItemId) {
-        SetupItem setupItem = getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, setupItemId);
+    public void deleteByIdForUserScheduleVersion(Long userId, Long setupItemId) {
+        SetupItem setupItem = getEntityByIdForUserScheduleVersion(userId, setupItemId);
         setupItemRepository.delete(setupItem);
     }
 
 
 
     @Override
-    public SetupItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupItemId) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
-
+    public SetupItem getEntityByIdForUserScheduleVersion(Long userId, Long setupItemId) {
         SetupItem setupItem = getEntityById(setupItemId);
-        scheduleVersionService.checkScheduleVersionId(scheduleVersion, setupItem.getScheduleVersion().getId(), "SetupItem");
+        scheduleVersionService.checkUserAccessToScheduleVersion(setupItem.getScheduleVersion(), userId);
         return setupItem;
     }
 
     @Override
-    public List<SetupItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+    public List<SetupItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId) {
+        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUser(userId, scheduleVersionId);
 
         return setupItemRepository.findAllByScheduleVersionId(scheduleVersion.getId());
     }
 
     @Override
-    public List<SetupItem> getAllEntitiesByGroupIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long groupId) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
-        Group group = groupService.getEntityByIdForUserSchedule(userId, scheduleId, groupId);
+    public List<SetupItem> getAllEntitiesByGroupIdForUserScheduleVersion(Long userId, Long scheduleVersionId, Long groupId) {
+        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUser(userId, scheduleVersionId);
+        Group group = groupService.getEntityByIdForUserSchedule(userId, groupId);
 
         return setupItemRepository.findAllByGroupIdAndScheduleVersionId(group.getId(), scheduleVersion.getId());
     }

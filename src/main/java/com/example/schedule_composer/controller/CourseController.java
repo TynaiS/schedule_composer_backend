@@ -22,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ApiConstants.SCHEDULE_API + "/{scheduleId}" + ApiConstants.COURSE_API)
+@RequestMapping(ApiConstants.COURSE_API)
 @Tag(name = "Course API", description = "Endpoints for managing student Courses inside of Schedule")
 public class CourseController {
 
@@ -33,14 +33,13 @@ public class CourseController {
     @Operation(summary = "Get Course by ID", description = "Retrieves a specific Course by its ID for Schedule")
     public ResponseEntity<CourseDTOGet> getById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("courseId") Long courseId) {
         Long userId = user.getId();
-        CourseDTOGet course = courseService.getByIdForUserSchedule(userId, scheduleId, courseId);
+        CourseDTOGet course = courseService.getByIdForUserSchedule(userId, courseId);
         return ResponseEntity.ok(course);
     }
 
-    @GetMapping()
+    @GetMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Get all Courses", description = "Retrieves a list of all Courses for Schedule")
     public ResponseEntity<List<CourseDTOGet>>  getAll(
             @AuthenticationPrincipal User user,
@@ -50,7 +49,7 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
 
-    @PostMapping()
+    @PostMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Create Course", description = "Creates new Course for Schedule")
     public ResponseEntity<CourseDTOGet> create(
             @AuthenticationPrincipal User user,
@@ -65,11 +64,10 @@ public class CourseController {
     @Operation(summary = "Update Course", description = "Updates an existing Course for Schedule")
     public ResponseEntity<CourseDTOGet> update(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("courseId") Long courseId,
             @Valid @RequestBody CourseDTOPatch patchRequest) {
         Long userId = user.getId();
-        CourseDTOGet updated = courseService.updateForUserSchedule(userId, scheduleId, courseId, patchRequest);
+        CourseDTOGet updated = courseService.updateForUserSchedule(userId, courseId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -77,10 +75,9 @@ public class CourseController {
     @Operation(summary = "Delete Course by ID", description = "Deletes a specific Course by its ID for Schedule")
     public ResponseEntity<Void> deleteById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("courseId") Long courseId) {
         Long userId = user.getId();
-        courseService.deleteByIdForUserSchedule(userId, scheduleId, courseId);
+        courseService.deleteByIdForUserSchedule(userId, courseId);
         return ResponseEntity.noContent().build();
     }
 

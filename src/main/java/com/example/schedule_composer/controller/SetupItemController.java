@@ -19,9 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ApiConstants.SCHEDULE_API + "/{scheduleId}" +
-        ApiConstants.SCHEDULE_VERSION_API + "/{scheduleVersionId}" +
-        ApiConstants.SETUP_ITEM_API)
+@RequestMapping(ApiConstants.SETUP_ITEM_API)
 @Tag(name = "SetupItem API", description = "Endpoints for managing SetupItem relations of ScheduleVersion of Schedule")
 public class SetupItemController {
 
@@ -31,46 +29,41 @@ public class SetupItemController {
     @Operation(summary = "Get SetupItem by ID", description = "Retrieves a specific SetupItem by its ID for ScheduleVersion")
     public ResponseEntity<SetupItemDTOGet> getById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
-            @PathVariable("scheduleVersionId") Long scheduleVersionId,
             @PathVariable("setupItemId") Long setupItemId) {
         Long userId = user.getId();
-        SetupItemDTOGet result = setupItemService.getByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, setupItemId);
+        SetupItemDTOGet result = setupItemService.getByIdForUserScheduleVersion(userId, setupItemId);
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping()
+    @GetMapping("/forScheduleVersion/{scheduleVersionId}")
     @Operation(summary = "Get all SetupItem", description = "Retrieves a list of all SetupItems for ScheduleVersion")
     public ResponseEntity<List<SetupItemDTOGet>> getAll(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("scheduleVersionId") Long scheduleVersionId) {
         Long userId = user.getId();
-        List<SetupItemDTOGet> result = setupItemService.getAllForUserScheduleVersion(userId, scheduleId, scheduleVersionId);
+        List<SetupItemDTOGet> result = setupItemService.getAllForUserScheduleVersion(userId, scheduleVersionId);
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping(ApiConstants.GROUP_API + "/{groupId}")
+    @GetMapping("/forScheduleVersion/{scheduleVersionId}" + ApiConstants.GROUP_API + "/{groupId}")
     @Operation(summary = "Get all SetupItem entities by groupId", description = "Retrieves a list of all SetupItems with specific groupId for ScheduleVersion")
     public ResponseEntity<List<SetupItemDTOGet>> getAllByGroupId(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("scheduleVersionId") Long scheduleVersionId,
             @PathVariable("groupId") Long groupId) {
         Long userId = user.getId();
-        List<SetupItemDTOGet> result = setupItemService.getAllByGroupIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, groupId);
+        List<SetupItemDTOGet> result = setupItemService.getAllByGroupIdForUserScheduleVersion(userId, scheduleVersionId, groupId);
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping
+    @PostMapping("/forScheduleVersion/{scheduleVersionId}")
     @Operation(summary = "Create SetupItem relation", description = "Creates new SetupItem relation for ScheduleVersion")
     public ResponseEntity<SetupItemDTOGet> create(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("scheduleVersionId") Long scheduleVersionId,
             @Valid @RequestBody SetupItemDTOPost request) {
         Long userId = user.getId();
-        SetupItemDTOGet savedEntity = setupItemService.createForUserScheduleVersion(userId, scheduleId, scheduleVersionId, request);
+        SetupItemDTOGet savedEntity = setupItemService.createForUserScheduleVersion(userId, scheduleVersionId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
@@ -78,12 +71,10 @@ public class SetupItemController {
     @Operation(summary = "Update SetupItem relation", description = "Updates an existing SetupItem relation for ScheduleVersion")
     public ResponseEntity<SetupItemDTOGet> update(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
-            @PathVariable("scheduleVersionId") Long scheduleVersionId,
             @PathVariable("setupItemId") Long setupItemId,
             @Valid @RequestBody SetupItemDTOPatch patchRequest) {
         Long userId = user.getId();
-        SetupItemDTOGet updated = setupItemService.updateForUserScheduleVersion(userId, scheduleId, scheduleVersionId, setupItemId, patchRequest);
+        SetupItemDTOGet updated = setupItemService.updateForUserScheduleVersion(userId, setupItemId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -91,11 +82,9 @@ public class SetupItemController {
     @Operation(summary = "Delete SetupItem by ID", description = "Deletes a specific SetupItem by its ID for ScheduleVersion")
     public ResponseEntity<Void> deleteById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
-            @PathVariable("scheduleVersionId") Long scheduleVersionId,
             @PathVariable("setupItemId") Long setupItemId) {
         Long userId = user.getId();
-        setupItemService.deleteByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, setupItemId);
+        setupItemService.deleteByIdForUserScheduleVersion(userId, setupItemId);
         return ResponseEntity.noContent().build();
     }
 }

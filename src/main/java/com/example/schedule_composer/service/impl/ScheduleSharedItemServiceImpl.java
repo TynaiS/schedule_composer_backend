@@ -5,7 +5,6 @@ import com.example.schedule_composer.dto.patch.ScheduleSharedItemDTOPatch;
 import com.example.schedule_composer.dto.post.ScheduleSharedItemDTOPost;
 import com.example.schedule_composer.entity.*;
 import com.example.schedule_composer.entity.ScheduleSharedItem;
-import com.example.schedule_composer.entity.ScheduleSharedItem;
 import com.example.schedule_composer.mappers.ScheduleSharedItemMapper;
 import com.example.schedule_composer.repository.ScheduleSharedItemRepository;
 import com.example.schedule_composer.service.*;
@@ -83,24 +82,24 @@ public class ScheduleSharedItemServiceImpl implements ScheduleSharedItemService 
     }
 
     @Override
-    public ScheduleSharedItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleSharedItemId) {
-        return scheduleSharedItemMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleSharedItemId));
+    public ScheduleSharedItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleSharedItemId) {
+        return scheduleSharedItemMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, scheduleSharedItemId));
     }
 
     @Override
-    public List<ScheduleSharedItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId) {
-        return scheduleSharedItemMapper.fromEntityListToGetList(getAllEntitiesForUserScheduleVersion(userId, scheduleId, scheduleVersionId));
+    public List<ScheduleSharedItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleVersionId) {
+        return scheduleSharedItemMapper.fromEntityListToGetList(getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId));
     }
 
     @Override
-    public ScheduleSharedItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, ScheduleSharedItemDTOPost request) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+    public ScheduleSharedItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, ScheduleSharedItemDTOPost request) {
+        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUser(userId, scheduleVersionId);
 
         ScheduleSharedItem scheduleSharedItem = scheduleSharedItemMapper.fromPostToEntity(request);
 
-        SetupSharedItem setupSharedItem = setupSharedItemService.getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersion.getId(), request.getSetupSharedItemId());
-        Room room = roomService.getEntityByIdForUserSchedule(userId, scheduleId, request.getRoomId());
-        List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntitiesForUserSchedule(userId, scheduleId, request.getTimeSlotIds());
+        SetupSharedItem setupSharedItem = setupSharedItemService.getEntityByIdForUserScheduleVersion(userId, request.getSetupSharedItemId());
+        Room room = roomService.getEntityByIdForUserSchedule(userId, request.getRoomId());
+        List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntitiesForUserSchedule(userId, request.getTimeSlotIds());
 
         scheduleSharedItem.setScheduleVersion(scheduleVersion);
         scheduleSharedItem.setSetupSharedItem(setupSharedItem);
@@ -112,23 +111,23 @@ public class ScheduleSharedItemServiceImpl implements ScheduleSharedItemService 
     }
 
     @Override
-    public ScheduleSharedItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleSharedItemId, ScheduleSharedItemDTOPatch patchRequest) {
-        ScheduleSharedItem scheduleSharedItem = getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleSharedItemId);
+    public ScheduleSharedItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleSharedItemId, ScheduleSharedItemDTOPatch patchRequest) {
+        ScheduleSharedItem scheduleSharedItem = getEntityByIdForUserScheduleVersion(userId, scheduleSharedItemId);
 
         scheduleSharedItem = scheduleSharedItemMapper.fromPatchToEntity(patchRequest, scheduleSharedItem);
 
         if(patchRequest.getSetupSharedItemId() != null){
-            SetupSharedItem setupSharedItem = setupSharedItemService.getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, patchRequest.getSetupSharedItemId());
+            SetupSharedItem setupSharedItem = setupSharedItemService.getEntityByIdForUserScheduleVersion(userId, patchRequest.getSetupSharedItemId());
             scheduleSharedItem.setSetupSharedItem(setupSharedItem);
         }
 
         if(patchRequest.getRoomId() != null){
-            Room room = roomService.getEntityByIdForUserSchedule(userId, scheduleId, patchRequest.getRoomId());
+            Room room = roomService.getEntityByIdForUserSchedule(userId, patchRequest.getRoomId());
             scheduleSharedItem.setRoom(room);
         }
 
         if(patchRequest.getTimeSlotIds() != null){
-            List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntitiesForUserSchedule(userId, scheduleId, patchRequest.getTimeSlotIds());
+            List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntitiesForUserSchedule(userId, patchRequest.getTimeSlotIds());
             scheduleSharedItem.setTimeSlots(timeSlots);
         }
 
@@ -136,23 +135,21 @@ public class ScheduleSharedItemServiceImpl implements ScheduleSharedItemService 
     }
 
     @Override
-    public void deleteByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleSharedItemId) {
-        ScheduleSharedItem scheduleSharedItem = getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleSharedItemId);
+    public void deleteByIdForUserScheduleVersion(Long userId, Long scheduleSharedItemId) {
+        ScheduleSharedItem scheduleSharedItem = getEntityByIdForUserScheduleVersion(userId, scheduleSharedItemId);
         scheduleSharedItemRepository.delete(scheduleSharedItem);
     }
 
     @Override
-    public ScheduleSharedItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleSharedItemId) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
-
+    public ScheduleSharedItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleSharedItemId) {
         ScheduleSharedItem scheduleSharedItem = getEntityById(scheduleSharedItemId);
-        scheduleVersionService.checkScheduleVersionId(scheduleVersion, scheduleSharedItem.getScheduleVersion().getId(), "ScheduleSharedItem");
+        scheduleVersionService.checkUserAccessToScheduleVersion(scheduleSharedItem.getScheduleVersion(), userId);
         return scheduleSharedItem;
     }
 
     @Override
-    public List<ScheduleSharedItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+    public List<ScheduleSharedItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId) {
+        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUser(userId, scheduleVersionId);
 
         return scheduleSharedItemRepository.findAllByScheduleVersionId(scheduleVersion.getId());
     }

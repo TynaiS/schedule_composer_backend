@@ -22,13 +22,13 @@ public interface CourseService{
     List<Course> getAllEntities();
 
 
-    CourseDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long courseId);
+    CourseDTOGet getByIdForUserSchedule(Long userId, Long courseId);
     List<CourseDTOGet> getAllForUserSchedule(Long userId, Long scheduleId);
     CourseDTOGet createForUserSchedule(Long userId, Long scheduleId, CourseDTOPost request);
-    CourseDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long courseId, CourseDTOPatch patchRequest);
-    void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long courseId);
+    CourseDTOGet updateForUserSchedule(Long userId, Long courseId, CourseDTOPatch patchRequest);
+    void deleteByIdForUserSchedule(Long userId, Long courseId);
 
 
-    Course getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long courseId);
+    Course getEntityByIdForUserSchedule(Long userId, Long courseId);
     List<Course> getAllEntitiesForUserSchedule(Long userId, Long scheduleId);
 }

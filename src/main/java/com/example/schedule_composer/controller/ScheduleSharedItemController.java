@@ -20,9 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ApiConstants.SCHEDULE_API + "/{scheduleId}" +
-        ApiConstants.SCHEDULE_VERSION_API + "/{scheduleVersionId}" +
-        ApiConstants.SCHEDULE_SHARED_ITEM_API)
+@RequestMapping(ApiConstants.SCHEDULE_SHARED_ITEM_API)
 @Tag(name = "ScheduleSharedItem API", description = "Endpoints for managing ScheduleSharedItems of ScheduleVersion of Schedule")
 public class ScheduleSharedItemController {
 
@@ -33,34 +31,30 @@ public class ScheduleSharedItemController {
     @Operation(summary = "Get ScheduleSharedItem by ID", description = "Retrieves a specific ScheduleSharedItem by its ID for ScheduleVersion")
     public ResponseEntity<ScheduleSharedItemDTOGet> getById(
             @AuthenticationPrincipal User user,
-            @PathVariable Long scheduleId,
-            @PathVariable Long scheduleVersionId,
             @PathVariable Long scheduleSharedItemId) {
         Long userId = user.getId();
-        ScheduleSharedItemDTOGet item = scheduleSharedItemService.getByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleSharedItemId);
+        ScheduleSharedItemDTOGet item = scheduleSharedItemService.getByIdForUserScheduleVersion(userId, scheduleSharedItemId);
         return ResponseEntity.ok(item);
     }
 
-    @GetMapping
+    @GetMapping("/forScheduleVersion/{scheduleVersionId}")
     @Operation(summary = "Get all ScheduleSharedItems", description = "Retrieves all ScheduleSharedItems for ScheduleVersion")
     public ResponseEntity<List<ScheduleSharedItemDTOGet>> getAll(
             @AuthenticationPrincipal User user,
-            @PathVariable Long scheduleId,
             @PathVariable Long scheduleVersionId) {
         Long userId = user.getId();
-        List<ScheduleSharedItemDTOGet> items = scheduleSharedItemService.getAllForUserScheduleVersion(userId, scheduleId, scheduleVersionId);
+        List<ScheduleSharedItemDTOGet> items = scheduleSharedItemService.getAllForUserScheduleVersion(userId, scheduleVersionId);
         return ResponseEntity.ok(items);
     }
 
-    @PostMapping
+    @PostMapping("/forScheduleVersion/{scheduleVersionId}")
     @Operation(summary = "Create ScheduleSharedItem", description = "Creates a new ScheduleSharedItem for ScheduleVersion")
     public ResponseEntity<ScheduleSharedItemDTOGet> create(
             @AuthenticationPrincipal User user,
-            @PathVariable Long scheduleId,
             @PathVariable Long scheduleVersionId,
             @Valid @RequestBody ScheduleSharedItemDTOPost request) {
         Long userId = user.getId();
-        ScheduleSharedItemDTOGet created = scheduleSharedItemService.createForUserScheduleVersion(userId, scheduleId, scheduleVersionId, request);
+        ScheduleSharedItemDTOGet created = scheduleSharedItemService.createForUserScheduleVersion(userId, scheduleVersionId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -68,12 +62,10 @@ public class ScheduleSharedItemController {
     @Operation(summary = "Update ScheduleSharedItem", description = "Updates an existing ScheduleSharedItem for ScheduleVersion")
     public ResponseEntity<ScheduleSharedItemDTOGet> update(
             @AuthenticationPrincipal User user,
-            @PathVariable Long scheduleId,
-            @PathVariable Long scheduleVersionId,
             @PathVariable Long scheduleSharedItemId,
             @Valid @RequestBody ScheduleSharedItemDTOPatch patchRequest) {
         Long userId = user.getId();
-        ScheduleSharedItemDTOGet updated = scheduleSharedItemService.updateForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleSharedItemId, patchRequest);
+        ScheduleSharedItemDTOGet updated = scheduleSharedItemService.updateForUserScheduleVersion(userId, scheduleSharedItemId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -81,11 +73,9 @@ public class ScheduleSharedItemController {
     @Operation(summary = "Delete ScheduleSharedItem by ID", description = "Deletes a specific ScheduleSharedItem by its ID for ScheduleVersion")
     public ResponseEntity<Void> deleteById(
             @AuthenticationPrincipal User user,
-            @PathVariable Long scheduleId,
-            @PathVariable Long scheduleVersionId,
             @PathVariable Long scheduleSharedItemId) {
         Long userId = user.getId();
-        scheduleSharedItemService.deleteByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleSharedItemId);
+        scheduleSharedItemService.deleteByIdForUserScheduleVersion(userId, scheduleSharedItemId);
         return ResponseEntity.noContent().build();
     }
 }

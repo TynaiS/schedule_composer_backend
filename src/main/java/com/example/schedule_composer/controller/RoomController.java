@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ApiConstants.SCHEDULE_API + "/{scheduleId}" + ApiConstants.ROOM_API)
+@RequestMapping(ApiConstants.ROOM_API)
 @Tag(name = "Room API", description = "Endpoints for managing Rooms inside of Schedule")
 public class RoomController {
 
@@ -31,14 +31,13 @@ public class RoomController {
     @Operation(summary = "Get Room by ID", description = "Retrieves a specific Room by its ID for Schedule")
     public ResponseEntity<RoomDTOGet> getById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("roomId") Long roomId) {
         Long userId = user.getId();
-        RoomDTOGet room = roomService.getByIdForUserSchedule(userId, scheduleId, roomId);
+        RoomDTOGet room = roomService.getByIdForUserSchedule(userId, roomId);
         return ResponseEntity.ok(room);
     }
 
-    @GetMapping
+    @GetMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Get all Rooms", description = "Retrieves all Rooms for Schedule")
     public ResponseEntity<List<RoomDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -48,7 +47,7 @@ public class RoomController {
         return ResponseEntity.ok(rooms);
     }
 
-    @PostMapping
+    @PostMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Create Room", description = "Creates a new Room for Schedule")
     public ResponseEntity<RoomDTOGet> create(
             @AuthenticationPrincipal User user,
@@ -68,7 +67,7 @@ public class RoomController {
             @PathVariable("roomId") Long roomId,
             @Valid @RequestBody RoomDTOPatch patchRequest) {
         Long userId = user.getId();
-        RoomDTOGet updatedRoom = roomService.updateForUserSchedule(userId, scheduleId, roomId, patchRequest);
+        RoomDTOGet updatedRoom = roomService.updateForUserSchedule(userId, roomId, patchRequest);
         return ResponseEntity.ok(updatedRoom);
     }
 
@@ -76,10 +75,9 @@ public class RoomController {
     @Operation(summary = "Delete Room", description = "Deletes a specific Room for Schedule")
     public ResponseEntity<Void> deleteById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("roomId") Long roomId) {
         Long userId = user.getId();
-        roomService.deleteByIdForUserSchedule(userId, scheduleId, roomId);
+        roomService.deleteByIdForUserSchedule(userId, roomId);
         return ResponseEntity.noContent().build();
     }
 

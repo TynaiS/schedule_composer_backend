@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ApiConstants.SCHEDULE_API + "/{scheduleId}" + ApiConstants.SCHEDULE_VERSION_API)
+@RequestMapping(ApiConstants.SCHEDULE_VERSION_API)
 @Tag(name = "ScheduleVersion API", description = "Endpoints for managing student ScheduleVersions of Schedule")
 public class ScheduleVersionController {
 
@@ -31,14 +31,13 @@ public class ScheduleVersionController {
     @Operation(summary = "Get ScheduleVersion by ID", description = "Retrieves a specific ScheduleVersion by its ID for Schedule")
     public ResponseEntity<ScheduleVersionDTOGet> getById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("scheduleVersionId") Long scheduleVersionId) {
         Long userId = user.getId();
-        ScheduleVersionDTOGet scheduleVersion = scheduleVersionService.getByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+        ScheduleVersionDTOGet scheduleVersion = scheduleVersionService.getByIdForUserSchedule(userId, scheduleVersionId);
         return ResponseEntity.ok(scheduleVersion);
     }
 
-    @GetMapping()
+    @GetMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Get all ScheduleVersions", description = "Retrieves a list of all ScheduleVersions for Schedule")
     public ResponseEntity<List<ScheduleVersionDTOGet>>  getAll(
             @AuthenticationPrincipal User user,
@@ -48,7 +47,7 @@ public class ScheduleVersionController {
         return ResponseEntity.ok(scheduleVersions);
     }
 
-    @PostMapping()
+    @PostMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Create ScheduleVersion", description = "Creates new ScheduleVersion for Schedule")
     public ResponseEntity<ScheduleVersionDTOGet> create(
             @AuthenticationPrincipal User user,
@@ -63,11 +62,10 @@ public class ScheduleVersionController {
     @Operation(summary = "Update ScheduleVersion", description = "Updates an existing ScheduleVersion for Schedule")
     public ResponseEntity<ScheduleVersionDTOGet> update(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("scheduleVersionId") Long scheduleVersionId,
             @Valid @RequestBody ScheduleVersionDTOPatch patchRequest) {
         Long userId = user.getId();
-        ScheduleVersionDTOGet updated = scheduleVersionService.updateForUserSchedule(userId, scheduleId, scheduleVersionId, patchRequest);
+        ScheduleVersionDTOGet updated = scheduleVersionService.updateForUserSchedule(userId, scheduleVersionId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -75,10 +73,9 @@ public class ScheduleVersionController {
     @Operation(summary = "Delete ScheduleVersion by ID", description = "Deletes a specific ScheduleVersion by its ID for Schedule")
     public ResponseEntity<Void> deleteById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("scheduleVersionId") Long scheduleVersionId) {
         Long userId = user.getId();
-        scheduleVersionService.deleteByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+        scheduleVersionService.deleteByIdForUserSchedule(userId, scheduleVersionId);
         return ResponseEntity.noContent().build();
     }
 

@@ -79,8 +79,8 @@ public class ScheduleVersionServiceImpl implements ScheduleVersionService {
     }
 
     @Override
-    public ScheduleVersionDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long scheduleVersionId) {
-        return scheduleVersionMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId));
+    public ScheduleVersionDTOGet getByIdForUserSchedule(Long userId, Long scheduleVersionId) {
+        return scheduleVersionMapper.fromEntityToGet(getEntityByIdForUser(userId, scheduleVersionId));
     }
 
     @Override
@@ -99,8 +99,8 @@ public class ScheduleVersionServiceImpl implements ScheduleVersionService {
     }
 
     @Override
-    public ScheduleVersionDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long scheduleVersionId, ScheduleVersionDTOPatch patchRequest) {
-        ScheduleVersion scheduleVersion = getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+    public ScheduleVersionDTOGet updateForUserSchedule(Long userId, Long scheduleVersionId, ScheduleVersionDTOPatch patchRequest) {
+        ScheduleVersion scheduleVersion = getEntityByIdForUser(userId, scheduleVersionId);
 
         scheduleVersion = scheduleVersionMapper.fromPatchToEntity(patchRequest, scheduleVersion);
         ScheduleVersion updatedScheduleVersion = scheduleVersionRepository.save(scheduleVersion);
@@ -108,8 +108,8 @@ public class ScheduleVersionServiceImpl implements ScheduleVersionService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long scheduleVersionId) {
-        ScheduleVersion scheduleVersion = getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+    public void deleteByIdForUserSchedule(Long userId, Long scheduleVersionId) {
+        ScheduleVersion scheduleVersion = getEntityByIdForUser(userId, scheduleVersionId);
 
         scheduleVersionRepository.delete(scheduleVersion);
     }
@@ -122,11 +122,9 @@ public class ScheduleVersionServiceImpl implements ScheduleVersionService {
     }
 
     @Override
-    public ScheduleVersion getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long scheduleVersionId) {
-        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
-
+    public ScheduleVersion getEntityByIdForUser(Long userId, Long scheduleVersionId) {
         ScheduleVersion scheduleVersion = getEntityById(scheduleVersionId);
-        scheduleService.checkScheduleId(schedule, scheduleVersion.getSchedule().getId(), "ScheduleVersion");
+        scheduleService.checkUserAccessToSchedule(scheduleVersion.getSchedule(), userId);
         return scheduleVersion;
     }
 
@@ -135,5 +133,10 @@ public class ScheduleVersionServiceImpl implements ScheduleVersionService {
         Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
 
         return scheduleVersionRepository.findAllByScheduleId(schedule.getId());
+    }
+
+    @Override
+    public void checkUserAccessToScheduleVersion(ScheduleVersion scheduleVersion, Long userId) {
+        scheduleService.checkUserAccessToSchedule(scheduleVersion.getSchedule(), userId);
     }
 }

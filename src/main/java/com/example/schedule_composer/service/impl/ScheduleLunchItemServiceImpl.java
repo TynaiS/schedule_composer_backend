@@ -76,24 +76,24 @@ public class ScheduleLunchItemServiceImpl implements ScheduleLunchItemService {
     }
 
     @Override
-    public ScheduleLunchItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleLunchItemId) {
-        return scheduleLunchItemMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleLunchItemId));
+    public ScheduleLunchItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleLunchItemId) {
+        return scheduleLunchItemMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, scheduleLunchItemId));
 
     }
 
     @Override
-    public List<ScheduleLunchItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId) {
-        return scheduleLunchItemMapper.fromEntityListToGetList(getAllEntitiesForUserScheduleVersion(userId, scheduleId, scheduleVersionId));
+    public List<ScheduleLunchItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleVersionId) {
+        return scheduleLunchItemMapper.fromEntityListToGetList(getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId));
     }
 
     @Override
-    public ScheduleLunchItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, ScheduleLunchItemDTOPost request) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+    public ScheduleLunchItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, ScheduleLunchItemDTOPost request) {
+        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUser(userId, scheduleVersionId);
 
         ScheduleLunchItem scheduleLunchItem = scheduleLunchItemMapper.fromPostToEntity(request);
 
-        Group group = groupService.getEntityByIdForUserSchedule(userId, scheduleId, request.getGroupId());
-        List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntitiesForUserSchedule(userId, scheduleId, request.getTimeSlotIds());
+        Group group = groupService.getEntityByIdForUserSchedule(userId, request.getGroupId());
+        List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntitiesForUserSchedule(userId, request.getTimeSlotIds());
 
         scheduleLunchItem.setScheduleVersion(scheduleVersion);
         scheduleLunchItem.setGroup(group);
@@ -103,19 +103,19 @@ public class ScheduleLunchItemServiceImpl implements ScheduleLunchItemService {
     }
 
     @Override
-    public ScheduleLunchItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleLunchItemId, ScheduleLunchItemDTOPatch patchRequest) {
-        ScheduleLunchItem scheduleLunchItem = getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleLunchItemId);
+    public ScheduleLunchItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleLunchItemId, ScheduleLunchItemDTOPatch patchRequest) {
+        ScheduleLunchItem scheduleLunchItem = getEntityByIdForUserScheduleVersion(userId, scheduleLunchItemId);
 
         scheduleLunchItem = scheduleLunchItemMapper.fromPatchToEntity(patchRequest, scheduleLunchItem);
 
 
         if(patchRequest.getGroupId() != null){
-            Group group = groupService.getEntityByIdForUserSchedule(userId, scheduleId, patchRequest.getGroupId());
+            Group group = groupService.getEntityByIdForUserSchedule(userId, patchRequest.getGroupId());
             scheduleLunchItem.setGroup(group);
         }
 
         if(patchRequest.getTimeSlotIds() != null){
-            List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntitiesForUserSchedule(userId, scheduleId, patchRequest.getTimeSlotIds());
+            List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntitiesForUserSchedule(userId, patchRequest.getTimeSlotIds());
             scheduleLunchItem.setTimeSlots(timeSlots);
         }
 
@@ -123,23 +123,21 @@ public class ScheduleLunchItemServiceImpl implements ScheduleLunchItemService {
     }
 
     @Override
-    public void deleteByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleLunchItemId) {
-        ScheduleLunchItem scheduleLunchItem = getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleLunchItemId);
+    public void deleteByIdForUserScheduleVersion(Long userId, Long scheduleLunchItemId) {
+        ScheduleLunchItem scheduleLunchItem = getEntityByIdForUserScheduleVersion(userId, scheduleLunchItemId);
         scheduleLunchItemRepository.delete(scheduleLunchItem);
     }
 
     @Override
-    public ScheduleLunchItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleLunchItemId) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
-
+    public ScheduleLunchItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleLunchItemId) {
         ScheduleLunchItem scheduleLunchItem = getEntityById(scheduleLunchItemId);
-        scheduleVersionService.checkScheduleVersionId(scheduleVersion, scheduleLunchItem.getScheduleVersion().getId(), "ScheduleLunchItem");
+        scheduleVersionService.checkUserAccessToScheduleVersion(scheduleLunchItem.getScheduleVersion(), userId);
         return scheduleLunchItem;
     }
 
     @Override
-    public List<ScheduleLunchItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+    public List<ScheduleLunchItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId) {
+        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUser(userId, scheduleVersionId);
 
         return scheduleLunchItemRepository.findAllByScheduleVersionId(scheduleVersion.getId());
     }

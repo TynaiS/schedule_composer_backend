@@ -20,9 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ApiConstants.SCHEDULE_API + "/{scheduleId}" +
-        ApiConstants.SCHEDULE_VERSION_API + "/{scheduleVersionId}" +
-        ApiConstants.SCHEDULE_ITEM_API)
+@RequestMapping(ApiConstants.SCHEDULE_ITEM_API)
 @Tag(name = "ScheduleItem API", description = "Endpoints for managing ScheduleItems of ScheduleVersion of Schedule")
 public class ScheduleItemController {
 
@@ -34,34 +32,30 @@ public class ScheduleItemController {
     @Operation(summary = "Get ScheduleItem by ID", description = "Retrieves a specific ScheduleItem by its ID for ScheduleVersion")
     public ResponseEntity<ScheduleItemDTOGet> getById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
-            @PathVariable("scheduleVersionId") Long scheduleVersionId,
             @PathVariable("scheduleItemId") Long scheduleItemId) {
         Long userId = user.getId();
-        ScheduleItemDTOGet scheduleItem = scheduleItemService.getByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleItemId);
+        ScheduleItemDTOGet scheduleItem = scheduleItemService.getByIdForUserScheduleVersion(userId, scheduleItemId);
         return ResponseEntity.ok(scheduleItem);
     }
 
-    @GetMapping()
+    @GetMapping("/forScheduleVersion/{scheduleVersionId}")
     @Operation(summary = "Get all ScheduleItems", description = "Retrieves a list of all ScheduleItems for ScheduleVersion")
     public ResponseEntity<List<ScheduleItemDTOGet>> getAll(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("scheduleVersionId") Long scheduleVersionId) {
         Long userId = user.getId();
-        List<ScheduleItemDTOGet> schedule = scheduleItemService.getAllForUserScheduleVersion(userId, scheduleId, scheduleVersionId);
+        List<ScheduleItemDTOGet> schedule = scheduleItemService.getAllForUserScheduleVersion(userId, scheduleVersionId);
         return ResponseEntity.ok(schedule);
     }
 
-    @PostMapping()
+    @PostMapping("/forScheduleVersion/{scheduleVersionId}")
     @Operation(summary = "Create ScheduleItem", description = "Creates new ScheduleItem for ScheduleVersion")
     public ResponseEntity<ScheduleItemDTOGet> create(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("scheduleVersionId") Long scheduleVersionId,
             @Valid @RequestBody ScheduleItemDTOPost request) {
         Long userId = user.getId();
-        ScheduleItemDTOGet savedEntity = scheduleItemService.createForUserScheduleVersion(userId, scheduleId, scheduleVersionId, request);
+        ScheduleItemDTOGet savedEntity = scheduleItemService.createForUserScheduleVersion(userId, scheduleVersionId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
@@ -69,12 +63,10 @@ public class ScheduleItemController {
     @Operation(summary = "Update ScheduleItem", description = "Updates an existing ScheduleItem for ScheduleVersion")
     public ResponseEntity<ScheduleItemDTOGet> update(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
-            @PathVariable("scheduleVersionId") Long scheduleVersionId,
             @PathVariable("scheduleItemId") Long scheduleItemId,
             @Valid @RequestBody ScheduleItemDTOPatch patchRequest) {
         Long userId = user.getId();
-        ScheduleItemDTOGet updated = scheduleItemService.updateForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleItemId, patchRequest);
+        ScheduleItemDTOGet updated = scheduleItemService.updateForUserScheduleVersion(userId, scheduleItemId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -82,11 +74,9 @@ public class ScheduleItemController {
     @Operation(summary = "Delete ScheduleItem by ID", description = "Deletes a specific ScheduleItem by its ID for ScheduleVersion")
     public ResponseEntity<Void> deleteById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
-            @PathVariable("scheduleVersionId") Long scheduleVersionId,
             @PathVariable("scheduleItemId") Long scheduleItemId) {
         Long userId = user.getId();
-        scheduleItemService.deleteByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleItemId);
+        scheduleItemService.deleteByIdForUserScheduleVersion(userId, scheduleItemId);
         return ResponseEntity.noContent().build();
     }
 }

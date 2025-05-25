@@ -82,8 +82,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long roomId) {
-        return roomMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, scheduleId, roomId));
+    public RoomDTOGet getByIdForUserSchedule(Long userId, Long roomId) {
+        return roomMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, roomId));
     }
 
     @Override
@@ -102,8 +102,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long roomId, RoomDTOPatch patchRequest) {
-        Room room = getEntityByIdForUserSchedule(userId, scheduleId, roomId);
+    public RoomDTOGet updateForUserSchedule(Long userId, Long roomId, RoomDTOPatch patchRequest) {
+        Room room = getEntityByIdForUserSchedule(userId, roomId);
 
         room = roomMapper.fromPatchToEntity(patchRequest, room);
         Room updated = roomRepository.save(room);
@@ -111,18 +111,16 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long roomId) {
-        Room room = getEntityByIdForUserSchedule(userId, scheduleId, roomId);
+    public void deleteByIdForUserSchedule(Long userId, Long roomId) {
+        Room room = getEntityByIdForUserSchedule(userId, roomId);
 
         roomRepository.delete(room);
     }
 
     @Override
-    public Room getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long roomId) {
-        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
-
+    public Room getEntityByIdForUserSchedule(Long userId, Long roomId) {
         Room room = getEntityById(roomId);
-        scheduleService.checkScheduleId(schedule, room.getSchedule().getId(), "Room");
+        scheduleService.checkUserAccessToSchedule(room.getSchedule(), userId);
         return room;
     }
 

@@ -22,21 +22,21 @@ public interface SetupSharedItemService {
     List<SetupSharedItem> getAllEntities();
 
 
-    SetupSharedItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedItemId);
+    SetupSharedItemDTOGet getByIdForUserScheduleVersion(Long userId, Long setupSharedItemId);
 
-    SetupSharedItemDTOGet getByIdForUserSetupSharedSet(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId, Long setupSharedItemId);
-    List<SetupSharedItemDTOGet> getAllForUserSetupSharedSet(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId);
-    List<SetupSharedItemDTOGet> getAllByGroupIdForUserSetupSharedSet(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId, Long groupId);
-    SetupSharedItemDTOGet createForUserSetupSharedSet(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId, SetupSharedItemDTOPost request);
-    SetupSharedItemDTOGet updateForUserSetupSharedSet(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId, Long setupSharedItemId, SetupSharedItemDTOPatch patchRequest);
-    void deleteByIdForUserSetupSharedSet(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId, Long setupSharedItemId);
+    SetupSharedItemDTOGet getByIdForUserSetupSharedSet(Long userId, Long setupSharedItemId);
+    List<SetupSharedItemDTOGet> getAllForUserSetupSharedSet(Long userId, Long setupSharedSetId);
+    List<SetupSharedItemDTOGet> getAllByGroupIdForUserSetupSharedSet(Long userId, Long setupSharedSetId, Long groupId);
+    SetupSharedItemDTOGet createForUserSetupSharedSet(Long userId, Long setupSharedSetId, SetupSharedItemDTOPost request);
+    SetupSharedItemDTOGet updateForUserSetupSharedSet(Long userId, Long setupSharedItemId, SetupSharedItemDTOPatch patchRequest);
+    void deleteByIdForUserSetupSharedSet(Long userId, Long setupSharedItemId);
 
 
-    SetupSharedItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedItemId);
+    SetupSharedItem getEntityByIdForUserScheduleVersion(Long userId, Long setupSharedItemId);
 
-    SetupSharedItem getEntityByIdForUserSetupSharedSet(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId, Long setupSharedItemId);
-    List<SetupSharedItem> getAllEntitiesForUserSetupSharedSet(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId);
-    List<SetupSharedItem> getAllEntitiesByGroupIdForUserSetupSharedSet(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId, Long groupId);
+    SetupSharedItem getEntityByIdForUserSetupSharedSet(Long userId, Long setupSharedItemId);
+    List<SetupSharedItem> getAllEntitiesForUserSetupSharedSet(Long userId, Long setupSharedSetId);
+    List<SetupSharedItem> getAllEntitiesByGroupIdForUserSetupSharedSet(Long userId, Long setupSharedSetId, Long groupId);
 
     //  ----  Shared groups ----
 

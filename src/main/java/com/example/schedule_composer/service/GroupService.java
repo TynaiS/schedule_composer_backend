@@ -22,17 +22,17 @@ public interface GroupService {
     List<Group> checkIfAllExistAndGetEntities(List<Long> groupIds);
 
 
-    GroupDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long groupId);
+    GroupDTOGet getByIdForUserSchedule(Long userId, Long groupId);
     List<GroupDTOGet> getAllForUserSchedule(Long userId, Long scheduleId);
     GroupDTOGet createForUserSchedule(Long userId, Long scheduleId, GroupDTOPost request);
-    GroupDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long groupId, GroupDTOPatch patchRequest);
-    void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long groupId);
+    GroupDTOGet updateForUserSchedule(Long userId, Long groupId, GroupDTOPatch patchRequest);
+    void deleteByIdForUserSchedule(Long userId, Long groupId);
 
 
 
-    Group getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long groupId);
+    Group getEntityByIdForUserSchedule(Long userId, Long groupId);
     List<Group> getAllEntitiesForUserSchedule(Long userId, Long scheduleId);
-    List<Group> checkIfAllExistAndGetEntitiesForUserSchedule(Long userId, Long scheduleId, List<Long> groupIds);
+    List<Group> checkIfAllExistAndGetEntitiesForUserSchedule(Long userId, List<Long> groupIds);
 
 }
 
