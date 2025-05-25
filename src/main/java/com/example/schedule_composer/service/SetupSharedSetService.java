@@ -25,14 +25,16 @@ public interface SetupSharedSetService {
 
 
 
-    SetupSharedSetDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId);
-    List<SetupSharedSetDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId);
-    SetupSharedSetDTOGet createForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, SetupSharedSetDTOPost request);
-    SetupSharedSetDTOGet updateForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId, SetupSharedSetDTOPatch patchRequest);
-    void deleteByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId);
+    SetupSharedSetDTOGet getByIdForUserScheduleVersion(Long userId, Long setupSharedSetId);
+    List<SetupSharedSetDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleVersionId);
+    SetupSharedSetDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, SetupSharedSetDTOPost request);
+    SetupSharedSetDTOGet updateForUserScheduleVersion(Long userId, Long setupSharedSetId, SetupSharedSetDTOPatch patchRequest);
+    void deleteByIdForUserScheduleVersion(Long userId, Long setupSharedSetId);
     void checkSetupSharedSetId(SetupSharedSet setupSharedSet, Long setupSharedSetId, String entityName);
 
 
-    SetupSharedSet getEntityByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId);
-    List<SetupSharedSet> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId);
+    SetupSharedSet getEntityByIdForUserScheduleVersion(Long userId, Long setupSharedSetId);
+    List<SetupSharedSet> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId);
+
+    void checkUserAccessToScheduleSharedSet(SetupSharedSet setupSharedSet, Long userId);
 }

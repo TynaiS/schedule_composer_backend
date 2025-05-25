@@ -24,15 +24,15 @@ public interface SetupItemService {
 
 
 
-    SetupItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupItemId);
-    List<SetupItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId);
-    List<SetupItemDTOGet> getAllByGroupIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long groupId);
-    SetupItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, SetupItemDTOPost request);
-    SetupItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupItemId, SetupItemDTOPatch patchRequest);
-    void deleteByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupItemId);
+    SetupItemDTOGet getByIdForUserScheduleVersion(Long userId, Long setupItemId);
+    List<SetupItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleVersionId);
+    List<SetupItemDTOGet> getAllByGroupIdForUserScheduleVersion(Long userId, Long scheduleVersionId, Long groupId);
+    SetupItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, SetupItemDTOPost request);
+    SetupItemDTOGet updateForUserScheduleVersion(Long userId, Long setupItemId, SetupItemDTOPatch patchRequest);
+    void deleteByIdForUserScheduleVersion(Long userId, Long setupItemId);
 
-    SetupItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupItemId);
-    List<SetupItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId);
-    List<SetupItem> getAllEntitiesByGroupIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long groupId);
+    SetupItem getEntityByIdForUserScheduleVersion(Long userId, Long setupItemId);
+    List<SetupItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId);
+    List<SetupItem> getAllEntitiesByGroupIdForUserScheduleVersion(Long userId, Long scheduleVersionId, Long groupId);
 
 }

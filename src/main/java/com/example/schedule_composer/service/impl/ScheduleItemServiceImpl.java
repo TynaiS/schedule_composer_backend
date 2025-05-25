@@ -9,7 +9,6 @@ import com.example.schedule_composer.repository.ScheduleItemRepository;
 import com.example.schedule_composer.service.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -82,24 +81,24 @@ public class ScheduleItemServiceImpl implements ScheduleItemService {
     }
 
     @Override
-    public ScheduleItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleItemId) {
-        return scheduleItemMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleItemId));
+    public ScheduleItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleItemId) {
+        return scheduleItemMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, scheduleItemId));
     }
 
     @Override
-    public List<ScheduleItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId) {
-        return scheduleItemMapper.fromEntityListToGetList(getAllEntitiesForUserScheduleVersion(userId, scheduleId, scheduleVersionId));
+    public List<ScheduleItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleVersionId) {
+        return scheduleItemMapper.fromEntityListToGetList(getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId));
     }
 
     @Override
-    public ScheduleItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, ScheduleItemDTOPost request) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+    public ScheduleItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, ScheduleItemDTOPost request) {
+        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUser(userId, scheduleVersionId);
 
         ScheduleItem scheduleItem = scheduleItemMapper.fromPostToEntity(request);
 
-        SetupItem setupItem = setupItemService.getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, request.getSetupItemId());
-        Room room = roomService.getEntityByIdForUserSchedule(userId, scheduleId, request.getRoomId());
-        List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntitiesForUserSchedule(userId, scheduleId, request.getTimeSlotIds());
+        SetupItem setupItem = setupItemService.getEntityByIdForUserScheduleVersion(userId, request.getSetupItemId());
+        Room room = roomService.getEntityByIdForUserSchedule(userId, request.getRoomId());
+        List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntitiesForUserSchedule(userId, request.getTimeSlotIds());
 
         scheduleItem.setScheduleVersion(scheduleVersion);
         scheduleItem.setSetupItem(setupItem);
@@ -110,23 +109,23 @@ public class ScheduleItemServiceImpl implements ScheduleItemService {
     }
 
     @Override
-    public ScheduleItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleItemId, ScheduleItemDTOPatch patchRequest) {
-        ScheduleItem scheduleItem = getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleItemId);
+    public ScheduleItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleItemId, ScheduleItemDTOPatch patchRequest) {
+        ScheduleItem scheduleItem = getEntityByIdForUserScheduleVersion(userId, scheduleItemId);
 
         scheduleItem = scheduleItemMapper.fromPatchToEntity(patchRequest, scheduleItem);
 
         if(patchRequest.getSetupItemId() != null){
-            SetupItem setupItem = setupItemService.getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, patchRequest.getSetupItemId());
+            SetupItem setupItem = setupItemService.getEntityByIdForUserScheduleVersion(userId, patchRequest.getSetupItemId());
             scheduleItem.setSetupItem(setupItem);
         }
 
         if(patchRequest.getRoomId() != null){
-            Room room = roomService.getEntityByIdForUserSchedule(userId, scheduleId, patchRequest.getRoomId());
+            Room room = roomService.getEntityByIdForUserSchedule(userId, patchRequest.getRoomId());
             scheduleItem.setRoom(room);
         }
 
         if(patchRequest.getTimeSlotIds() != null){
-            List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntitiesForUserSchedule(userId, scheduleId, patchRequest.getTimeSlotIds());
+            List<TimeSlot> timeSlots = timeSlotService.checkIfAllExistAndGetEntitiesForUserSchedule(userId, patchRequest.getTimeSlotIds());
             scheduleItem.setTimeSlots(timeSlots);
         }
 
@@ -134,23 +133,21 @@ public class ScheduleItemServiceImpl implements ScheduleItemService {
     }
 
     @Override
-    public void deleteByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleItemId) {
-        ScheduleItem scheduleItem = getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, scheduleItemId);
+    public void deleteByIdForUserScheduleVersion(Long userId, Long scheduleItemId) {
+        ScheduleItem scheduleItem = getEntityByIdForUserScheduleVersion(userId, scheduleItemId);
         scheduleItemRepository.delete(scheduleItem);
     }
 
     @Override
-    public ScheduleItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleItemId) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
-
+    public ScheduleItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleItemId) {
         ScheduleItem scheduleItem = getEntityById(scheduleItemId);
-        scheduleVersionService.checkScheduleVersionId(scheduleVersion, scheduleItem.getScheduleVersion().getId(), "ScheduleItem");
+        scheduleVersionService.checkUserAccessToScheduleVersion(scheduleItem.getScheduleVersion(), userId);
         return scheduleItem;
     }
 
     @Override
-    public List<ScheduleItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+    public List<ScheduleItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId) {
+        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUser(userId, scheduleVersionId);
 
         return scheduleItemRepository.findAllByScheduleVersionId(scheduleVersion.getId());
     }

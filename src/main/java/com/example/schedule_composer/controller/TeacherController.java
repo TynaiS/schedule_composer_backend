@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,14 +30,13 @@ public class TeacherController {
     @Operation(summary = "Get Teacher by ID", description = "Retrieves a specific Teacher by its ID for Schedule")
     public ResponseEntity<TeacherDTOGet> getById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("teacherId") Long teacherId) {
         Long userId = user.getId();
-        TeacherDTOGet teacher = teacherService.getByIdForUserSchedule(userId, scheduleId, teacherId);
+        TeacherDTOGet teacher = teacherService.getByIdForUser(userId, teacherId);
         return ResponseEntity.ok(teacher);
     }
 
-    @GetMapping
+    @GetMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Get all Teachers", description = "Retrieves a list of all Teachers for Schedule")
     public ResponseEntity<List<TeacherDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -48,7 +46,7 @@ public class TeacherController {
         return ResponseEntity.ok(teachers);
     }
 
-    @PostMapping
+    @PostMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Create Teacher", description = "Creates new Teacher for Schedule")
     public ResponseEntity<TeacherDTOGet> create(
             @AuthenticationPrincipal User user,
@@ -63,11 +61,10 @@ public class TeacherController {
     @Operation(summary = "Update Teacher", description = "Updates an existing Teacher for Schedule")
     public ResponseEntity<TeacherDTOGet> update(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("teacherId") Long teacherId,
             @Valid @RequestBody TeacherDTOPatch patchRequest) {
         Long userId = user.getId();
-        TeacherDTOGet updated = teacherService.updateForUserSchedule(userId, scheduleId, teacherId, patchRequest);
+        TeacherDTOGet updated = teacherService.updateForUserSchedule(userId, teacherId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -75,10 +72,9 @@ public class TeacherController {
     @Operation(summary = "Delete Teacher by ID", description = "Deletes a specific Teacher by its ID for Schedule")
     public ResponseEntity<Void> deleteById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("teacherId") Long teacherId) {
         Long userId = user.getId();
-        teacherService.deleteByIdForUserSchedule(userId, scheduleId, teacherId);
+        teacherService.deleteByIdForUserSchedule(userId, teacherId);
         return ResponseEntity.noContent().build();
     }
 

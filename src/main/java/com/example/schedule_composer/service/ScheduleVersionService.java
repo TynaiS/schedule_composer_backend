@@ -24,13 +24,15 @@ public interface ScheduleVersionService {
 
 
 
-    ScheduleVersionDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long scheduleVersionId);
+    ScheduleVersionDTOGet getByIdForUserSchedule(Long userId, Long scheduleVersionId);
     List<ScheduleVersionDTOGet> getAllForUserSchedule(Long userId, Long scheduleId);
     ScheduleVersionDTOGet createForUserSchedule(Long userId, Long scheduleId, ScheduleVersionDTOPost request);
-    ScheduleVersionDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long scheduleVersionId, ScheduleVersionDTOPatch patchRequest);
-    void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long scheduleVersionId);
+    ScheduleVersionDTOGet updateForUserSchedule(Long userId, Long scheduleVersionId, ScheduleVersionDTOPatch patchRequest);
+    void deleteByIdForUserSchedule(Long userId, Long scheduleVersionId);
     void checkScheduleVersionId(ScheduleVersion scheduleVersion, Long scheduleVersionId, String entityName);
 
-    ScheduleVersion getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long scheduleVersionId);
+    ScheduleVersion getEntityByIdForUser(Long userId, Long scheduleVersionId);
     List<ScheduleVersion> getAllEntitiesForUserSchedule(Long userId, Long scheduleId);
+
+    void checkUserAccessToScheduleVersion(ScheduleVersion scheduleVersion, Long userId);
 }

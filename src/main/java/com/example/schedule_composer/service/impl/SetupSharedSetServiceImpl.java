@@ -82,18 +82,18 @@ public class SetupSharedSetServiceImpl implements SetupSharedSetService {
     }
 
     @Override
-    public SetupSharedSetDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId) {
-        return setupSharedSetMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, setupSharedSetId));
+    public SetupSharedSetDTOGet getByIdForUserScheduleVersion(Long userId, Long setupSharedSetId) {
+        return setupSharedSetMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, setupSharedSetId));
     }
 
     @Override
-    public List<SetupSharedSetDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId) {
-        return setupSharedSetMapper.fromEntityListToGetList(getAllEntitiesForUserScheduleVersion(userId, scheduleId, scheduleVersionId));
+    public List<SetupSharedSetDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleVersionId) {
+        return setupSharedSetMapper.fromEntityListToGetList(getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId));
     }
 
     @Override
-    public SetupSharedSetDTOGet createForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, SetupSharedSetDTOPost request) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+    public SetupSharedSetDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, SetupSharedSetDTOPost request) {
+        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUser(userId, scheduleVersionId);
 
         SetupSharedSet setupSharedSet = setupSharedSetMapper.fromPostToEntity(request);
         setupSharedSet.setScheduleVersion(scheduleVersion);
@@ -101,16 +101,16 @@ public class SetupSharedSetServiceImpl implements SetupSharedSetService {
     }
 
     @Override
-    public SetupSharedSetDTOGet updateForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId, SetupSharedSetDTOPatch patchRequest) {
-        SetupSharedSet setupSharedSet = getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, setupSharedSetId);
+    public SetupSharedSetDTOGet updateForUserScheduleVersion(Long userId, Long setupSharedSetId, SetupSharedSetDTOPatch patchRequest) {
+        SetupSharedSet setupSharedSet = getEntityByIdForUserScheduleVersion(userId, setupSharedSetId);
 
         setupSharedSet = setupSharedSetMapper.fromPatchToEntity(patchRequest, setupSharedSet);
         return setupSharedSetMapper.fromEntityToGet(setupSharedSetRepository.save(setupSharedSet));
     }
 
     @Override
-    public void deleteByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId) {
-        SetupSharedSet setupSharedSet = getEntityByIdForUserScheduleVersion(userId, scheduleId, scheduleVersionId, setupSharedSetId);
+    public void deleteByIdForUserScheduleVersion(Long userId, Long setupSharedSetId) {
+        SetupSharedSet setupSharedSet = getEntityByIdForUserScheduleVersion(userId, setupSharedSetId);
         setupSharedSetRepository.delete(setupSharedSet);
     }
 
@@ -122,21 +122,21 @@ public class SetupSharedSetServiceImpl implements SetupSharedSetService {
     }
 
     @Override
-    public SetupSharedSet getEntityByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long setupSharedSetId) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
-
+    public SetupSharedSet getEntityByIdForUserScheduleVersion(Long userId, Long setupSharedSetId) {
         SetupSharedSet setupSharedSet = getEntityById(setupSharedSetId);
-        scheduleVersionService.checkScheduleVersionId(scheduleVersion, setupSharedSet.getScheduleVersion().getId(), "SetupSharedSet");
+        scheduleVersionService.checkUserAccessToScheduleVersion(setupSharedSet.getScheduleVersion(), userId);
         return setupSharedSet;
     }
 
     @Override
-    public List<SetupSharedSet> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId) {
-        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUserSchedule(userId, scheduleId, scheduleVersionId);
+    public List<SetupSharedSet> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId) {
+        ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUser(userId, scheduleVersionId);
 
         return setupSharedSetRepository.findAllByScheduleVersionId(scheduleVersion.getId());
-
     }
 
-
+    @Override
+    public void checkUserAccessToScheduleSharedSet(SetupSharedSet setupSharedSet, Long userId) {
+        scheduleVersionService.checkUserAccessToScheduleVersion(setupSharedSet.getScheduleVersion(), userId);
+    }
 }

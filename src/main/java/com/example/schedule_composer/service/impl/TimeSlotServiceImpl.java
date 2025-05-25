@@ -89,8 +89,8 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     }
 
     @Override
-    public TimeSlotDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long timeSlotId) {
-        return timeSlotMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, scheduleId, timeSlotId));
+    public TimeSlotDTOGet getByIdForUserSchedule(Long userId, Long timeSlotId) {
+        return timeSlotMapper.fromEntityToGet(getEntityByIdForUser(userId, timeSlotId));
     }
 
     @Override
@@ -109,8 +109,8 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     }
 
     @Override
-    public TimeSlotDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long timeSlotId, TimeSlotDTOPatch request) {
-        TimeSlot timeSlot = getEntityByIdForUserSchedule(userId, scheduleId, timeSlotId);
+    public TimeSlotDTOGet updateForUserSchedule(Long userId, Long timeSlotId, TimeSlotDTOPatch request) {
+        TimeSlot timeSlot = getEntityByIdForUser(userId, timeSlotId);
 
         timeSlot = timeSlotMapper.fromPatchToEntity(request, timeSlot);
         TimeSlot updated = timeSlotRepository.save(timeSlot);
@@ -118,18 +118,16 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long timeSlotId) {
-        TimeSlot timeSlot = getEntityByIdForUserSchedule(userId, scheduleId, timeSlotId);
+    public void deleteByIdForUserSchedule(Long userId, Long timeSlotId) {
+        TimeSlot timeSlot = getEntityByIdForUser(userId, timeSlotId);
 
         timeSlotRepository.delete(timeSlot);
     }
 
     @Override
-    public TimeSlot getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long timeSlotId) {
-        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
-
+    public TimeSlot getEntityByIdForUser(Long userId, Long timeSlotId) {
         TimeSlot timeSlot = getEntityById(timeSlotId);
-        scheduleService.checkScheduleId(schedule, timeSlot.getSchedule().getId(), "TimeSlot");
+        scheduleService.checkUserAccessToSchedule(timeSlot.getSchedule(), userId);
         return timeSlot;
     }
 
@@ -141,9 +139,9 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     }
 
     @Override
-    public List<TimeSlot> checkIfAllExistAndGetEntitiesForUserSchedule(Long userId, Long scheduleId, List<Long> timeSlotIds) {
+    public List<TimeSlot> checkIfAllExistAndGetEntitiesForUserSchedule(Long userId, List<Long> timeSlotIds) {
         return timeSlotIds.stream()
-                    .map(id -> getEntityByIdForUserSchedule(userId, scheduleId, id))
+                    .map(id -> getEntityByIdForUser(userId, id))
                     .collect(Collectors.toList());
     }
 }

@@ -87,8 +87,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long groupId) {
-        return groupMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, scheduleId, groupId));
+    public GroupDTOGet getByIdForUserSchedule(Long userId, Long groupId) {
+        return groupMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, groupId));
     }
 
     @Override
@@ -100,7 +100,7 @@ public class GroupServiceImpl implements GroupService {
     public GroupDTOGet createForUserSchedule(Long userId, Long scheduleId, GroupDTOPost request) {
         Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
 
-        Department department = departmentService.getEntityByIdForUserSchedule(userId, scheduleId, request.getDepartmentId());
+        Department department = departmentService.getEntityByIdForUserSchedule(userId, request.getDepartmentId());
 
         Group group = groupMapper.fromPostToEntity(request);
         group.setSchedule(schedule);
@@ -110,12 +110,12 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long groupId, GroupDTOPatch patchRequest) {
-        Group group = getEntityByIdForUserSchedule(userId, scheduleId, groupId);
+    public GroupDTOGet updateForUserSchedule(Long userId, Long groupId, GroupDTOPatch patchRequest) {
+        Group group = getEntityByIdForUserSchedule(userId, groupId);
 
         group = groupMapper.fromPatchToEntity(patchRequest, group);
         if(patchRequest.getDepartmentId() != null) {
-            Department department = departmentService.getEntityByIdForUserSchedule(userId, scheduleId, patchRequest.getDepartmentId());
+            Department department = departmentService.getEntityByIdForUserSchedule(userId, patchRequest.getDepartmentId());
             group.setDepartment(department);
         }
         Group updated = groupRepository.save(group);
@@ -123,17 +123,15 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long groupId) {
-        Group group = getEntityByIdForUserSchedule(userId, scheduleId, groupId);
+    public void deleteByIdForUserSchedule(Long userId, Long groupId) {
+        Group group = getEntityByIdForUserSchedule(userId, groupId);
         groupRepository.delete(group);
     }
 
     @Override
-    public Group getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long groupId) {
-        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
-
+    public Group getEntityByIdForUserSchedule(Long userId, Long groupId) {
         Group group = getEntityById(groupId);
-        scheduleService.checkScheduleId(schedule, group.getSchedule().getId(), "Group");
+        scheduleService.checkUserAccessToSchedule(group.getSchedule(), userId);
         return group;
     }
 
@@ -145,9 +143,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<Group> checkIfAllExistAndGetEntitiesForUserSchedule(Long userId, Long scheduleId, List<Long> groupIds) {
+    public List<Group> checkIfAllExistAndGetEntitiesForUserSchedule(Long userId, List<Long> groupIds) {
         return groupIds.stream()
-                .map(id -> getEntityByIdForUserSchedule(userId, scheduleId, id))
+                .map(id -> getEntityByIdForUserSchedule(userId, id))
                 .collect(Collectors.toList());
     }
 }

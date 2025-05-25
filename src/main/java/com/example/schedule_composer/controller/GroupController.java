@@ -20,26 +20,23 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ApiConstants.SCHEDULE_API + "/{scheduleId}" + ApiConstants.GROUP_API)
+@RequestMapping(ApiConstants.GROUP_API)
 @Tag(name = "Group API", description = "Endpoints for managing student Groups inside of Schedule")
 public class GroupController {
 
     private final GroupService groupService;
 
-
-
     @GetMapping("/{groupId}")
     @Operation(summary = "Get Group by ID", description = "Retrieves a specific student Group by its ID for Schedule")
     public ResponseEntity<GroupDTOGet> getById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("groupId") Long groupId) {
         Long userId = user.getId();
-        GroupDTOGet group = groupService.getByIdForUserSchedule(userId, scheduleId, groupId);
+        GroupDTOGet group = groupService.getByIdForUserSchedule(userId, groupId);
         return ResponseEntity.ok(group);
     }
 
-    @GetMapping
+    @GetMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Get all Groups", description = "Retrieves a list of all student Groups for Schedule")
     public ResponseEntity<List<GroupDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -49,7 +46,7 @@ public class GroupController {
         return ResponseEntity.ok(groups);
     }
 
-    @PostMapping
+    @PostMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Create Group", description = "Creates a new student Group for Schedule")
     public ResponseEntity<GroupDTOGet> create(
             @AuthenticationPrincipal User user,
@@ -64,11 +61,10 @@ public class GroupController {
     @Operation(summary = "Update Group", description = "Updates an existing student Group for Schedule")
     public ResponseEntity<GroupDTOGet> update(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("groupId") Long groupId,
             @Valid @RequestBody GroupDTOPatch patchRequest) {
         Long userId = user.getId();
-        GroupDTOGet updatedGroup = groupService.updateForUserSchedule(userId, scheduleId, groupId, patchRequest);
+        GroupDTOGet updatedGroup = groupService.updateForUserSchedule(userId, groupId, patchRequest);
         return ResponseEntity.ok(updatedGroup);
     }
 
@@ -76,10 +72,9 @@ public class GroupController {
     @Operation(summary = "Delete Group by ID", description = "Deletes a specific student Group by its ID for Schedule")
     public ResponseEntity<Void> deleteById(
             @AuthenticationPrincipal User user,
-            @PathVariable("scheduleId") Long scheduleId,
             @PathVariable("groupId") Long groupId) {
         Long userId = user.getId();
-        groupService.deleteByIdForUserSchedule(userId, scheduleId, groupId);
+        groupService.deleteByIdForUserSchedule(userId, groupId);
         return ResponseEntity.noContent().build();
     }
 

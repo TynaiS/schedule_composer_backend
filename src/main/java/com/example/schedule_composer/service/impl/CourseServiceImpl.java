@@ -77,8 +77,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long courseId) {
-        return courseMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, scheduleId, courseId));
+    public CourseDTOGet getByIdForUserSchedule(Long userId, Long courseId) {
+        return courseMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, courseId));
     }
 
     @Override
@@ -97,8 +97,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long courseId, CourseDTOPatch patchRequest) {
-        Course course = getEntityByIdForUserSchedule(userId, scheduleId, courseId);
+    public CourseDTOGet updateForUserSchedule(Long userId, Long courseId, CourseDTOPatch patchRequest) {
+        Course course = getEntityByIdForUserSchedule(userId, courseId);
 
         course = courseMapper.fromPatchToEntity(patchRequest, course);
         Course updated = courseRepository.save(course);
@@ -106,18 +106,16 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long courseId) {
-        Course course = getEntityByIdForUserSchedule(userId, scheduleId, courseId);
+    public void deleteByIdForUserSchedule(Long userId, Long courseId) {
+        Course course = getEntityByIdForUserSchedule(userId, courseId);
 
         courseRepository.delete(course);
     }
 
     @Override
-    public Course getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long courseId) {
-        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
-
+    public Course getEntityByIdForUserSchedule(Long userId, Long courseId) {
         Course course = getEntityById(courseId);
-        scheduleService.checkScheduleId(schedule, course.getSchedule().getId(), "Course");
+        scheduleService.checkUserAccessToSchedule(course.getSchedule(), userId);
         return course;
     }
 

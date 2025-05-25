@@ -72,8 +72,8 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public TeacherDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long teacherId) {
-        return teacherMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, scheduleId, teacherId));
+    public TeacherDTOGet getByIdForUser(Long userId, Long teacherId) {
+        return teacherMapper.fromEntityToGet(getEntityByIdForUser(userId, teacherId));
     }
 
     @Override
@@ -92,8 +92,8 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public TeacherDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long teacherId, TeacherDTOPatch patchRequest) {
-        Teacher teacher = getEntityByIdForUserSchedule(userId, scheduleId, teacherId);
+    public TeacherDTOGet updateForUserSchedule(Long userId, Long teacherId, TeacherDTOPatch patchRequest) {
+        Teacher teacher = getEntityByIdForUser(userId, teacherId);
 
         teacher = teacherMapper.fromPatchToEntity(patchRequest, teacher);
         Teacher updated = teacherRepository.save(teacher);
@@ -101,18 +101,16 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long teacherId) {
-        Teacher teacher = getEntityByIdForUserSchedule(userId, scheduleId, teacherId);
+    public void deleteByIdForUserSchedule(Long userId, Long teacherId) {
+        Teacher teacher = getEntityByIdForUser(userId, teacherId);
 
         teacherRepository.delete(teacher);
     }
 
     @Override
-    public Teacher getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long teacherId) {
-        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
-
+    public Teacher getEntityByIdForUser(Long userId, Long teacherId) { //
         Teacher teacher = getEntityById(teacherId);
-        scheduleService.checkScheduleId(schedule, teacher.getSchedule().getId(), "Teacher");
+        scheduleService.checkUserAccessToSchedule(teacher.getSchedule(), userId);
         return teacher;
     }
 

@@ -21,13 +21,14 @@ public interface TeacherService {
     List<Teacher> getAllEntities();
 
 
-    TeacherDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long teacherId);
+    TeacherDTOGet getByIdForUser(Long userId, Long teacherId);
     List<TeacherDTOGet> getAllForUserSchedule(Long userId, Long scheduleId);
     TeacherDTOGet createForUserSchedule(Long userId, Long scheduleId, TeacherDTOPost request);
-    TeacherDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long teacherId, TeacherDTOPatch patchRequest);
-    void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long teacherId);
+    TeacherDTOGet updateForUserSchedule(Long userId, Long teacherId, TeacherDTOPatch patchRequest);
+    void deleteByIdForUserSchedule(Long userId, Long teacherId);
 
 
-    Teacher getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long teacherId);
+    Teacher getEntityByIdForUser(Long userId, Long teacherId);
     List<Teacher> getAllEntitiesForUserSchedule(Long userId, Long scheduleId);
+
 }

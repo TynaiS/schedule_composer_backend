@@ -90,8 +90,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public DepartmentDTOGet getByIdForUserSchedule(Long userId, Long scheduleId, Long departmentId) {
-        return departmentMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, scheduleId, departmentId));
+    public DepartmentDTOGet getByIdForUserSchedule(Long userId, Long departmentId) {
+        return departmentMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, departmentId));
     }
 
     @Override
@@ -110,8 +110,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public DepartmentDTOGet updateForUserSchedule(Long userId, Long scheduleId, Long departmentId, DepartmentDTOPatch patchRequest) {
-        Department department = getEntityByIdForUserSchedule(userId, scheduleId, departmentId);
+    public DepartmentDTOGet updateForUserSchedule(Long userId, Long departmentId, DepartmentDTOPatch patchRequest) {
+        Department department = getEntityByIdForUserSchedule(userId, departmentId);
 
         department = departmentMapper.fromPatchToEntity(patchRequest, department);
         Department updatedDepartment = departmentRepository.save(department);
@@ -119,18 +119,16 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long scheduleId, Long departmentId) {
-        Department department = getEntityByIdForUserSchedule(userId, scheduleId, departmentId);
+    public void deleteByIdForUserSchedule(Long userId, Long departmentId) {
+        Department department = getEntityByIdForUserSchedule(userId, departmentId);
 
         departmentRepository.delete(department);
     }
 
     @Override
-    public Department getEntityByIdForUserSchedule(Long userId, Long scheduleId, Long departmentId) {
-        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
-
+    public Department getEntityByIdForUserSchedule(Long userId, Long departmentId) {
         Department department = getEntityById(departmentId);
-        scheduleService.checkScheduleId(schedule, department.getSchedule().getId(), "Department");
+        scheduleService.checkUserAccessToSchedule(department.getSchedule(), userId);
         return department;
     }
 

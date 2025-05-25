@@ -22,12 +22,12 @@ public interface ScheduleLunchItemService {
 
 
 
-    ScheduleLunchItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleLunchItemId);
-    List<ScheduleLunchItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId);
-    ScheduleLunchItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, ScheduleLunchItemDTOPost request);
-    ScheduleLunchItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleLunchItemId, ScheduleLunchItemDTOPatch patchRequest);
-    void deleteByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleLunchItemId);
+    ScheduleLunchItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleLunchItemId);
+    List<ScheduleLunchItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleVersionId);
+    ScheduleLunchItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, ScheduleLunchItemDTOPost request);
+    ScheduleLunchItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleLunchItemId, ScheduleLunchItemDTOPatch patchRequest);
+    void deleteByIdForUserScheduleVersion(Long userId, Long scheduleLunchItemId);
 
-    ScheduleLunchItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId, Long scheduleLunchItemId);
-    List<ScheduleLunchItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleId, Long scheduleVersionId);
+    ScheduleLunchItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleLunchItemId);
+    List<ScheduleLunchItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId);
 }

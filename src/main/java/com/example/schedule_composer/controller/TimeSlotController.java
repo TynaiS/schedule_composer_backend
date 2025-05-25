@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ApiConstants.SCHEDULE_API + "/{scheduleId}" + ApiConstants.TIME_SLOT_API)
+@RequestMapping(ApiConstants.TIME_SLOT_API)
 @Tag(name = "TimeSlot API", description = "Endpoints for managing TimeSlots inside of Schedule")
 public class TimeSlotController {
 
@@ -31,14 +31,13 @@ public class TimeSlotController {
     @Operation(summary = "Get TimeSlot by ID", description = "Retrieves a specific TimeSlot by its ID for Schedule")
     public ResponseEntity<TimeSlotDTOGet> getById(
             @AuthenticationPrincipal User user,
-            @PathVariable Long scheduleId,
             @PathVariable Long timeSlotId) {
         Long userId = user.getId();
-        TimeSlotDTOGet timeSlot = timeSlotService.getByIdForUserSchedule(userId, scheduleId, timeSlotId);
+        TimeSlotDTOGet timeSlot = timeSlotService.getByIdForUserSchedule(userId, timeSlotId);
         return ResponseEntity.ok(timeSlot);
     }
 
-    @GetMapping
+    @GetMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Get all TimeSlots", description = "Retrieves all TimeSlots for Schedule")
     public ResponseEntity<List<TimeSlotDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -48,7 +47,7 @@ public class TimeSlotController {
         return ResponseEntity.ok(timeSlots);
     }
 
-    @PostMapping
+    @PostMapping("/forSchedule/{scheduleId}")
     @Operation(summary = "Create TimeSlot", description = "Creates a new TimeSlot for Schedule")
     public ResponseEntity<TimeSlotDTOGet> create(
             @AuthenticationPrincipal User user,
@@ -63,11 +62,10 @@ public class TimeSlotController {
     @Operation(summary = "Update TimeSlot", description = "Updates an existing TimeSlot for Schedule")
     public ResponseEntity<TimeSlotDTOGet> update(
             @AuthenticationPrincipal User user,
-            @PathVariable Long scheduleId,
             @PathVariable Long timeSlotId,
             @Valid @RequestBody TimeSlotDTOPatch request) {
         Long userId = user.getId();
-        TimeSlotDTOGet updated = timeSlotService.updateForUserSchedule(userId, scheduleId, timeSlotId, request);
+        TimeSlotDTOGet updated = timeSlotService.updateForUserSchedule(userId, timeSlotId, request);
         return ResponseEntity.ok(updated);
     }
 
@@ -75,10 +73,9 @@ public class TimeSlotController {
     @Operation(summary = "Delete TimeSlot", description = "Deletes a specific TimeSlot for Schedule")
     public ResponseEntity<Void> delete(
             @AuthenticationPrincipal User user,
-            @PathVariable Long scheduleId,
             @PathVariable Long timeSlotId) {
         Long userId = user.getId();
-        timeSlotService.deleteByIdForUserSchedule(userId, scheduleId, timeSlotId);
+        timeSlotService.deleteByIdForUserSchedule(userId, timeSlotId);
         return ResponseEntity.noContent().build();
     }
 }
