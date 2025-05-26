@@ -36,7 +36,7 @@ public class TeacherController {
         return ResponseEntity.ok(teacher);
     }
 
-    @GetMapping("/forSchedule/{scheduleId}")
+    @GetMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Get all Teachers", description = "Retrieves a list of all Teachers for Schedule")
     public ResponseEntity<List<TeacherDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -46,7 +46,7 @@ public class TeacherController {
         return ResponseEntity.ok(teachers);
     }
 
-    @PostMapping("/forSchedule/{scheduleId}")
+    @PostMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Create Teacher", description = "Creates new Teacher for Schedule")
     public ResponseEntity<TeacherDTOGet> create(
             @AuthenticationPrincipal User user,

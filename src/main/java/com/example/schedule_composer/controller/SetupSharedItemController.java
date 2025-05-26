@@ -34,7 +34,7 @@ public class SetupSharedItemController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/forSetupSharedSet/{setupSharedSetId}")
+    @GetMapping("/for-setup-shared-set/{setupSharedSetId}")
     @Operation(summary = "Get all SetupSharedItems", description = "Retrieves a list of all SetupSharedItem's for SetupSharedSet")
     public ResponseEntity<List<SetupSharedItemDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -45,7 +45,7 @@ public class SetupSharedItemController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/forSetupSharedSet/{setupSharedSetId}" + ApiConstants.GROUP_API + "/{groupId}")
+    @GetMapping("/for-setup-shared-set/{setupSharedSetId}/for-group/{groupId}")
     @Operation(summary = "Get all SetupSharedItems by groupId", description = "Retrieves a list of all SetupSharedItem 's with specific groupId for SetupSharedSet")
     public ResponseEntity<List<SetupSharedItemDTOGet>> getAllByGroupId(
             @AuthenticationPrincipal User user,
@@ -56,7 +56,7 @@ public class SetupSharedItemController {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("/forSetupSharedSet/{setupSharedSetId}")
+    @PostMapping("/for-setup-shared-set/{setupSharedSetId}")
     @Operation(summary = "Create SetupSharedItem relation", description = "Creates new SetupSharedItem relation for SetupSharedSet")
     public ResponseEntity<SetupSharedItemDTOGet> create(
             @AuthenticationPrincipal User user,

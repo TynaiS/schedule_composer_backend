@@ -37,7 +37,7 @@ public class RoomController {
         return ResponseEntity.ok(room);
     }
 
-    @GetMapping("/forSchedule/{scheduleId}")
+    @GetMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Get all Rooms", description = "Retrieves all Rooms for Schedule")
     public ResponseEntity<List<RoomDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -47,7 +47,7 @@ public class RoomController {
         return ResponseEntity.ok(rooms);
     }
 
-    @PostMapping("/forSchedule/{scheduleId}")
+    @PostMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Create Room", description = "Creates a new Room for Schedule")
     public ResponseEntity<RoomDTOGet> create(
             @AuthenticationPrincipal User user,

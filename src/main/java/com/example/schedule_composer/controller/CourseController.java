@@ -39,7 +39,7 @@ public class CourseController {
         return ResponseEntity.ok(course);
     }
 
-    @GetMapping("/forSchedule/{scheduleId}")
+    @GetMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Get all Courses", description = "Retrieves a list of all Courses for Schedule")
     public ResponseEntity<List<CourseDTOGet>>  getAll(
             @AuthenticationPrincipal User user,
@@ -49,7 +49,7 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
 
-    @PostMapping("/forSchedule/{scheduleId}")
+    @PostMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Create Course", description = "Creates new Course for Schedule")
     public ResponseEntity<CourseDTOGet> create(
             @AuthenticationPrincipal User user,

@@ -36,7 +36,7 @@ public class GroupController {
         return ResponseEntity.ok(group);
     }
 
-    @GetMapping("/forSchedule/{scheduleId}")
+    @GetMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Get all Groups", description = "Retrieves a list of all student Groups for Schedule")
     public ResponseEntity<List<GroupDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -46,7 +46,7 @@ public class GroupController {
         return ResponseEntity.ok(groups);
     }
 
-    @PostMapping("/forSchedule/{scheduleId}")
+    @PostMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Create Group", description = "Creates a new student Group for Schedule")
     public ResponseEntity<GroupDTOGet> create(
             @AuthenticationPrincipal User user,

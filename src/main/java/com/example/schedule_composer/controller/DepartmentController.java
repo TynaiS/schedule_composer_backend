@@ -36,7 +36,7 @@ public class DepartmentController {
         return ResponseEntity.ok(department);
     }
 
-    @GetMapping("/forSchedule/{scheduleId}")
+    @GetMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Get all Departments", description = "Retrieves a list of all student Departments for Schedule")
     public ResponseEntity<List<DepartmentDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -46,7 +46,7 @@ public class DepartmentController {
         return ResponseEntity.ok(departments);
     }
 
-    @PostMapping("/forSchedule/{scheduleId}")
+    @PostMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Create Department", description = "Creates new Department for Schedule")
     public ResponseEntity<DepartmentDTOGet> create(
             @AuthenticationPrincipal User user,

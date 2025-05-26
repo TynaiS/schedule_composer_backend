@@ -35,7 +35,7 @@ public class SetupItemController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/forScheduleVersion/{scheduleVersionId}")
+    @GetMapping("/for-schedule-version/{scheduleVersionId}")
     @Operation(summary = "Get all SetupItem", description = "Retrieves a list of all SetupItems for ScheduleVersion")
     public ResponseEntity<List<SetupItemDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -45,7 +45,7 @@ public class SetupItemController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/forScheduleVersion/{scheduleVersionId}" + ApiConstants.GROUP_API + "/{groupId}")
+    @GetMapping("/for-schedule-version/{scheduleVersionId}/for-group/{groupId}")
     @Operation(summary = "Get all SetupItem entities by groupId", description = "Retrieves a list of all SetupItems with specific groupId for ScheduleVersion")
     public ResponseEntity<List<SetupItemDTOGet>> getAllByGroupId(
             @AuthenticationPrincipal User user,
@@ -56,7 +56,7 @@ public class SetupItemController {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("/forScheduleVersion/{scheduleVersionId}")
+    @PostMapping("/for-schedule-version/{scheduleVersionId}")
     @Operation(summary = "Create SetupItem relation", description = "Creates new SetupItem relation for ScheduleVersion")
     public ResponseEntity<SetupItemDTOGet> create(
             @AuthenticationPrincipal User user,

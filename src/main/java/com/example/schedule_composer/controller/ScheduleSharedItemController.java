@@ -37,7 +37,7 @@ public class ScheduleSharedItemController {
         return ResponseEntity.ok(item);
     }
 
-    @GetMapping("/forScheduleVersion/{scheduleVersionId}")
+    @GetMapping("/for-schedule-version/{scheduleVersionId}")
     @Operation(summary = "Get all ScheduleSharedItems", description = "Retrieves all ScheduleSharedItems for ScheduleVersion")
     public ResponseEntity<List<ScheduleSharedItemDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -47,7 +47,7 @@ public class ScheduleSharedItemController {
         return ResponseEntity.ok(items);
     }
 
-    @PostMapping("/forScheduleVersion/{scheduleVersionId}")
+    @PostMapping("/for-schedule-version/{scheduleVersionId}")
     @Operation(summary = "Create ScheduleSharedItem", description = "Creates a new ScheduleSharedItem for ScheduleVersion")
     public ResponseEntity<ScheduleSharedItemDTOGet> create(
             @AuthenticationPrincipal User user,

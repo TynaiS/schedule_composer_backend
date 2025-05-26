@@ -36,7 +36,7 @@ public class ScheduleLunchItemController {
         return ResponseEntity.ok(lunchItem);
     }
 
-    @GetMapping("/forScheduleVersion/{scheduleVersionId}")
+    @GetMapping("/for-schedule-version/{scheduleVersionId}")
     @Operation(summary = "Get all ScheduleLunchItems", description = "Retrieves a list of all ScheduleLunchItems for ScheduleVersion")
     public ResponseEntity<List<ScheduleLunchItemDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -47,7 +47,7 @@ public class ScheduleLunchItemController {
     }
 
 
-    @PostMapping("/forScheduleVersion/{scheduleVersionId}")
+    @PostMapping("/for-schedule-version/{scheduleVersionId}")
     @Operation(summary = "Create ScheduleLunchItem", description = "Creates new ScheduleLunchItem for ScheduleVersion")
     public ResponseEntity<ScheduleLunchItemDTOGet> create(
             @AuthenticationPrincipal User user,

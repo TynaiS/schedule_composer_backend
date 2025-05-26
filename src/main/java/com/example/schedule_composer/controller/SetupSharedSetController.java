@@ -37,7 +37,7 @@ public class SetupSharedSetController {
         return ResponseEntity.ok(setupSharedSet);
     }
 
-    @GetMapping("/forScheduleVersion/{scheduleVersionId}")
+    @GetMapping("/for-schedule-version/{scheduleVersionId}")
     @Operation(summary = "Get all SetupSharedSets", description = "Retrieves a list of all student SetupSharedSets for ScheduleVersion")
     public ResponseEntity<List<SetupSharedSetDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -47,7 +47,7 @@ public class SetupSharedSetController {
         return ResponseEntity.ok(setupSharedSets);
     }
 
-    @PostMapping("/forScheduleVersion/{scheduleVersionId}")
+    @PostMapping("/for-schedule-version/{scheduleVersionId}")
     @Operation(summary = "Create SetupSharedSet", description = "Creates new SetupSharedSet for ScheduleVersion")
     public ResponseEntity<SetupSharedSetDTOGet> create(
             @AuthenticationPrincipal User user,

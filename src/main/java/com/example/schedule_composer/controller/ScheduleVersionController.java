@@ -37,7 +37,7 @@ public class ScheduleVersionController {
         return ResponseEntity.ok(scheduleVersion);
     }
 
-    @GetMapping("/forSchedule/{scheduleId}")
+    @GetMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Get all ScheduleVersions", description = "Retrieves a list of all ScheduleVersions for Schedule")
     public ResponseEntity<List<ScheduleVersionDTOGet>>  getAll(
             @AuthenticationPrincipal User user,
@@ -47,7 +47,7 @@ public class ScheduleVersionController {
         return ResponseEntity.ok(scheduleVersions);
     }
 
-    @PostMapping("/forSchedule/{scheduleId}")
+    @PostMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Create ScheduleVersion", description = "Creates new ScheduleVersion for Schedule")
     public ResponseEntity<ScheduleVersionDTOGet> create(
             @AuthenticationPrincipal User user,

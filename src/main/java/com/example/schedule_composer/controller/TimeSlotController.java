@@ -37,7 +37,7 @@ public class TimeSlotController {
         return ResponseEntity.ok(timeSlot);
     }
 
-    @GetMapping("/forSchedule/{scheduleId}")
+    @GetMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Get all TimeSlots", description = "Retrieves all TimeSlots for Schedule")
     public ResponseEntity<List<TimeSlotDTOGet>> getAll(
             @AuthenticationPrincipal User user,
@@ -47,7 +47,7 @@ public class TimeSlotController {
         return ResponseEntity.ok(timeSlots);
     }
 
-    @PostMapping("/forSchedule/{scheduleId}")
+    @PostMapping("/for-schedule/{scheduleId}")
     @Operation(summary = "Create TimeSlot", description = "Creates a new TimeSlot for Schedule")
     public ResponseEntity<TimeSlotDTOGet> create(
             @AuthenticationPrincipal User user,
