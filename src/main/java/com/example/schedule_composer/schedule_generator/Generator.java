@@ -31,14 +31,26 @@ public class Generator {
     private final TeacherService teacherService;
 
     private final ScheduleVersionService scheduleVersionService;
-    private final ScheduleItemService scheduleService;
-    private final ScheduleSharedItemService scheduleSharedService;
-    private final ScheduleLunchItemService scheduleLunchService;
+    private final ScheduleItemService scheduleItemService;
+    private final ScheduleSharedItemService scheduleSharedItemService;
+    private final ScheduleLunchItemService scheduleLunchItemService;
     private final SetupItemService setupItemService;
     private final SetupSharedItemService setupSharedItemService;
 
 
     public void generate(Long userId, Long scheduleVersionId) {
+
+        // Check if schedule was already generated
+
+        if(scheduleLunchItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId).size() > 0 ||
+                scheduleItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId).size() > 0 ||
+                scheduleSharedItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId).size() > 0){
+            throw new IllegalArgumentException("Schedule has been already generated");
+        }
+
+
+        //
+
         ScheduleVersion scheduleVersion = scheduleVersionService.getEntityByIdForUser(userId, scheduleVersionId);
         Schedule schedule = scheduleVersion.getSchedule();
         List<SetupItemDTOGet> setupItemsDTO = setupItemService.getAllForUserScheduleVersion(userId, scheduleVersion.getId());
@@ -70,7 +82,7 @@ public class Generator {
                             .day(day)
                             .timeSlots(randomLunchTimeSlotList)
                             .build();
-                    scheduleLunchService.create(newLunchItem);
+                    scheduleLunchItemService.create(newLunchItem);
                 }
 
             }
@@ -104,7 +116,7 @@ public class Generator {
 
                 // Checking current SetupSharedItem with the ScheduleLunchItems
 
-                for(ScheduleLunchItem scheduleLunchItem : scheduleLunchService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
+                for(ScheduleLunchItem scheduleLunchItem : scheduleLunchItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
                     haveCommonGroups = checkForCommonGroups(currSetupSharedItemDTO.getGroups(), List.of(scheduleLunchItem.getGroup()));
 
                     if(scheduleLunchItem.getDay() == randomDayOfWeek) {
@@ -122,7 +134,7 @@ public class Generator {
 
                 // Checking current SetupSharedItem with the ScheduleSharedItems
 
-                for(ScheduleSharedItem scheduleSharedItem : scheduleSharedService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
+                for(ScheduleSharedItem scheduleSharedItem : scheduleSharedItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
 
                     isTeacherSame = scheduleSharedItem.getSetupSharedItem().getTeacher().getId() == currSetupSharedItemDTO.getTeacher().getId();
                     isRoomSame = randomRoom.getId() == scheduleSharedItem.getRoom().getId();
@@ -150,7 +162,7 @@ public class Generator {
                             .timeSlots(randomtimeFrame)
                             .teachingMode(TeachingMode.CLASSROOM)
                             .build();
-                    scheduleSharedService.create(newItem);
+                    scheduleSharedItemService.create(newItem);
                     currSetupSharedItemDTO.getSetupSharedSet().setHoursAWeek(
                             currSetupSharedItemDTO.getSetupSharedSet().getHoursAWeek() - randomtimeFrame.size());
                 }
@@ -183,7 +195,7 @@ public class Generator {
 
                 // Checking current SetupSharedItem with the ScheduleLunchItems
 
-                for(ScheduleLunchItem scheduleLunchItem : scheduleLunchService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
+                for(ScheduleLunchItem scheduleLunchItem : scheduleLunchItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
                     haveCommonGroups = checkForCommonGroups(List.of(currSetupItemDTO.getGroup()), List.of(scheduleLunchItem.getGroup()));
 
                     if(scheduleLunchItem.getDay() == randomDayOfWeek) {
@@ -200,7 +212,7 @@ public class Generator {
 
                 // Checking current SetupItem item with the ScheduleSharedItems
 
-                for(ScheduleSharedItem scheduleSharedItem : scheduleSharedService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
+                for(ScheduleSharedItem scheduleSharedItem : scheduleSharedItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
 
                     isTeacherSame = scheduleSharedItem.getSetupSharedItem().getTeacher().getId() == currSetupItemDTO.getTeacher().getId();
                     isRoomSame = randomRoom.getId() == scheduleSharedItem.getRoom().getId();
@@ -223,7 +235,7 @@ public class Generator {
 
                 // Checking current SetupItem item with the ScheduleSharedItems
 
-                for(ScheduleItem scheduleItem : scheduleService.getAllEntities()){
+                for(ScheduleItem scheduleItem : scheduleItemService.getAllEntities()){
 
                     isTeacherSame = scheduleItem.getSetupItem().getTeacher().getId() == currSetupItemDTO.getTeacher().getId();
                     isRoomSame = randomRoom.getId() == scheduleItem.getRoom().getId();
@@ -251,7 +263,7 @@ public class Generator {
                             .timeSlots(randomtimeFrame)
                             .teachingMode(TeachingMode.CLASSROOM)
                             .build();
-                    scheduleSharedService.create(newItem);
+                    scheduleSharedItemService.create(newItem);
                     currSetupItemDTO.setHoursAWeek(
                             currSetupItemDTO.getHoursAWeek() - randomtimeFrame.size());
                 }
