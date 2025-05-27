@@ -22,7 +22,7 @@ public class GeneratorController {
             @AuthenticationPrincipal User user,
             @PathVariable("scheduleVersionId") Long scheduleVersionId) {
         generator.generate(user.getId(), scheduleVersionId);
-        return ResponseEntity.ok("ScheduleItem generated successfully!");
+        return ResponseEntity.ok("Schedule generated successfully!");
     }
 
 }
