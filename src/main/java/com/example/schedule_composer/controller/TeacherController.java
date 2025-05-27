@@ -64,7 +64,7 @@ public class TeacherController {
             @PathVariable("teacherId") Long teacherId,
             @Valid @RequestBody TeacherDTOPatch patchRequest) {
         Long userId = user.getId();
-        TeacherDTOGet updated = teacherService.updateForUserSchedule(userId, teacherId, patchRequest);
+        TeacherDTOGet updated = teacherService.updateForUser(userId, teacherId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -74,7 +74,7 @@ public class TeacherController {
             @AuthenticationPrincipal User user,
             @PathVariable("teacherId") Long teacherId) {
         Long userId = user.getId();
-        teacherService.deleteByIdForUserSchedule(userId, teacherId);
+        teacherService.deleteByIdForUser(userId, teacherId);
         return ResponseEntity.noContent().build();
     }
 

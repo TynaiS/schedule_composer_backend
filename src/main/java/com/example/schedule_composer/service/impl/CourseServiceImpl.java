@@ -77,7 +77,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseDTOGet getByIdForUserSchedule(Long userId, Long courseId) {
+    public CourseDTOGet getByIdForUser(Long userId, Long courseId) {
         return courseMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, courseId));
     }
 
@@ -97,7 +97,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseDTOGet updateForUserSchedule(Long userId, Long courseId, CourseDTOPatch patchRequest) {
+    public CourseDTOGet updateForUser(Long userId, Long courseId, CourseDTOPatch patchRequest) {
         Course course = getEntityByIdForUserSchedule(userId, courseId);
 
         course = courseMapper.fromPatchToEntity(patchRequest, course);
@@ -106,7 +106,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long courseId) {
+    public void deleteByIdForUser(Long userId, Long courseId) {
         Course course = getEntityByIdForUserSchedule(userId, courseId);
 
         courseRepository.delete(course);

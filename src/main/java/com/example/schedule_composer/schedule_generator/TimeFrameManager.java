@@ -3,29 +3,29 @@ package com.example.schedule_composer.schedule_generator;
 import com.example.schedule_composer.mappers.TimeSlotMapper;
 import com.example.schedule_composer.entity.TimeSlot;
 import com.example.schedule_composer.repository.TimeSlotRepository;
+import com.example.schedule_composer.service.TimeSlotService;
 import com.example.schedule_composer.utils.TimeSlotOrdered;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class TimeFrameManager {
 
     private final TimeSlotRepository timeSlotRepository;
+    private final TimeSlotService timeSlotService;
     private final TimeSlotMapper timeSlotMapper;
     private static final Random random = new Random();
 
-    @Autowired
-    public TimeFrameManager(TimeSlotRepository timeSlotRepository, TimeSlotMapper timeSlotMapper){
-        this.timeSlotRepository = timeSlotRepository;
-        this.timeSlotMapper = timeSlotMapper;
-    }
 
-    public List<TimeSlot> getRandomTimeSlotsSet(int academicHours) {
-        List<TimeSlot> timeSlots = timeSlotRepository.findAll();
+    public List<TimeSlot> getRandomTimeSlotsSet(Long userId, Long scheduleId, int academicHours) {
+        List<TimeSlot> timeSlots = timeSlotService.getAllEntitiesForUserSchedule(userId, scheduleId);
         List<TimeSlotOrdered> timeSlotsOrdered = timeSlotMapper.fromEntityListToOrderedList(timeSlots);
 
 

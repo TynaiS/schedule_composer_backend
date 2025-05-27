@@ -3,7 +3,6 @@ package com.example.schedule_composer.service;
 import com.example.schedule_composer.dto.get.SetupSharedSetDTOGet;
 import com.example.schedule_composer.dto.patch.SetupSharedSetDTOPatch;
 import com.example.schedule_composer.dto.post.SetupSharedSetDTOPost;
-import com.example.schedule_composer.entity.ScheduleVersion;
 import com.example.schedule_composer.entity.SetupSharedSet;
 
 
@@ -25,15 +24,15 @@ public interface SetupSharedSetService {
 
 
 
-    SetupSharedSetDTOGet getByIdForUserScheduleVersion(Long userId, Long setupSharedSetId);
+    SetupSharedSetDTOGet getByIdForUser(Long userId, Long setupSharedSetId);
     List<SetupSharedSetDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleVersionId);
     SetupSharedSetDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, SetupSharedSetDTOPost request);
-    SetupSharedSetDTOGet updateForUserScheduleVersion(Long userId, Long setupSharedSetId, SetupSharedSetDTOPatch patchRequest);
-    void deleteByIdForUserScheduleVersion(Long userId, Long setupSharedSetId);
+    SetupSharedSetDTOGet updateForUser(Long userId, Long setupSharedSetId, SetupSharedSetDTOPatch patchRequest);
+    void deleteByIdForUser(Long userId, Long setupSharedSetId);
     void checkSetupSharedSetId(SetupSharedSet setupSharedSet, Long setupSharedSetId, String entityName);
 
 
-    SetupSharedSet getEntityByIdForUserScheduleVersion(Long userId, Long setupSharedSetId);
+    SetupSharedSet getEntityByIdForUser(Long userId, Long setupSharedSetId);
     List<SetupSharedSet> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId);
 
     void checkUserAccessToScheduleSharedSet(SetupSharedSet setupSharedSet, Long userId);

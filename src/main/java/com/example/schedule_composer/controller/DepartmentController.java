@@ -32,7 +32,7 @@ public class DepartmentController {
             @AuthenticationPrincipal User user,
             @PathVariable("departmentId") Long departmentId) {
         Long userId = user.getId();
-        DepartmentDTOGet department = departmentService.getByIdForUserSchedule(userId, departmentId);
+        DepartmentDTOGet department = departmentService.getByIdForUser(userId, departmentId);
         return ResponseEntity.ok(department);
     }
 
@@ -64,7 +64,7 @@ public class DepartmentController {
             @PathVariable("departmentId") Long departmentId,
             @Valid @RequestBody DepartmentDTOPatch patchRequest) {
         Long userId = user.getId();
-        DepartmentDTOGet updated = departmentService.updateForUserSchedule(userId,departmentId, patchRequest);
+        DepartmentDTOGet updated = departmentService.updateForUser(userId,departmentId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -74,7 +74,7 @@ public class DepartmentController {
             @AuthenticationPrincipal User user,
             @PathVariable("departmentId") Long departmentId) {
         Long userId = user.getId();
-        departmentService.deleteByIdForUserSchedule(userId, departmentId);
+        departmentService.deleteByIdForUser(userId, departmentId);
         return ResponseEntity.noContent().build();
     }
 

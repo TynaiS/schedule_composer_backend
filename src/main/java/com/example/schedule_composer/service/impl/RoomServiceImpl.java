@@ -82,7 +82,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDTOGet getByIdForUserSchedule(Long userId, Long roomId) {
+    public RoomDTOGet getByIdForUser(Long userId, Long roomId) {
         return roomMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, roomId));
     }
 
@@ -102,7 +102,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDTOGet updateForUserSchedule(Long userId, Long roomId, RoomDTOPatch patchRequest) {
+    public RoomDTOGet updateForUser(Long userId, Long roomId, RoomDTOPatch patchRequest) {
         Room room = getEntityByIdForUserSchedule(userId, roomId);
 
         room = roomMapper.fromPatchToEntity(patchRequest, room);
@@ -111,7 +111,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long roomId) {
+    public void deleteByIdForUser(Long userId, Long roomId) {
         Room room = getEntityByIdForUserSchedule(userId, roomId);
 
         roomRepository.delete(room);

@@ -81,7 +81,7 @@ public class ScheduleItemServiceImpl implements ScheduleItemService {
     }
 
     @Override
-    public ScheduleItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleItemId) {
+    public ScheduleItemDTOGet getByIdForUser(Long userId, Long scheduleItemId) {
         return scheduleItemMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, scheduleItemId));
     }
 
@@ -109,7 +109,7 @@ public class ScheduleItemServiceImpl implements ScheduleItemService {
     }
 
     @Override
-    public ScheduleItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleItemId, ScheduleItemDTOPatch patchRequest) {
+    public ScheduleItemDTOGet updateForUser(Long userId, Long scheduleItemId, ScheduleItemDTOPatch patchRequest) {
         ScheduleItem scheduleItem = getEntityByIdForUserScheduleVersion(userId, scheduleItemId);
 
         scheduleItem = scheduleItemMapper.fromPatchToEntity(patchRequest, scheduleItem);
@@ -133,7 +133,7 @@ public class ScheduleItemServiceImpl implements ScheduleItemService {
     }
 
     @Override
-    public void deleteByIdForUserScheduleVersion(Long userId, Long scheduleItemId) {
+    public void deleteByIdForUser(Long userId, Long scheduleItemId) {
         ScheduleItem scheduleItem = getEntityByIdForUserScheduleVersion(userId, scheduleItemId);
         scheduleItemRepository.delete(scheduleItem);
     }

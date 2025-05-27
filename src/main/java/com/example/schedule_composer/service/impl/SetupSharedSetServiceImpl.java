@@ -82,8 +82,8 @@ public class SetupSharedSetServiceImpl implements SetupSharedSetService {
     }
 
     @Override
-    public SetupSharedSetDTOGet getByIdForUserScheduleVersion(Long userId, Long setupSharedSetId) {
-        return setupSharedSetMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, setupSharedSetId));
+    public SetupSharedSetDTOGet getByIdForUser(Long userId, Long setupSharedSetId) {
+        return setupSharedSetMapper.fromEntityToGet(getEntityByIdForUser(userId, setupSharedSetId));
     }
 
     @Override
@@ -101,16 +101,16 @@ public class SetupSharedSetServiceImpl implements SetupSharedSetService {
     }
 
     @Override
-    public SetupSharedSetDTOGet updateForUserScheduleVersion(Long userId, Long setupSharedSetId, SetupSharedSetDTOPatch patchRequest) {
-        SetupSharedSet setupSharedSet = getEntityByIdForUserScheduleVersion(userId, setupSharedSetId);
+    public SetupSharedSetDTOGet updateForUser(Long userId, Long setupSharedSetId, SetupSharedSetDTOPatch patchRequest) {
+        SetupSharedSet setupSharedSet = getEntityByIdForUser(userId, setupSharedSetId);
 
         setupSharedSet = setupSharedSetMapper.fromPatchToEntity(patchRequest, setupSharedSet);
         return setupSharedSetMapper.fromEntityToGet(setupSharedSetRepository.save(setupSharedSet));
     }
 
     @Override
-    public void deleteByIdForUserScheduleVersion(Long userId, Long setupSharedSetId) {
-        SetupSharedSet setupSharedSet = getEntityByIdForUserScheduleVersion(userId, setupSharedSetId);
+    public void deleteByIdForUser(Long userId, Long setupSharedSetId) {
+        SetupSharedSet setupSharedSet = getEntityByIdForUser(userId, setupSharedSetId);
         setupSharedSetRepository.delete(setupSharedSet);
     }
 
@@ -122,7 +122,7 @@ public class SetupSharedSetServiceImpl implements SetupSharedSetService {
     }
 
     @Override
-    public SetupSharedSet getEntityByIdForUserScheduleVersion(Long userId, Long setupSharedSetId) {
+    public SetupSharedSet getEntityByIdForUser(Long userId, Long setupSharedSetId) {
         SetupSharedSet setupSharedSet = getEntityById(setupSharedSetId);
         scheduleVersionService.checkUserAccessToScheduleVersion(setupSharedSet.getScheduleVersion(), userId);
         return setupSharedSet;

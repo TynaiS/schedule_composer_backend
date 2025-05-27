@@ -23,11 +23,11 @@ public interface DepartmentService {
     List<Department> getAllEntities();
 
 
-    DepartmentDTOGet getByIdForUserSchedule(Long userId, Long departmentId);
+    DepartmentDTOGet getByIdForUser(Long userId, Long departmentId);
     List<DepartmentDTOGet> getAllForUserSchedule(Long userId, Long scheduleId);
     DepartmentDTOGet createForUserSchedule(Long userId, Long scheduleId, DepartmentDTOPost request);
-    DepartmentDTOGet updateForUserSchedule(Long userId, Long departmentId, DepartmentDTOPatch patchRequest);
-    void deleteByIdForUserSchedule(Long userId, Long departmentId);
+    DepartmentDTOGet updateForUser(Long userId, Long departmentId, DepartmentDTOPatch patchRequest);
+    void deleteByIdForUser(Long userId, Long departmentId);
 
 
     Department getEntityByIdForUserSchedule(Long userId, Long departmentId);

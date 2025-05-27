@@ -33,7 +33,7 @@ public class TimeSlotController {
             @AuthenticationPrincipal User user,
             @PathVariable Long timeSlotId) {
         Long userId = user.getId();
-        TimeSlotDTOGet timeSlot = timeSlotService.getByIdForUserSchedule(userId, timeSlotId);
+        TimeSlotDTOGet timeSlot = timeSlotService.getByIdForUser(userId, timeSlotId);
         return ResponseEntity.ok(timeSlot);
     }
 
@@ -65,7 +65,7 @@ public class TimeSlotController {
             @PathVariable Long timeSlotId,
             @Valid @RequestBody TimeSlotDTOPatch request) {
         Long userId = user.getId();
-        TimeSlotDTOGet updated = timeSlotService.updateForUserSchedule(userId, timeSlotId, request);
+        TimeSlotDTOGet updated = timeSlotService.updateForUser(userId, timeSlotId, request);
         return ResponseEntity.ok(updated);
     }
 
@@ -75,7 +75,7 @@ public class TimeSlotController {
             @AuthenticationPrincipal User user,
             @PathVariable Long timeSlotId) {
         Long userId = user.getId();
-        timeSlotService.deleteByIdForUserSchedule(userId, timeSlotId);
+        timeSlotService.deleteByIdForUser(userId, timeSlotId);
         return ResponseEntity.noContent().build();
     }
 }

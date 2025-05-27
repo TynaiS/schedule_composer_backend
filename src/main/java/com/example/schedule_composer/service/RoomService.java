@@ -23,11 +23,11 @@ public interface RoomService {
     List<Room> getAllClassroomEntities();
 
 
-    RoomDTOGet getByIdForUserSchedule(Long userId, Long roomId);
+    RoomDTOGet getByIdForUser(Long userId, Long roomId);
     List<RoomDTOGet> getAllForUserSchedule(Long userId, Long scheduleId);
     RoomDTOGet createForUserSchedule(Long userId, Long scheduleId, RoomDTOPost request);
-    RoomDTOGet updateForUserSchedule(Long userId, Long roomId, RoomDTOPatch patchRequest);
-    void deleteByIdForUserSchedule(Long userId, Long roomId);
+    RoomDTOGet updateForUser(Long userId, Long roomId, RoomDTOPatch patchRequest);
+    void deleteByIdForUser(Long userId, Long roomId);
 
 
     Room getEntityByIdForUserSchedule(Long userId, Long roomId);

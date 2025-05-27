@@ -92,7 +92,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public TeacherDTOGet updateForUserSchedule(Long userId, Long teacherId, TeacherDTOPatch patchRequest) {
+    public TeacherDTOGet updateForUser(Long userId, Long teacherId, TeacherDTOPatch patchRequest) {
         Teacher teacher = getEntityByIdForUser(userId, teacherId);
 
         teacher = teacherMapper.fromPatchToEntity(patchRequest, teacher);
@@ -101,7 +101,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long teacherId) {
+    public void deleteByIdForUser(Long userId, Long teacherId) {
         Teacher teacher = getEntityByIdForUser(userId, teacherId);
 
         teacherRepository.delete(teacher);

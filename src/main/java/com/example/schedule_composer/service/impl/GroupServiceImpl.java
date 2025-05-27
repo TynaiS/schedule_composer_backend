@@ -87,7 +87,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDTOGet getByIdForUserSchedule(Long userId, Long groupId) {
+    public GroupDTOGet getByIdForUser(Long userId, Long groupId) {
         return groupMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, groupId));
     }
 
@@ -110,7 +110,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDTOGet updateForUserSchedule(Long userId, Long groupId, GroupDTOPatch patchRequest) {
+    public GroupDTOGet updateForUser(Long userId, Long groupId, GroupDTOPatch patchRequest) {
         Group group = getEntityByIdForUserSchedule(userId, groupId);
 
         group = groupMapper.fromPatchToEntity(patchRequest, group);
@@ -123,7 +123,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long groupId) {
+    public void deleteByIdForUser(Long userId, Long groupId) {
         Group group = getEntityByIdForUserSchedule(userId, groupId);
         groupRepository.delete(group);
     }

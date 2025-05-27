@@ -23,14 +23,16 @@ public interface TimeSlotService {
     List<TimeSlot> getAllEntities();
 
 
-    TimeSlotDTOGet getByIdForUserSchedule(Long userId, Long timeSlotId);
+    TimeSlotDTOGet getByIdForUser(Long userId, Long timeSlotId);
     List<TimeSlotDTOGet> getAllForUserSchedule(Long userId, Long scheduleId);
     TimeSlotDTOGet createForUserSchedule(Long userId, Long scheduleId, TimeSlotDTOPost request);
-    TimeSlotDTOGet updateForUserSchedule(Long userId, Long timeSlotId, TimeSlotDTOPatch request);
-    void deleteByIdForUserSchedule(Long userId, Long timeSlotId);
+    TimeSlotDTOGet updateForUser(Long userId, Long timeSlotId, TimeSlotDTOPatch request);
+    void deleteByIdForUser(Long userId, Long timeSlotId);
 
 
     TimeSlot getEntityByIdForUser(Long userId, Long timeSlotId);
+
+    List<TimeSlot> getAllEntitiesWithLunchAllowedForUserSchedule(Long userId, Long scheduleId);
     List<TimeSlot> getAllEntitiesForUserSchedule(Long userId, Long scheduleId);
     List<TimeSlot> checkIfAllExistAndGetEntitiesForUserSchedule(Long userId, List<Long> timeSlotIds);
 }

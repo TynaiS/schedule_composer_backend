@@ -47,7 +47,6 @@ public class SetupSharedItem {
     @Column(name = "course_priority")
     private CoursePriority coursePriority;
 
-
     @Column(name = "hours_in_lab")
     private Integer hoursInLab;
 

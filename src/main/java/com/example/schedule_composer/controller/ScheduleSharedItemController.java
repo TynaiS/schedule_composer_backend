@@ -33,7 +33,7 @@ public class ScheduleSharedItemController {
             @AuthenticationPrincipal User user,
             @PathVariable Long scheduleSharedItemId) {
         Long userId = user.getId();
-        ScheduleSharedItemDTOGet item = scheduleSharedItemService.getByIdForUserScheduleVersion(userId, scheduleSharedItemId);
+        ScheduleSharedItemDTOGet item = scheduleSharedItemService.getByIdForUser(userId, scheduleSharedItemId);
         return ResponseEntity.ok(item);
     }
 
@@ -65,7 +65,7 @@ public class ScheduleSharedItemController {
             @PathVariable Long scheduleSharedItemId,
             @Valid @RequestBody ScheduleSharedItemDTOPatch patchRequest) {
         Long userId = user.getId();
-        ScheduleSharedItemDTOGet updated = scheduleSharedItemService.updateForUserScheduleVersion(userId, scheduleSharedItemId, patchRequest);
+        ScheduleSharedItemDTOGet updated = scheduleSharedItemService.updateForUser(userId, scheduleSharedItemId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -75,7 +75,7 @@ public class ScheduleSharedItemController {
             @AuthenticationPrincipal User user,
             @PathVariable Long scheduleSharedItemId) {
         Long userId = user.getId();
-        scheduleSharedItemService.deleteByIdForUserScheduleVersion(userId, scheduleSharedItemId);
+        scheduleSharedItemService.deleteByIdForUser(userId, scheduleSharedItemId);
         return ResponseEntity.noContent().build();
     }
 }

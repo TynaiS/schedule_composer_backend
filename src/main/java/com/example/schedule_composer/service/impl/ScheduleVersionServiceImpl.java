@@ -79,7 +79,7 @@ public class ScheduleVersionServiceImpl implements ScheduleVersionService {
     }
 
     @Override
-    public ScheduleVersionDTOGet getByIdForUserSchedule(Long userId, Long scheduleVersionId) {
+    public ScheduleVersionDTOGet getByIdForUser(Long userId, Long scheduleVersionId) {
         return scheduleVersionMapper.fromEntityToGet(getEntityByIdForUser(userId, scheduleVersionId));
     }
 
@@ -99,7 +99,7 @@ public class ScheduleVersionServiceImpl implements ScheduleVersionService {
     }
 
     @Override
-    public ScheduleVersionDTOGet updateForUserSchedule(Long userId, Long scheduleVersionId, ScheduleVersionDTOPatch patchRequest) {
+    public ScheduleVersionDTOGet updateForUser(Long userId, Long scheduleVersionId, ScheduleVersionDTOPatch patchRequest) {
         ScheduleVersion scheduleVersion = getEntityByIdForUser(userId, scheduleVersionId);
 
         scheduleVersion = scheduleVersionMapper.fromPatchToEntity(patchRequest, scheduleVersion);
@@ -108,7 +108,7 @@ public class ScheduleVersionServiceImpl implements ScheduleVersionService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long scheduleVersionId) {
+    public void deleteByIdForUser(Long userId, Long scheduleVersionId) {
         ScheduleVersion scheduleVersion = getEntityByIdForUser(userId, scheduleVersionId);
 
         scheduleVersionRepository.delete(scheduleVersion);

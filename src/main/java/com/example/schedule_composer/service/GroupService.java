@@ -22,11 +22,11 @@ public interface GroupService {
     List<Group> checkIfAllExistAndGetEntities(List<Long> groupIds);
 
 
-    GroupDTOGet getByIdForUserSchedule(Long userId, Long groupId);
+    GroupDTOGet getByIdForUser(Long userId, Long groupId);
     List<GroupDTOGet> getAllForUserSchedule(Long userId, Long scheduleId);
     GroupDTOGet createForUserSchedule(Long userId, Long scheduleId, GroupDTOPost request);
-    GroupDTOGet updateForUserSchedule(Long userId, Long groupId, GroupDTOPatch patchRequest);
-    void deleteByIdForUserSchedule(Long userId, Long groupId);
+    GroupDTOGet updateForUser(Long userId, Long groupId, GroupDTOPatch patchRequest);
+    void deleteByIdForUser(Long userId, Long groupId);
 
 
 

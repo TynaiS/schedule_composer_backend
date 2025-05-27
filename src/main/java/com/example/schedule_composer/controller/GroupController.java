@@ -32,7 +32,7 @@ public class GroupController {
             @AuthenticationPrincipal User user,
             @PathVariable("groupId") Long groupId) {
         Long userId = user.getId();
-        GroupDTOGet group = groupService.getByIdForUserSchedule(userId, groupId);
+        GroupDTOGet group = groupService.getByIdForUser(userId, groupId);
         return ResponseEntity.ok(group);
     }
 
@@ -64,7 +64,7 @@ public class GroupController {
             @PathVariable("groupId") Long groupId,
             @Valid @RequestBody GroupDTOPatch patchRequest) {
         Long userId = user.getId();
-        GroupDTOGet updatedGroup = groupService.updateForUserSchedule(userId, groupId, patchRequest);
+        GroupDTOGet updatedGroup = groupService.updateForUser(userId, groupId, patchRequest);
         return ResponseEntity.ok(updatedGroup);
     }
 
@@ -74,7 +74,7 @@ public class GroupController {
             @AuthenticationPrincipal User user,
             @PathVariable("groupId") Long groupId) {
         Long userId = user.getId();
-        groupService.deleteByIdForUserSchedule(userId, groupId);
+        groupService.deleteByIdForUser(userId, groupId);
         return ResponseEntity.noContent().build();
     }
 

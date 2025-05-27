@@ -83,7 +83,7 @@ public class SetupItemServiceImpl implements SetupItemService {
     }
 
     @Override
-    public SetupItemDTOGet getByIdForUserScheduleVersion(Long userId, Long setupItemId) {
+    public SetupItemDTOGet getByIdForUser(Long userId, Long setupItemId) {
         return setupItemMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, setupItemId));
     }
 
@@ -116,7 +116,7 @@ public class SetupItemServiceImpl implements SetupItemService {
     }
 
     @Override
-    public SetupItemDTOGet updateForUserScheduleVersion(Long userId, Long setupItemId, SetupItemDTOPatch patchRequest) {
+    public SetupItemDTOGet updateForUser(Long userId, Long setupItemId, SetupItemDTOPatch patchRequest) {
         SetupItem setupItem = getEntityByIdForUserScheduleVersion(userId, setupItemId);
 
         setupItem = setupItemMapper.fromPatchToEntity(patchRequest, setupItem);
@@ -140,7 +140,7 @@ public class SetupItemServiceImpl implements SetupItemService {
     }
 
     @Override
-    public void deleteByIdForUserScheduleVersion(Long userId, Long setupItemId) {
+    public void deleteByIdForUser(Long userId, Long setupItemId) {
         SetupItem setupItem = getEntityByIdForUserScheduleVersion(userId, setupItemId);
         setupItemRepository.delete(setupItem);
     }

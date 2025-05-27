@@ -3,7 +3,6 @@ package com.example.schedule_composer.service.impl;
 import com.example.schedule_composer.dto.get.TimeSlotDTOGet;
 import com.example.schedule_composer.dto.patch.TimeSlotDTOPatch;
 import com.example.schedule_composer.dto.post.TimeSlotDTOPost;
-import com.example.schedule_composer.entity.Group;
 import com.example.schedule_composer.entity.Schedule;
 import com.example.schedule_composer.entity.TimeSlot;
 import com.example.schedule_composer.mappers.TimeSlotMapper;
@@ -89,7 +88,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     }
 
     @Override
-    public TimeSlotDTOGet getByIdForUserSchedule(Long userId, Long timeSlotId) {
+    public TimeSlotDTOGet getByIdForUser(Long userId, Long timeSlotId) {
         return timeSlotMapper.fromEntityToGet(getEntityByIdForUser(userId, timeSlotId));
     }
 
@@ -109,7 +108,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     }
 
     @Override
-    public TimeSlotDTOGet updateForUserSchedule(Long userId, Long timeSlotId, TimeSlotDTOPatch request) {
+    public TimeSlotDTOGet updateForUser(Long userId, Long timeSlotId, TimeSlotDTOPatch request) {
         TimeSlot timeSlot = getEntityByIdForUser(userId, timeSlotId);
 
         timeSlot = timeSlotMapper.fromPatchToEntity(request, timeSlot);
@@ -118,7 +117,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long timeSlotId) {
+    public void deleteByIdForUser(Long userId, Long timeSlotId) {
         TimeSlot timeSlot = getEntityByIdForUser(userId, timeSlotId);
 
         timeSlotRepository.delete(timeSlot);
@@ -132,10 +131,17 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     }
 
     @Override
+    public List<TimeSlot> getAllEntitiesWithLunchAllowedForUserSchedule(Long userId, Long scheduleId) {
+        Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
+
+        return timeSlotRepository.findByIsLunchAllowedTrueAndSchedule_Id(schedule.getId());
+    }
+
+    @Override
     public List<TimeSlot> getAllEntitiesForUserSchedule(Long userId, Long scheduleId) {
         Schedule schedule = scheduleService.getEntityByIdForUser(userId, scheduleId);
 
-        return timeSlotRepository.findAllByScheduleId(schedule.getId());
+        return timeSlotRepository.findAllBySchedule_Id(schedule.getId());
     }
 
     @Override

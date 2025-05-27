@@ -24,11 +24,11 @@ public interface ScheduleVersionService {
 
 
 
-    ScheduleVersionDTOGet getByIdForUserSchedule(Long userId, Long scheduleVersionId);
+    ScheduleVersionDTOGet getByIdForUser(Long userId, Long scheduleVersionId);
     List<ScheduleVersionDTOGet> getAllForUserSchedule(Long userId, Long scheduleId);
     ScheduleVersionDTOGet createForUserSchedule(Long userId, Long scheduleId, ScheduleVersionDTOPost request);
-    ScheduleVersionDTOGet updateForUserSchedule(Long userId, Long scheduleVersionId, ScheduleVersionDTOPatch patchRequest);
-    void deleteByIdForUserSchedule(Long userId, Long scheduleVersionId);
+    ScheduleVersionDTOGet updateForUser(Long userId, Long scheduleVersionId, ScheduleVersionDTOPatch patchRequest);
+    void deleteByIdForUser(Long userId, Long scheduleVersionId);
     void checkScheduleVersionId(ScheduleVersion scheduleVersion, Long scheduleVersionId, String entityName);
 
     ScheduleVersion getEntityByIdForUser(Long userId, Long scheduleVersionId);

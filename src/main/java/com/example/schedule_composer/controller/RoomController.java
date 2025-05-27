@@ -33,7 +33,7 @@ public class RoomController {
             @AuthenticationPrincipal User user,
             @PathVariable("roomId") Long roomId) {
         Long userId = user.getId();
-        RoomDTOGet room = roomService.getByIdForUserSchedule(userId, roomId);
+        RoomDTOGet room = roomService.getByIdForUser(userId, roomId);
         return ResponseEntity.ok(room);
     }
 
@@ -67,7 +67,7 @@ public class RoomController {
             @PathVariable("roomId") Long roomId,
             @Valid @RequestBody RoomDTOPatch patchRequest) {
         Long userId = user.getId();
-        RoomDTOGet updatedRoom = roomService.updateForUserSchedule(userId, roomId, patchRequest);
+        RoomDTOGet updatedRoom = roomService.updateForUser(userId, roomId, patchRequest);
         return ResponseEntity.ok(updatedRoom);
     }
 
@@ -77,7 +77,7 @@ public class RoomController {
             @AuthenticationPrincipal User user,
             @PathVariable("roomId") Long roomId) {
         Long userId = user.getId();
-        roomService.deleteByIdForUserSchedule(userId, roomId);
+        roomService.deleteByIdForUser(userId, roomId);
         return ResponseEntity.noContent().build();
     }
 

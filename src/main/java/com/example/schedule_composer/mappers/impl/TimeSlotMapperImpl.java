@@ -24,6 +24,7 @@ public class TimeSlotMapperImpl implements TimeSlotMapper {
         TimeSlotDTOGet timeSlotGet = TimeSlotDTOGet.builder()
                 .id(timeSlot.getId())
                 .scheduleId(timeSlot.getSchedule().getId())
+                .isLunchAllowed(timeSlot.getIsLunchAllowed())
                 .startTime(timeSlot.getStartTime())
                 .endTime(timeSlot.getEndTime())
                 .build();
@@ -48,6 +49,7 @@ public class TimeSlotMapperImpl implements TimeSlotMapper {
         }
 
         TimeSlot timeSlot = TimeSlot.builder()
+                .isLunchAllowed(timeSlotDTOPost.getIsLunchAllowed())
                 .startTime(timeSlotDTOPost.getStartTime())
                 .endTime(timeSlotDTOPost.getEndTime())
                 .build();
@@ -83,6 +85,11 @@ public class TimeSlotMapperImpl implements TimeSlotMapper {
             timeSlotToUpdate.setEndTime(newEndTime);
         }
 
+
+        if (timeSlotDTOPatch.getIsLunchAllowed() != null) {
+            timeSlotToUpdate.setIsLunchAllowed(timeSlotDTOPatch.getIsLunchAllowed());
+        }
+
         return timeSlotToUpdate;
     }
 
@@ -99,6 +106,7 @@ public class TimeSlotMapperImpl implements TimeSlotMapper {
                     return TimeSlotOrdered.builder()
                             .id(ts.getId())
                             .seqNumber(i + 1)
+                            .isLunchAllowed(ts.getIsLunchAllowed())
                             .startTime(ts.getStartTime())
                             .endTime(ts.getEndTime())
                             .build();
@@ -111,6 +119,7 @@ public class TimeSlotMapperImpl implements TimeSlotMapper {
         return orderedSlots.stream()
                 .map(ordered -> TimeSlot.builder()
                         .id(ordered.getId())
+                        .isLunchAllowed(ordered.getIsLunchAllowed())
                         .startTime(ordered.getStartTime())
                         .endTime(ordered.getEndTime())
                         .build())

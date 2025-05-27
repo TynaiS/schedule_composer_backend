@@ -11,7 +11,9 @@ public interface TimeSlotRepository extends JpaRepository<TimeSlot, Long> {
     @Override
     List<TimeSlot> findAll();
 
-    List<TimeSlot> findAllByScheduleId(Long scheduleId);
+    List<TimeSlot> findAllBySchedule_Id(Long scheduleId);
+
+    List<TimeSlot> findByIsLunchAllowedTrueAndSchedule_Id(Long scheduleId);
 
 }
 

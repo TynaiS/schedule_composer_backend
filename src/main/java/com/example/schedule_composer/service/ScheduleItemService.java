@@ -23,11 +23,11 @@ public interface ScheduleItemService {
 
 
 
-    ScheduleItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleItemId);
+    ScheduleItemDTOGet getByIdForUser(Long userId, Long scheduleItemId);
     List<ScheduleItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleVersionId);
     ScheduleItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, ScheduleItemDTOPost request);
-    ScheduleItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleItemId, ScheduleItemDTOPatch patchRequest);
-    void deleteByIdForUserScheduleVersion(Long userId, Long scheduleItemId);
+    ScheduleItemDTOGet updateForUser(Long userId, Long scheduleItemId, ScheduleItemDTOPatch patchRequest);
+    void deleteByIdForUser(Long userId, Long scheduleItemId);
 
     ScheduleItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleItemId);
     List<ScheduleItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId);

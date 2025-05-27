@@ -31,7 +31,7 @@ public class SetupItemController {
             @AuthenticationPrincipal User user,
             @PathVariable("setupItemId") Long setupItemId) {
         Long userId = user.getId();
-        SetupItemDTOGet result = setupItemService.getByIdForUserScheduleVersion(userId, setupItemId);
+        SetupItemDTOGet result = setupItemService.getByIdForUser(userId, setupItemId);
         return ResponseEntity.ok(result);
     }
 
@@ -74,7 +74,7 @@ public class SetupItemController {
             @PathVariable("setupItemId") Long setupItemId,
             @Valid @RequestBody SetupItemDTOPatch patchRequest) {
         Long userId = user.getId();
-        SetupItemDTOGet updated = setupItemService.updateForUserScheduleVersion(userId, setupItemId, patchRequest);
+        SetupItemDTOGet updated = setupItemService.updateForUser(userId, setupItemId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -84,7 +84,7 @@ public class SetupItemController {
             @AuthenticationPrincipal User user,
             @PathVariable("setupItemId") Long setupItemId) {
         Long userId = user.getId();
-        setupItemService.deleteByIdForUserScheduleVersion(userId, setupItemId);
+        setupItemService.deleteByIdForUser(userId, setupItemId);
         return ResponseEntity.noContent().build();
     }
 }

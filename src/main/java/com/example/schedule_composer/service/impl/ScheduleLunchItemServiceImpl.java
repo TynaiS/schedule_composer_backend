@@ -37,6 +37,11 @@ public class ScheduleLunchItemServiceImpl implements ScheduleLunchItemService {
     }
 
     @Override
+    public ScheduleLunchItemDTOGet create(ScheduleLunchItem createEntity) {
+        return scheduleLunchItemMapper.fromEntityToGet(createEntity);
+    }
+
+    @Override
     public ScheduleLunchItemDTOGet update(Long scheduleLunchItemId, ScheduleLunchItemDTOPatch updateDto) {
         ScheduleLunchItem existing = getEntityById(scheduleLunchItemId);
         ScheduleLunchItem updatedEntity = scheduleLunchItemRepository.save(scheduleLunchItemMapper.fromPatchToEntity(updateDto, existing));
@@ -76,7 +81,7 @@ public class ScheduleLunchItemServiceImpl implements ScheduleLunchItemService {
     }
 
     @Override
-    public ScheduleLunchItemDTOGet getByIdForUserScheduleVersion(Long userId, Long scheduleLunchItemId) {
+    public ScheduleLunchItemDTOGet getByIdForUser(Long userId, Long scheduleLunchItemId) {
         return scheduleLunchItemMapper.fromEntityToGet(getEntityByIdForUserScheduleVersion(userId, scheduleLunchItemId));
 
     }
@@ -103,7 +108,7 @@ public class ScheduleLunchItemServiceImpl implements ScheduleLunchItemService {
     }
 
     @Override
-    public ScheduleLunchItemDTOGet updateForUserScheduleVersion(Long userId, Long scheduleLunchItemId, ScheduleLunchItemDTOPatch patchRequest) {
+    public ScheduleLunchItemDTOGet updateForUser(Long userId, Long scheduleLunchItemId, ScheduleLunchItemDTOPatch patchRequest) {
         ScheduleLunchItem scheduleLunchItem = getEntityByIdForUserScheduleVersion(userId, scheduleLunchItemId);
 
         scheduleLunchItem = scheduleLunchItemMapper.fromPatchToEntity(patchRequest, scheduleLunchItem);
@@ -123,7 +128,7 @@ public class ScheduleLunchItemServiceImpl implements ScheduleLunchItemService {
     }
 
     @Override
-    public void deleteByIdForUserScheduleVersion(Long userId, Long scheduleLunchItemId) {
+    public void deleteByIdForUser(Long userId, Long scheduleLunchItemId) {
         ScheduleLunchItem scheduleLunchItem = getEntityByIdForUserScheduleVersion(userId, scheduleLunchItemId);
         scheduleLunchItemRepository.delete(scheduleLunchItem);
     }
