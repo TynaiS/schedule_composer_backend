@@ -22,9 +22,9 @@ public interface SetupSharedItemService {
     List<SetupSharedItem> getAllEntities();
 
 
-    SetupSharedItemDTOGet getByIdForUserScheduleVersion(Long userId, Long setupSharedItemId);
-
+    SetupSharedItemDTOGet getByIdForUser(Long userId, Long setupSharedItemId);
     SetupSharedItemDTOGet getByIdForUserSetupSharedSet(Long userId, Long setupSharedItemId);
+    List<SetupSharedItemDTOGet> getAllForUserScheduleVersion(Long userId, Long scheduleVersionId);
     List<SetupSharedItemDTOGet> getAllForUserSetupSharedSet(Long userId, Long setupSharedSetId);
     List<SetupSharedItemDTOGet> getAllByGroupIdForUserSetupSharedSet(Long userId, Long setupSharedSetId, Long groupId);
     SetupSharedItemDTOGet createForUserSetupSharedSet(Long userId, Long setupSharedSetId, SetupSharedItemDTOPost request);
@@ -32,11 +32,12 @@ public interface SetupSharedItemService {
     void deleteByIdForUserSetupSharedSet(Long userId, Long setupSharedItemId);
 
 
-    SetupSharedItem getEntityByIdForUserScheduleVersion(Long userId, Long setupSharedItemId);
-
+    SetupSharedItem getEntityByIdForUser(Long userId, Long scheduleVersionId);
     SetupSharedItem getEntityByIdForUserSetupSharedSet(Long userId, Long setupSharedItemId);
+    List<SetupSharedItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId);
     List<SetupSharedItem> getAllEntitiesForUserSetupSharedSet(Long userId, Long setupSharedSetId);
     List<SetupSharedItem> getAllEntitiesByGroupIdForUserSetupSharedSet(Long userId, Long setupSharedSetId, Long groupId);
+
 
     //  ----  Shared groups ----
 

@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,7 +32,7 @@ public class SetupSharedSetController {
             @AuthenticationPrincipal User user,
             @PathVariable("setupSharedSetId") Long setupSharedSetId) {
         Long userId = user.getId();
-        SetupSharedSetDTOGet setupSharedSet = setupSharedSetService.getByIdForUserScheduleVersion(userId, setupSharedSetId);
+        SetupSharedSetDTOGet setupSharedSet = setupSharedSetService.getByIdForUser(userId, setupSharedSetId);
         return ResponseEntity.ok(setupSharedSet);
     }
 
@@ -65,7 +64,7 @@ public class SetupSharedSetController {
             @PathVariable("setupSharedSetId") Long setupSharedSetId,
             @Valid @RequestBody SetupSharedSetDTOPatch patchRequest) {
         Long userId = user.getId();
-        SetupSharedSetDTOGet updated = setupSharedSetService.updateForUserScheduleVersion(userId, setupSharedSetId, patchRequest);
+        SetupSharedSetDTOGet updated = setupSharedSetService.updateForUser(userId, setupSharedSetId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -75,7 +74,7 @@ public class SetupSharedSetController {
             @AuthenticationPrincipal User user,
             @PathVariable("setupSharedSetId") Long setupSharedSetId) {
         Long userId = user.getId();
-        setupSharedSetService.deleteByIdForUserScheduleVersion(userId, setupSharedSetId);
+        setupSharedSetService.deleteByIdForUser(userId, setupSharedSetId);
         return ResponseEntity.noContent().build();
     }
 

@@ -15,6 +15,7 @@ public class TimeSlotOrdered {
 
     private Long id;
     private Integer seqNumber;
+    private Boolean isLunchAllowed;
     private LocalTime startTime;
     private LocalTime endTime;
 }

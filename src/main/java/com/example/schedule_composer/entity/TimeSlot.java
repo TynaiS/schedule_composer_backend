@@ -23,6 +23,9 @@ public class TimeSlot {
     @JoinColumn(name = "schedule_id", nullable = false)
     private Schedule schedule;
 
+    @Column(name = "is_lunch_allowed", nullable = false)
+    private Boolean isLunchAllowed;
+
     @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
 

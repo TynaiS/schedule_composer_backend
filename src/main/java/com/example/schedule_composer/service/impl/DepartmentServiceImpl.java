@@ -90,7 +90,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public DepartmentDTOGet getByIdForUserSchedule(Long userId, Long departmentId) {
+    public DepartmentDTOGet getByIdForUser(Long userId, Long departmentId) {
         return departmentMapper.fromEntityToGet(getEntityByIdForUserSchedule(userId, departmentId));
     }
 
@@ -110,7 +110,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public DepartmentDTOGet updateForUserSchedule(Long userId, Long departmentId, DepartmentDTOPatch patchRequest) {
+    public DepartmentDTOGet updateForUser(Long userId, Long departmentId, DepartmentDTOPatch patchRequest) {
         Department department = getEntityByIdForUserSchedule(userId, departmentId);
 
         department = departmentMapper.fromPatchToEntity(patchRequest, department);
@@ -119,7 +119,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void deleteByIdForUserSchedule(Long userId, Long departmentId) {
+    public void deleteByIdForUser(Long userId, Long departmentId) {
         Department department = getEntityByIdForUserSchedule(userId, departmentId);
 
         departmentRepository.delete(department);

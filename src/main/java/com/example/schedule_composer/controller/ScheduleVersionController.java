@@ -33,7 +33,7 @@ public class ScheduleVersionController {
             @AuthenticationPrincipal User user,
             @PathVariable("scheduleVersionId") Long scheduleVersionId) {
         Long userId = user.getId();
-        ScheduleVersionDTOGet scheduleVersion = scheduleVersionService.getByIdForUserSchedule(userId, scheduleVersionId);
+        ScheduleVersionDTOGet scheduleVersion = scheduleVersionService.getByIdForUser(userId, scheduleVersionId);
         return ResponseEntity.ok(scheduleVersion);
     }
 
@@ -65,7 +65,7 @@ public class ScheduleVersionController {
             @PathVariable("scheduleVersionId") Long scheduleVersionId,
             @Valid @RequestBody ScheduleVersionDTOPatch patchRequest) {
         Long userId = user.getId();
-        ScheduleVersionDTOGet updated = scheduleVersionService.updateForUserSchedule(userId, scheduleVersionId, patchRequest);
+        ScheduleVersionDTOGet updated = scheduleVersionService.updateForUser(userId, scheduleVersionId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -75,7 +75,7 @@ public class ScheduleVersionController {
             @AuthenticationPrincipal User user,
             @PathVariable("scheduleVersionId") Long scheduleVersionId) {
         Long userId = user.getId();
-        scheduleVersionService.deleteByIdForUserSchedule(userId, scheduleVersionId);
+        scheduleVersionService.deleteByIdForUser(userId, scheduleVersionId);
         return ResponseEntity.noContent().build();
     }
 

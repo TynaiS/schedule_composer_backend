@@ -32,7 +32,7 @@ public class ScheduleLunchItemController {
             @AuthenticationPrincipal User user,
             @PathVariable Long scheduleLunchItemId) {
         Long userId = user.getId();
-        ScheduleLunchItemDTOGet lunchItem = scheduleLunchItemService.getByIdForUserScheduleVersion(userId, scheduleLunchItemId);
+        ScheduleLunchItemDTOGet lunchItem = scheduleLunchItemService.getByIdForUser(userId, scheduleLunchItemId);
         return ResponseEntity.ok(lunchItem);
     }
 
@@ -65,7 +65,7 @@ public class ScheduleLunchItemController {
             @PathVariable Long scheduleLunchItemId,
             @Valid @RequestBody ScheduleLunchItemDTOPatch patchRequest) {
         Long userId = user.getId();
-        ScheduleLunchItemDTOGet updated = scheduleLunchItemService.updateForUserScheduleVersion(userId, scheduleLunchItemId, patchRequest);
+        ScheduleLunchItemDTOGet updated = scheduleLunchItemService.updateForUser(userId, scheduleLunchItemId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -75,7 +75,7 @@ public class ScheduleLunchItemController {
             @AuthenticationPrincipal User user,
             @PathVariable Long scheduleLunchItemId) {
         Long userId = user.getId();
-        scheduleLunchItemService.deleteByIdForUserScheduleVersion(userId, scheduleLunchItemId);
+        scheduleLunchItemService.deleteByIdForUser(userId, scheduleLunchItemId);
         return ResponseEntity.noContent().build();
     }
 }

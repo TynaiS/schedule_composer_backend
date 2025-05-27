@@ -35,7 +35,7 @@ public class CourseController {
             @AuthenticationPrincipal User user,
             @PathVariable("courseId") Long courseId) {
         Long userId = user.getId();
-        CourseDTOGet course = courseService.getByIdForUserSchedule(userId, courseId);
+        CourseDTOGet course = courseService.getByIdForUser(userId, courseId);
         return ResponseEntity.ok(course);
     }
 
@@ -67,7 +67,7 @@ public class CourseController {
             @PathVariable("courseId") Long courseId,
             @Valid @RequestBody CourseDTOPatch patchRequest) {
         Long userId = user.getId();
-        CourseDTOGet updated = courseService.updateForUserSchedule(userId, courseId, patchRequest);
+        CourseDTOGet updated = courseService.updateForUser(userId, courseId, patchRequest);
         return ResponseEntity.ok(updated);
     }
 
@@ -77,7 +77,7 @@ public class CourseController {
             @AuthenticationPrincipal User user,
             @PathVariable("courseId") Long courseId) {
         Long userId = user.getId();
-        courseService.deleteByIdForUserSchedule(userId, courseId);
+        courseService.deleteByIdForUser(userId, courseId);
         return ResponseEntity.noContent().build();
     }
 
