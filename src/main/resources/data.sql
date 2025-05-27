@@ -253,19 +253,20 @@ INSERT INTO teacher (name, daily_hours, weekly_hours, schedule_id) VALUES
     ('Ms. Asina Bopusheva', 6, 30, 1),
     ('Mr. Ilnar', 6, 30, 1);
 
-INSERT INTO time_slot (start_time, end_time) VALUES
-    ('09:00', '09:55',1),
-    ('10:00', '10:40',1),
-    ('10:45', '11:25',1),
-    ('11:30', '12:10',1),
-    ('12:15', '12:55',1),
-    ('13:00', '13:40',1),
-    ('13:45', '14:25',1),
-    ('14:30', '15:10',1),
-    ('15:15', '15:55',1),
-    ('16:00', '16:40',1),
-    ('16:45', '17:25',1),
-    ('17:30', '18:10',1);
+INSERT INTO time_slot (start_time, end_time, schedule_id, is_lunch_allowed) VALUES
+    ('09:00', '09:55', 1, false),
+    ('10:00', '10:40', 1, false),
+    ('10:45', '11:25', 1, false),
+    ('11:30', '12:10', 1, false),
+    ('12:15', '12:55', 1, true),
+    ('13:00', '13:40', 1, true),
+    ('13:45', '14:25', 1, false),
+    ('14:30', '15:10', 1, false),
+    ('15:15', '15:55', 1, false),
+    ('16:00', '16:40', 1, false),
+    ('16:45', '17:25', 1, false),
+    ('17:30', '18:10', 1, false);
+
 
 INSERT INTO setup_shared_set (name, hours_a_week, schedule_version_id) VALUES
     ('Common Electives', 4, 1),

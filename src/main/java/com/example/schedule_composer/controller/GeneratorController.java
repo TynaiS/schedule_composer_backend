@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GeneratorController {
 
     private final Generator generator;
-    @PostMapping("/generate")
+    @PostMapping("/generate/{scheduleVersionId}")
     public ResponseEntity<String> generateSchedule(
             @AuthenticationPrincipal User user,
             @PathVariable("scheduleVersionId") Long scheduleVersionId) {
