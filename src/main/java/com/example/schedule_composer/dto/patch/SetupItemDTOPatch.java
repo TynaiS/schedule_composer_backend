@@ -2,11 +2,11 @@ package com.example.schedule_composer.dto.patch;
 
 import com.example.schedule_composer.utils.types.CoursePriority;
 import com.example.schedule_composer.utils.types.RoomType;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class SetupItemDTOPatch {
 
     private Long groupId;

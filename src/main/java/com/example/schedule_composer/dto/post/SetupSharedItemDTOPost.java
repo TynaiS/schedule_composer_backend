@@ -3,13 +3,13 @@ package com.example.schedule_composer.dto.post;
 import com.example.schedule_composer.utils.types.CoursePriority;
 import com.example.schedule_composer.utils.types.RoomType;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class SetupSharedItemDTOPost {
 
     @NotNull(message = "Group ID's cannot be null")

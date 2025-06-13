@@ -1,14 +1,13 @@
 package com.example.schedule_composer.dto.post;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalTime;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class TimeSlotDTOPost {
 
     @NotNull(message = "IsLunchAllowed field cannot be null")

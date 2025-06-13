@@ -1,15 +1,10 @@
 package com.example.schedule_composer.dto.post;
 
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class LoginDTOPost {
     @Email(message = "Email should be valid")
     private String email;

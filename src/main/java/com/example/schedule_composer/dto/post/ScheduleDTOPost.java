@@ -2,13 +2,13 @@ package com.example.schedule_composer.dto.post;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class ScheduleDTOPost {
 
     @NotBlank(message = "Schedule name cannot be blank")

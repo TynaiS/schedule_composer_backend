@@ -3,14 +3,14 @@ package com.example.schedule_composer.dto.post;
 import com.example.schedule_composer.utils.types.TeachingMode;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.DayOfWeek;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class ScheduleItemDTOPost {
 
     @NotNull(message = "SetupItem ID cannot be null")

@@ -1,9 +1,11 @@
 package com.example.schedule_composer.dto.post;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
+@Getter
+@Builder
 public class RefreshTokenDTOPost {
 
     @NotBlank
