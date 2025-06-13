@@ -7,7 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "course")
+@Table(
+    name = "course",
+    uniqueConstraints = @UniqueConstraint(name = "unique_course_name", columnNames = {"schedule_id", "name"})
+)
 @Data
 @Builder
 @AllArgsConstructor
@@ -23,4 +26,13 @@ public class Course {
 
     private String name;
     private Integer credits;
+
+    @PrePersist
+    @PreUpdate
+    public void trimName() {
+        if (name != null) {
+            name = name.trim();
+        }
+    }
+
 }

@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "_group")
+@Table(
+    name = "_group",
+    uniqueConstraints = @UniqueConstraint(name = "unique_group_name", columnNames = {"schedule_id", "name"})
+)
 @Data
 @Builder
 @AllArgsConstructor
@@ -27,4 +30,12 @@ public class Group {
 
     @Enumerated(EnumType.STRING)
     private GroupRoomSize size;
+
+    @PrePersist
+    @PreUpdate
+    public void trimName() {
+        if (name != null) {
+            name = name.trim();
+        }
+    }
 }

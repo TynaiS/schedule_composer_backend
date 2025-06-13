@@ -7,7 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "setup_shared_set")
+@Table(
+    name = "setup_shared_set",
+    uniqueConstraints = @UniqueConstraint(name = "unique_setup_shared_set_name", columnNames = {"schedule_version_id", "name"})
+)
 @Data
 @Builder
 @AllArgsConstructor
@@ -26,5 +29,13 @@ public class SetupSharedSet {
 
     @Column(name = "hours_a_week")
     private Integer hoursAWeek;
+
+    @PrePersist
+    @PreUpdate
+    public void trimName() {
+        if (name != null) {
+            name = name.trim();
+        }
+    }
 
 }

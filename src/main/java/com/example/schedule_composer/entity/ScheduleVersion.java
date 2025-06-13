@@ -7,7 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "schedule_version")
+@Table(
+    name = "schedule_version",
+    uniqueConstraints = @UniqueConstraint(name = "unique_schedule_version_name", columnNames = {"schedule_id", "name"})
+)
 @Data
 @Builder
 @AllArgsConstructor
@@ -24,6 +27,14 @@ public class ScheduleVersion {
 
     @Column(nullable = false)
     private String name;
+
+    @PrePersist
+    @PreUpdate
+    public void trimName() {
+        if (name != null) {
+            name = name.trim();
+        }
+    }
 
 }
 

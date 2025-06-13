@@ -78,12 +78,22 @@ public class User implements UserDetails {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+
+        if (name != null) {
+            name = name.trim();
+        }
     }
 
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+
+        if (name != null) {
+            name = name.trim();
+        }
     }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

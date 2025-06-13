@@ -9,7 +9,10 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@Table(name = "schedule")
+@Table(
+    name = "schedule",
+    uniqueConstraints = @UniqueConstraint(name = "unique_schedule_name", columnNames = {"user_id", "name"})
+)
 @Data
 @Builder
 @AllArgsConstructor
@@ -35,6 +38,14 @@ public class Schedule {
             uniqueConstraints = @UniqueConstraint(columnNames = {"schedule_id", "user_id"})
     )
     private List<User> editors;
+
+    @PrePersist
+    @PreUpdate
+    public void trimName() {
+        if (name != null) {
+            name = name.trim();
+        }
+    }
 
 }
 

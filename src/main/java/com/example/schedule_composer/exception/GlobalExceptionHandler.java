@@ -2,6 +2,7 @@ package com.example.schedule_composer.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -163,5 +167,52 @@ public class GlobalExceptionHandler {
                 ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+    }
+
+
+
+
+
+
+    private static final Map<String, String> constraintMessages = new HashMap<>();
+
+    static {
+        constraintMessages.put("unique_course_name", "Course with this name already exists in the same Schedule");
+        constraintMessages.put("unique_department_name", "Department with this name already exists in the same Schedule");
+        constraintMessages.put("unique_group_name", "Group with this name already exists in the same Schedule");
+        constraintMessages.put("unique_room_num", "Room with this number already exists in the same Schedule");
+        constraintMessages.put("unique_schedule_name", "Schedule with this name already exists for User");
+        constraintMessages.put("unique_schedule_version_name", "ScheduleVersion with this name already exists in the same Schedule");
+        constraintMessages.put("unique_setup_shared_set_name", "SetupSharedSet with this name already exists in the same ScheduleVersion");
+        constraintMessages.put("unique_teacher_name", "Teacher with this name already exists in the same Schedule");
+
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        String rootMessage = ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage();
+        ErrorResponse errorResponse;
+
+        if (rootMessage != null) {
+            for (Map.Entry<String, String> entry : constraintMessages.entrySet()) {
+                if (rootMessage.contains(entry.getKey())) {
+                    errorResponse = new ErrorResponse(
+                            HttpStatus.CONFLICT.value(),
+                            "Data integrity violation",
+                            entry.getValue()
+                    );
+
+                    return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+                }
+            }
+        }
+
+        errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Data integrity violation",
+                rootMessage);
+
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+
     }
 }

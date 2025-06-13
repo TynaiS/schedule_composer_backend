@@ -9,7 +9,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "room")
+@Table(
+    name = "room",
+    uniqueConstraints = @UniqueConstraint(name = "unique_room_num", columnNames = {"schedule_id", "room_num"})
+)
 @Data
 @Builder
 @AllArgsConstructor
@@ -31,4 +34,12 @@ public class Room {
 
     @Enumerated(EnumType.STRING)
     private GroupRoomSize size;
+
+    @PrePersist
+    @PreUpdate
+    public void trimName() {
+        if (roomNum != null) {
+            roomNum = roomNum.trim();
+        }
+    }
 }

@@ -5,7 +5,10 @@ import lombok.*;
 import org.springframework.stereotype.Service;
 
 @Entity
-@Table(name = "department")
+@Table(
+    name = "department",
+    uniqueConstraints = @UniqueConstraint(name = "unique_department_name", columnNames = {"schedule_id", "name"})
+)
 @Data
 @Builder
 @AllArgsConstructor
@@ -21,5 +24,13 @@ public class Department {
     private Schedule schedule;
 
     private String name;
+
+    @PrePersist
+    @PreUpdate
+    public void trimName() {
+        if (name != null) {
+            name = name.trim();
+        }
+    }
 
 }
