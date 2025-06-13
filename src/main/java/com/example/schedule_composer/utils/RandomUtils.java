@@ -10,5 +10,13 @@ public class RandomUtils {
         }
         return ThreadLocalRandom.current().nextInt(size);
     }
+
+    public static int randomIndexFromOneTo_Included(int size) {
+        if (size < 1) {
+            throw new IllegalArgumentException("Size must be >= 1 to get a random number from 1 to size included.");
+        }
+        return ThreadLocalRandom.current().nextInt(1, size + 1);
+    }
+
 }
 

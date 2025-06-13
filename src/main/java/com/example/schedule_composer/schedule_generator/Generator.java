@@ -105,72 +105,74 @@ public class Generator {
 
                 outerLoop:
                 for (int i = 0; i < 20; i++){
-                    randomtimeFrame = timeFrameManager.getRandomTimeSlotsSet(userId, schedule.getId(),
-                            RandomUtils.randomIndex(currSetupSharedItemDTO.getSetupSharedSet().getHoursAWeek()));
+                    if(currSetupSharedItemDTO.getSetupSharedSet().getHoursAWeek() >= 1){
+                        randomtimeFrame = timeFrameManager.getRandomTimeSlotsSet(userId, schedule.getId(),
+                                RandomUtils.randomIndexFromOneTo_Included(currSetupSharedItemDTO.getSetupSharedSet().getHoursAWeek()));
 
-                    if(randomtimeFrame.isEmpty()) break;
+                        if(randomtimeFrame.isEmpty()) break;
 
-                    randomDayOfWeek = getRandomWeekday();
-                    List<Room> suitableRooms = currSetupSharedItemDTO.getPreferredRoomType() == RoomType.LAB ? labRooms : classRooms;
-                    Room randomRoom = getRandomRoom(suitableRooms);
+                        randomDayOfWeek = getRandomWeekday();
+                        List<Room> suitableRooms = currSetupSharedItemDTO.getPreferredRoomType() == RoomType.LAB ? labRooms : classRooms;
+                        Room randomRoom = getRandomRoom(suitableRooms);
 
-                    boolean areTimeFramesCrossing = false;
-                    boolean isTeacherSame = false;
-                    boolean isRoomSame = false;
-                    boolean haveCommonGroups = false;
+                        boolean areTimeFramesCrossing = false;
+                        boolean isTeacherSame = false;
+                        boolean isRoomSame = false;
+                        boolean haveCommonGroups = false;
 
-                    // Checking current SetupSharedItem with the ScheduleLunchItems
+                        // Checking current SetupSharedItem with the ScheduleLunchItems
 
-                    for(ScheduleLunchItem scheduleLunchItem : scheduleLunchItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
-                        haveCommonGroups = checkForCommonGroups(currSetupSharedItemDTO.getGroups(), List.of(scheduleLunchItem.getGroup()));
+                        for(ScheduleLunchItem scheduleLunchItem : scheduleLunchItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
+                            haveCommonGroups = checkForCommonGroups(currSetupSharedItemDTO.getGroups(), List.of(scheduleLunchItem.getGroup()));
 
-                        if(scheduleLunchItem.getDay() == randomDayOfWeek) {
-                            areTimeFramesCrossing = checkIfTimeFramesAreCrossing(randomtimeFrame, scheduleLunchItem.getTimeSlots());
-                        }
+                            if(scheduleLunchItem.getDay() == randomDayOfWeek) {
+                                areTimeFramesCrossing = checkIfTimeFramesAreCrossing(randomtimeFrame, scheduleLunchItem.getTimeSlots());
+                            }
 
-                        if(areTimeFramesCrossing){
-                            if(haveCommonGroups){
-                                canBeAdded = false;
-                                break outerLoop;
+                            if(areTimeFramesCrossing){
+                                if(haveCommonGroups){
+                                    canBeAdded = false;
+                                    break outerLoop;
+                                }
                             }
                         }
-                    }
 
 
-                    // Checking current SetupSharedItem with the ScheduleSharedItems
+                        // Checking current SetupSharedItem with the ScheduleSharedItems
 
-                    for(ScheduleSharedItem scheduleSharedItem : scheduleSharedItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
+                        for(ScheduleSharedItem scheduleSharedItem : scheduleSharedItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
 
-                        isTeacherSame = scheduleSharedItem.getSetupSharedItem().getTeacher().getId() == currSetupSharedItemDTO.getTeacher().getId();
-                        isRoomSame = randomRoom.getId() == scheduleSharedItem.getRoom().getId();
-                        haveCommonGroups = checkForCommonGroups(currSetupSharedItemDTO.getGroups(), scheduleSharedItem.getSetupSharedItem().getGroups());
+                            isTeacherSame = scheduleSharedItem.getSetupSharedItem().getTeacher().getId() == currSetupSharedItemDTO.getTeacher().getId();
+                            isRoomSame = randomRoom.getId() == scheduleSharedItem.getRoom().getId();
+                            haveCommonGroups = checkForCommonGroups(currSetupSharedItemDTO.getGroups(), scheduleSharedItem.getSetupSharedItem().getGroups());
 
-                        if(scheduleSharedItem.getDay() == randomDayOfWeek) {
-                            checkIfTimeFramesAreCrossing(randomtimeFrame, scheduleSharedItem.getTimeSlots());
-                        }
+                            if(scheduleSharedItem.getDay() == randomDayOfWeek) {
+                                checkIfTimeFramesAreCrossing(randomtimeFrame, scheduleSharedItem.getTimeSlots());
+                            }
 
 
-                        if(areTimeFramesCrossing){
-                            if(isTeacherSame || isRoomSame || haveCommonGroups){
-                                canBeAdded = false;
-                                break outerLoop;
+                            if(areTimeFramesCrossing){
+                                if(isTeacherSame || isRoomSame || haveCommonGroups){
+                                    canBeAdded = false;
+                                    break outerLoop;
+                                }
                             }
                         }
-                    }
 
-                    if(canBeAdded){
-                        SetupSharedItem setupSharedItem = setupSharedItemService.getEntityById(currSetupSharedItemDTO.getId());
-                        ScheduleSharedItem newItem = ScheduleSharedItem.builder()
-                                .scheduleVersion(scheduleVersion)
-                                .setupSharedItem(setupSharedItem)
-                                .room(randomRoom)
-                                .day(randomDayOfWeek)
-                                .timeSlots(randomtimeFrame)
-                                .teachingMode(TeachingMode.CLASSROOM)
-                                .build();
-                        scheduleSharedItemService.create(newItem);
-                        currSetupSharedItemDTO.getSetupSharedSet().setHoursAWeek(
-                                currSetupSharedItemDTO.getSetupSharedSet().getHoursAWeek() - randomtimeFrame.size());
+                        if(canBeAdded){
+                            SetupSharedItem setupSharedItem = setupSharedItemService.getEntityById(currSetupSharedItemDTO.getId());
+                            ScheduleSharedItem newItem = ScheduleSharedItem.builder()
+                                    .scheduleVersion(scheduleVersion)
+                                    .setupSharedItem(setupSharedItem)
+                                    .room(randomRoom)
+                                    .day(randomDayOfWeek)
+                                    .timeSlots(randomtimeFrame)
+                                    .teachingMode(TeachingMode.CLASSROOM)
+                                    .build();
+                            scheduleSharedItemService.create(newItem);
+                            currSetupSharedItemDTO.getSetupSharedSet().setHoursAWeek(
+                                    currSetupSharedItemDTO.getSetupSharedSet().getHoursAWeek() - randomtimeFrame.size());
+                        }
                     }
                 }
             }
@@ -192,94 +194,95 @@ public class Generator {
 
                 outerLoop:
                 for (int i = 0; i < 20; i++){
-                    randomtimeFrame = timeFrameManager.getRandomTimeSlotsSet(userId, schedule.getId(),
-                            RandomUtils.randomIndex(currSetupItemDTO.getHoursAWeek()));
+                    if(currSetupItemDTO.getHoursAWeek() >= 1){
+                        randomtimeFrame = timeFrameManager.getRandomTimeSlotsSet(userId, schedule.getId(),
+                                RandomUtils.randomIndexFromOneTo_Included(currSetupItemDTO.getHoursAWeek()));
 
-                    if(randomtimeFrame.isEmpty()) break;
+                        if(randomtimeFrame.isEmpty()) break;
 
-                    randomDayOfWeek = getRandomWeekday();
-                    List<Room> suitableRooms = currSetupItemDTO.getPreferredRoomType() == RoomType.LAB ? labRooms : classRooms;
-                    Room randomRoom = getRandomRoom(suitableRooms);
+                        randomDayOfWeek = getRandomWeekday();
+                        List<Room> suitableRooms = currSetupItemDTO.getPreferredRoomType() == RoomType.LAB ? labRooms : classRooms;
+                        Room randomRoom = getRandomRoom(suitableRooms);
 
-                    boolean areTimeFramesCrossing = false;
-                    boolean isTeacherSame = false;
-                    boolean isRoomSame = false;
-                    boolean haveCommonGroups = false;
+                        boolean areTimeFramesCrossing = false;
+                        boolean isTeacherSame = false;
+                        boolean isRoomSame = false;
+                        boolean haveCommonGroups = false;
 
-                    // Checking current SetupSharedItem with the ScheduleLunchItems
+                        // Checking current SetupSharedItem with the ScheduleLunchItems
 
-                    for(ScheduleLunchItem scheduleLunchItem : scheduleLunchItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
-                        haveCommonGroups = checkForCommonGroups(List.of(currSetupItemDTO.getGroup()), List.of(scheduleLunchItem.getGroup()));
+                        for(ScheduleLunchItem scheduleLunchItem : scheduleLunchItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
+                            haveCommonGroups = checkForCommonGroups(List.of(currSetupItemDTO.getGroup()), List.of(scheduleLunchItem.getGroup()));
 
-                        if(scheduleLunchItem.getDay() == randomDayOfWeek) {
-                            areTimeFramesCrossing = checkIfTimeFramesAreCrossing(randomtimeFrame, scheduleLunchItem.getTimeSlots());
-                        }
-
-                        if(areTimeFramesCrossing){
-                            if(haveCommonGroups){
-                                canBeAdded = false;
-                                break outerLoop;
+                            if(scheduleLunchItem.getDay() == randomDayOfWeek) {
+                                areTimeFramesCrossing = checkIfTimeFramesAreCrossing(randomtimeFrame, scheduleLunchItem.getTimeSlots());
                             }
-                        }
-                    }
 
-                    // Checking current SetupItem item with the ScheduleSharedItems
-
-                    for(ScheduleSharedItem scheduleSharedItem : scheduleSharedItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
-
-                        isTeacherSame = scheduleSharedItem.getSetupSharedItem().getTeacher().getId() == currSetupItemDTO.getTeacher().getId();
-                        isRoomSame = randomRoom.getId() == scheduleSharedItem.getRoom().getId();
-                        haveCommonGroups = checkForCommonGroups(List.of(currSetupItemDTO.getGroup()), scheduleSharedItem.getSetupSharedItem().getGroups());
-
-                        if(scheduleSharedItem.getDay() == randomDayOfWeek) {
-                            areTimeFramesCrossing = checkIfTimeFramesAreCrossing(randomtimeFrame, scheduleSharedItem.getTimeSlots());
-                        }
-
-
-                        if(areTimeFramesCrossing){
-                            if(isTeacherSame || isRoomSame || haveCommonGroups){
-                                canBeAdded = false;
-                                break outerLoop;
-                            }
-                        }
-                    }
-
-
-
-                    // Checking current SetupItem item with the ScheduleSharedItems
-
-                    for(ScheduleItem scheduleItem : scheduleItemService.getAllEntities()){
-
-                        isTeacherSame = scheduleItem.getSetupItem().getTeacher().getId() == currSetupItemDTO.getTeacher().getId();
-                        isRoomSame = randomRoom.getId() == scheduleItem.getRoom().getId();
-                        haveCommonGroups = currSetupItemDTO.getGroup().getId() == scheduleItem.getSetupItem().getGroup().getId();
-
-                        if(scheduleItem.getDay() == randomDayOfWeek) {
-                            areTimeFramesCrossing = checkIfTimeFramesAreCrossing(randomtimeFrame, scheduleItem.getTimeSlots());
-                        }
-
-                        if(areTimeFramesCrossing){
-                            if(isTeacherSame || isRoomSame || haveCommonGroups){
-                                canBeAdded = false;
-                                break outerLoop;
+                            if(areTimeFramesCrossing){
+                                if(haveCommonGroups){
+                                    canBeAdded = false;
+                                    break outerLoop;
+                                }
                             }
                         }
 
-                    }
+                        // Checking current SetupItem item with the ScheduleSharedItems
 
-                    if(canBeAdded){
-                        SetupItem setupItem = setupItemService.getEntityById(currSetupItemDTO.getId());
-                        ScheduleItem newItem = ScheduleItem.builder()
-                                .scheduleVersion(scheduleVersion)
-                                .setupItem(setupItem)
-                                .room(randomRoom)
-                                .day(randomDayOfWeek)
-                                .timeSlots(randomtimeFrame)
-                                .teachingMode(TeachingMode.CLASSROOM)
-                                .build();
-                        scheduleItemService.create(newItem);
-                        currSetupItemDTO.setHoursAWeek(
-                                currSetupItemDTO.getHoursAWeek() - randomtimeFrame.size());
+                        for(ScheduleSharedItem scheduleSharedItem : scheduleSharedItemService.getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId)){
+
+                            isTeacherSame = scheduleSharedItem.getSetupSharedItem().getTeacher().getId() == currSetupItemDTO.getTeacher().getId();
+                            isRoomSame = randomRoom.getId() == scheduleSharedItem.getRoom().getId();
+                            haveCommonGroups = checkForCommonGroups(List.of(currSetupItemDTO.getGroup()), scheduleSharedItem.getSetupSharedItem().getGroups());
+
+                            if(scheduleSharedItem.getDay() == randomDayOfWeek) {
+                                areTimeFramesCrossing = checkIfTimeFramesAreCrossing(randomtimeFrame, scheduleSharedItem.getTimeSlots());
+                            }
+
+
+                            if(areTimeFramesCrossing){
+                                if(isTeacherSame || isRoomSame || haveCommonGroups){
+                                    canBeAdded = false;
+                                    break outerLoop;
+                                }
+                            }
+                        }
+
+
+                        // Checking current SetupItem item with the ScheduleSharedItems
+
+                        for(ScheduleItem scheduleItem : scheduleItemService.getAllEntities()){
+
+                            isTeacherSame = scheduleItem.getSetupItem().getTeacher().getId() == currSetupItemDTO.getTeacher().getId();
+                            isRoomSame = randomRoom.getId() == scheduleItem.getRoom().getId();
+                            haveCommonGroups = currSetupItemDTO.getGroup().getId() == scheduleItem.getSetupItem().getGroup().getId();
+
+                            if(scheduleItem.getDay() == randomDayOfWeek) {
+                                areTimeFramesCrossing = checkIfTimeFramesAreCrossing(randomtimeFrame, scheduleItem.getTimeSlots());
+                            }
+
+                            if(areTimeFramesCrossing){
+                                if(isTeacherSame || isRoomSame || haveCommonGroups){
+                                    canBeAdded = false;
+                                    break outerLoop;
+                                }
+                            }
+
+                        }
+
+                        if(canBeAdded){
+                            SetupItem setupItem = setupItemService.getEntityById(currSetupItemDTO.getId());
+                            ScheduleItem newItem = ScheduleItem.builder()
+                                    .scheduleVersion(scheduleVersion)
+                                    .setupItem(setupItem)
+                                    .room(randomRoom)
+                                    .day(randomDayOfWeek)
+                                    .timeSlots(randomtimeFrame)
+                                    .teachingMode(TeachingMode.CLASSROOM)
+                                    .build();
+                            scheduleItemService.create(newItem);
+                            currSetupItemDTO.setHoursAWeek(
+                                    currSetupItemDTO.getHoursAWeek() - randomtimeFrame.size());
+                        }
                     }
                 }
             }
