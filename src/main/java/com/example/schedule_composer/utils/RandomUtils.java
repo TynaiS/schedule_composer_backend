@@ -6,7 +6,7 @@ public class RandomUtils {
 
     public static int randomIndex(int size) {
         if (size <= 0) {
-            return 0;
+            throw new IllegalArgumentException("Size must be > 0 to get a random index.");
         }
         return ThreadLocalRandom.current().nextInt(size);
     }

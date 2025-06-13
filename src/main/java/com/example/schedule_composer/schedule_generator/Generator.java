@@ -67,21 +67,23 @@ public class Generator {
 
         List<TimeSlot> timeSlotsForLunches = timeSlotService.getAllEntitiesWithLunchAllowedForUserSchedule(userId, schedule.getId());
 
-        for (DayOfWeek day : DayOfWeek.values()) {
-            for(Group group : groupService.getAllEntitiesForUserSchedule(userId, schedule.getId())) {
+        if(!timeSlotsForLunches.isEmpty()){
+            for (DayOfWeek day : DayOfWeek.values()) {
+                for(Group group : groupService.getAllEntitiesForUserSchedule(userId, schedule.getId())) {
 
-                if (day.getValue() >= 1 && day.getValue() <= 5) {
-                    TimeSlot randomLunchTimeSlot = timeSlotsForLunches.get(RandomUtils.randomIndex(timeSlotsForLunches.size()));
-                    List<TimeSlot> randomLunchTimeSlotList = List.of(randomLunchTimeSlot);
-                    ScheduleLunchItem newLunchItem = ScheduleLunchItem.builder()
-                            .scheduleVersion(scheduleVersion)
-                            .group(group)
-                            .day(day)
-                            .timeSlots(randomLunchTimeSlotList)
-                            .build();
-                    scheduleLunchItemService.create(newLunchItem);
+                    if (day.getValue() >= 1 && day.getValue() <= 5) {
+                        TimeSlot randomLunchTimeSlot = timeSlotsForLunches.get(RandomUtils.randomIndex(timeSlotsForLunches.size()));
+                        List<TimeSlot> randomLunchTimeSlotList = List.of(randomLunchTimeSlot);
+                        ScheduleLunchItem newLunchItem = ScheduleLunchItem.builder()
+                                .scheduleVersion(scheduleVersion)
+                                .group(group)
+                                .day(day)
+                                .timeSlots(randomLunchTimeSlotList)
+                                .build();
+                        scheduleLunchItemService.create(newLunchItem);
+                    }
+
                 }
-
             }
         }
 
