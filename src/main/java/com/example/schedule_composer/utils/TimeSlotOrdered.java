@@ -1,5 +1,6 @@
 package com.example.schedule_composer.utils;
 
+import com.example.schedule_composer.entity.Schedule;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class TimeSlotOrdered {
 
     private Long id;
     private Integer seqNumber;
+    private Schedule schedule;
     private Boolean isLunchAllowed;
     private LocalTime startTime;
     private LocalTime endTime;

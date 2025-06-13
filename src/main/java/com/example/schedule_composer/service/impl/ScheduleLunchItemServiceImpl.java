@@ -38,7 +38,8 @@ public class ScheduleLunchItemServiceImpl implements ScheduleLunchItemService {
 
     @Override
     public ScheduleLunchItemDTOGet create(ScheduleLunchItem createEntity) {
-        return scheduleLunchItemMapper.fromEntityToGet(createEntity);
+        ScheduleLunchItem savedEntity = scheduleLunchItemRepository.save(createEntity);
+        return scheduleLunchItemMapper.fromEntityToGet(savedEntity);
     }
 
     @Override

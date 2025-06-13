@@ -47,8 +47,8 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToOne(mappedBy = "user")
-    private RefreshToken refreshToken;
+//    @OneToOne(mappedBy = "user")
+//    private RefreshToken refreshToken;
 
     @Column(name = "verification_code")
     private String verificationCode;
