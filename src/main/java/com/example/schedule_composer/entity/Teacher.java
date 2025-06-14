@@ -28,11 +28,15 @@ public class Teacher {
     private Integer dailyHours;
     private Integer weeklyHours;
 
-    @PrePersist
-    @PreUpdate
-    public void trimName() {
-        if (name != null) {
-            name = name.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public static class TeacherBuilder {
+
+        public TeacherBuilder name(String name) {
+            this.name = (name == null) ? null : name.trim();
+            return this;
         }
     }
 }

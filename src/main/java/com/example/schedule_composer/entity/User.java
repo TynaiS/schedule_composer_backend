@@ -76,18 +76,22 @@ public class User implements UserDetails {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
-
-        if (name != null) {
-            name = name.trim();
-        }
     }
 
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
 
-        if (name != null) {
-            name = name.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public static class UserBuilder {
+
+        public UserBuilder name(String name) {
+            this.name = (name == null) ? null : name.trim();
+            return this;
         }
     }
 

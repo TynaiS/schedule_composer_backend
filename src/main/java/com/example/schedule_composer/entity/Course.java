@@ -26,12 +26,14 @@ public class Course {
 
     private String name;
     private Integer credits;
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
 
-    @PrePersist
-    @PreUpdate
-    public void trimName() {
-        if (name != null) {
-            name = name.trim();
+    public static class CourseBuilder {
+        public CourseBuilder name(String name) {
+            this.name = (name == null) ? null : name.trim();
+            return this;
         }
     }
 

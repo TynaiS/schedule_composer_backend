@@ -28,11 +28,14 @@ public class ScheduleVersion {
     @Column(nullable = false)
     private String name;
 
-    @PrePersist
-    @PreUpdate
-    public void trimName() {
-        if (name != null) {
-            name = name.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public static class ScheduleVersionBuilder {
+        public ScheduleVersionBuilder name(String name) {
+            this.name = (name == null) ? null : name.trim();
+            return this;
         }
     }
 

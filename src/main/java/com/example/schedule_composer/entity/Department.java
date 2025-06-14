@@ -1,8 +1,10 @@
 package com.example.schedule_composer.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(
@@ -25,11 +27,14 @@ public class Department {
 
     private String name;
 
-    @PrePersist
-    @PreUpdate
-    public void trimName() {
-        if (name != null) {
-            name = name.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public static class DepartmentBuilder {
+        public DepartmentBuilder name(String name) {
+            this.name = (name == null) ? null : name.trim();
+            return this;
         }
     }
 

@@ -2,7 +2,10 @@ package com.example.schedule_composer.entity;
 
 import com.example.schedule_composer.utils.types.GroupRoomSize;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(
@@ -31,11 +34,14 @@ public class Group {
     @Enumerated(EnumType.STRING)
     private GroupRoomSize size;
 
-    @PrePersist
-    @PreUpdate
-    public void trimName() {
-        if (name != null) {
-            name = name.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public static class GroupBuilder {
+        public GroupBuilder name(String name) {
+            this.name = (name == null) ? null : name.trim();
+            return this;
         }
     }
 }

@@ -35,11 +35,14 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private GroupRoomSize size;
 
-    @PrePersist
-    @PreUpdate
-    public void trimName() {
-        if (roomNum != null) {
-            roomNum = roomNum.trim();
+    public void setName(String roomNum) {
+        this.roomNum = roomNum == null ? null : roomNum.trim();
+    }
+
+    public static class RoomBuilder {
+        public RoomBuilder name(String roomNum) {
+            this.roomNum = (roomNum == null) ? null : roomNum.trim();
+            return this;
         }
     }
 }

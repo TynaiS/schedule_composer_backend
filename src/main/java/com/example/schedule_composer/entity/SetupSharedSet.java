@@ -30,11 +30,15 @@ public class SetupSharedSet {
     @Column(name = "hours_a_week")
     private Integer hoursAWeek;
 
-    @PrePersist
-    @PreUpdate
-    public void trimName() {
-        if (name != null) {
-            name = name.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public static class SetupSharedSetBuilder {
+
+        public SetupSharedSetBuilder name(String name) {
+            this.name = (name == null) ? null : name.trim();
+            return this;
         }
     }
 
