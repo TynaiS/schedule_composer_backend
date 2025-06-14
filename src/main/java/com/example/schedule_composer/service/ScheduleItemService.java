@@ -28,6 +28,7 @@ public interface ScheduleItemService {
     ScheduleItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, ScheduleItemDTOPost request);
     ScheduleItemDTOGet updateForUser(Long userId, Long scheduleItemId, ScheduleItemDTOPatch patchRequest);
     void deleteByIdForUser(Long userId, Long scheduleItemId);
+    void deleteAllForUserScheduleVersion(Long userId, Long scheduleVersionId);
 
     ScheduleItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleItemId);
     List<ScheduleItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId);

@@ -4,6 +4,9 @@ import com.example.schedule_composer.dto.get.ScheduleVersionDTOGet;
 import com.example.schedule_composer.dto.patch.ScheduleVersionDTOPatch;
 import com.example.schedule_composer.dto.post.ScheduleVersionDTOPost;
 import com.example.schedule_composer.entity.User;
+import com.example.schedule_composer.service.ScheduleItemService;
+import com.example.schedule_composer.service.ScheduleLunchItemService;
+import com.example.schedule_composer.service.ScheduleSharedItemService;
 import com.example.schedule_composer.service.ScheduleVersionService;
 import com.example.schedule_composer.utils.ApiConstants;
 import com.example.schedule_composer.utils.types.TeachingMode;
@@ -25,6 +28,9 @@ import java.util.List;
 public class ScheduleVersionController {
 
     private final ScheduleVersionService scheduleVersionService;
+    private final ScheduleItemService scheduleItemService;
+    private final ScheduleLunchItemService scheduleLunchItemService;
+    private final ScheduleSharedItemService scheduleSharedItemService;
 
 
     @GetMapping("/{scheduleVersionId}")
@@ -76,6 +82,18 @@ public class ScheduleVersionController {
             @PathVariable("scheduleVersionId") Long scheduleVersionId) {
         Long userId = user.getId();
         scheduleVersionService.deleteByIdForUser(userId, scheduleVersionId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{scheduleVersionId}/clear-schedule")
+    @Operation(summary = "Removes all generated ScheduleItems", description = "Removes all generated ScheduleItems(lunch, shared) for ScheduleVersion")
+    public ResponseEntity<ScheduleVersionDTOGet> clearSchedule(
+            @AuthenticationPrincipal User user,
+            @PathVariable("scheduleVersionId") Long scheduleVersionId) {
+        Long userId = user.getId();
+        scheduleItemService.deleteAllForUserScheduleVersion(userId, scheduleVersionId);
+        scheduleLunchItemService.deleteAllForUserScheduleVersion(userId, scheduleVersionId);
+        scheduleSharedItemService.deleteAllForUserScheduleVersion(userId, scheduleVersionId);
         return ResponseEntity.noContent().build();
     }
 

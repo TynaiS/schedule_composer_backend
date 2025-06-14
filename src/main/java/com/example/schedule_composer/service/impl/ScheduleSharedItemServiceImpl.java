@@ -141,6 +141,18 @@ public class ScheduleSharedItemServiceImpl implements ScheduleSharedItemService 
     }
 
     @Override
+    public void deleteAllForUserScheduleVersion(Long userId, Long scheduleVersionId) {
+        List<ScheduleSharedItem> userItems = getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId);
+        List<Long> idsToDelete = userItems.stream()
+                .map(ScheduleSharedItem::getId)
+                .toList();
+
+        if (!idsToDelete.isEmpty()) {
+            scheduleSharedItemRepository.deleteAllByIdInBatch(idsToDelete);
+        }
+    }
+
+    @Override
     public ScheduleSharedItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleSharedItemId) {
         ScheduleSharedItem scheduleSharedItem = getEntityById(scheduleSharedItemId);
         scheduleVersionService.checkUserAccessToScheduleVersion(scheduleSharedItem.getScheduleVersion(), userId);

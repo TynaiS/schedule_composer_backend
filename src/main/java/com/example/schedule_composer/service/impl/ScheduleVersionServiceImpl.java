@@ -7,8 +7,7 @@ import com.example.schedule_composer.entity.Schedule;
 import com.example.schedule_composer.entity.ScheduleVersion;
 import com.example.schedule_composer.mappers.ScheduleVersionMapper;
 import com.example.schedule_composer.repository.ScheduleVersionRepository;
-import com.example.schedule_composer.service.ScheduleService;
-import com.example.schedule_composer.service.ScheduleVersionService;
+import com.example.schedule_composer.service.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,7 @@ public class ScheduleVersionServiceImpl implements ScheduleVersionService {
     private final ScheduleVersionRepository scheduleVersionRepository;
     private final ScheduleVersionMapper scheduleVersionMapper;
     private final ScheduleService scheduleService;
+
 
     @Override
     public ScheduleVersionDTOGet getById(Long id) {

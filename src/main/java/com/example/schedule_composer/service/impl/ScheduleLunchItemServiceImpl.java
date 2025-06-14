@@ -135,6 +135,18 @@ public class ScheduleLunchItemServiceImpl implements ScheduleLunchItemService {
     }
 
     @Override
+    public void deleteAllForUserScheduleVersion(Long userId, Long scheduleVersionId) {
+        List<ScheduleLunchItem> userItems = getAllEntitiesForUserScheduleVersion(userId, scheduleVersionId);
+        List<Long> idsToDelete = userItems.stream()
+                .map(ScheduleLunchItem::getId)
+                .toList();
+
+        if (!idsToDelete.isEmpty()) {
+            scheduleLunchItemRepository.deleteAllByIdInBatch(idsToDelete);
+        }
+    }
+
+    @Override
     public ScheduleLunchItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleLunchItemId) {
         ScheduleLunchItem scheduleLunchItem = getEntityById(scheduleLunchItemId);
         scheduleVersionService.checkUserAccessToScheduleVersion(scheduleLunchItem.getScheduleVersion(), userId);

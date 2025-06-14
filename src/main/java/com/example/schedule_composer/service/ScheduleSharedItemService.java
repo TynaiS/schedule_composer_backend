@@ -28,6 +28,8 @@ public interface ScheduleSharedItemService {
     ScheduleSharedItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, ScheduleSharedItemDTOPost request);
     ScheduleSharedItemDTOGet updateForUser(Long userId, Long scheduleSharedItemId, ScheduleSharedItemDTOPatch patchRequest);
     void deleteByIdForUser(Long userId, Long scheduleSharedItemId);
+    void deleteAllForUserScheduleVersion(Long userId, Long scheduleVersionId);
+
 
     ScheduleSharedItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleSharedItemId);
     List<ScheduleSharedItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId);

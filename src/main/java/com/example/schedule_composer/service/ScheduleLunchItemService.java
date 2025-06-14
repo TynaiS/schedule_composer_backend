@@ -30,6 +30,8 @@ public interface ScheduleLunchItemService {
     ScheduleLunchItemDTOGet createForUserScheduleVersion(Long userId, Long scheduleVersionId, ScheduleLunchItemDTOPost request);
     ScheduleLunchItemDTOGet updateForUser(Long userId, Long scheduleLunchItemId, ScheduleLunchItemDTOPatch patchRequest);
     void deleteByIdForUser(Long userId, Long scheduleLunchItemId);
+    void deleteAllForUserScheduleVersion(Long userId, Long scheduleVersionId);
+
 
     ScheduleLunchItem getEntityByIdForUserScheduleVersion(Long userId, Long scheduleLunchItemId);
     List<ScheduleLunchItem> getAllEntitiesForUserScheduleVersion(Long userId, Long scheduleVersionId);
